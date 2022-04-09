@@ -1,0 +1,50 @@
+server:
+  port: 443
+
+  ssl:
+    enabled: true
+    # keystore format
+    key-store-type: PKCS12
+    # keystore location
+    key-store: server.p12
+    # keystore password
+    key-store-password: changeit
+
+  # SSL protocol to use
+    protocol: TLS
+  # Enabled SSL protocol
+
+    enabled-protocols: TLSv1.2
+    client-auth: need
+    #trust store location
+    trust-store: server-truststore.p12
+    #trust store password
+    trust-store-password: changeit
+
+
+spring:
+  datasource:
+    url: jdbc:ch://localhost
+    username: default
+    password: 123456
+    driverClassName: com.clickhouse.jdbc.ClickHouseDriver
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+url: http://localhost:8123
+
+netflow:
+  saveFrequencyTime: 10000
+  # Свойства, связанные с сборщиком пакетом
+  collector:
+    routerAddress: 192.168.1.1
+    port: 2055
+  # Свойства, связанные с анализатором пакетов
+  analyze:
+    routerType: KEENETIC
+    updateMeanValueTimeMillis: 3600000
+    analyzeFrequencyMillis: 5000
+    maxUniqueDestinationPortCount: 40
+    flowMultiplierLimitation: 20
