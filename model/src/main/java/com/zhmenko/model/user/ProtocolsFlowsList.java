@@ -9,25 +9,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.List;
 
-public class ProtocolsList {
+public class ProtocolsFlowsList {
     private Map<Protocol, List<NetflowPacket>> protocolListHashMap;
-    private Map<Protocol, Boolean> busyListHashMap;
 
-    public ProtocolsList() {
+    public ProtocolsFlowsList() {
         protocolListHashMap = new ConcurrentHashMap<>();
-        busyListHashMap = new ConcurrentHashMap<>();
         for (Protocol protocol : Protocol.values()) {
             protocolListHashMap.put(protocol, new CopyOnWriteArrayList<>());
-            busyListHashMap.put(protocol, false);
         }
     }
 
     public void addFlow(NetflowPacket netflowPacket) {
         protocolListHashMap.get(netflowPacket.getProtocol()).add(netflowPacket);
-    }
-
-    public List<NetflowPacket> getUserProtocolList(Protocol protocol) {
-        return protocolListHashMap.get(protocol);
     }
 
     public List<List<NetflowPacket>> getUserAllProtocolLists() {
@@ -39,15 +32,15 @@ public class ProtocolsList {
     }
 
     public boolean isEmpty() {
-        for (Protocol protocol : Protocol.values()) {
-            if (!protocolListHashMap.get(protocol).isEmpty()) return false;
+        for (List<NetflowPacket> lst : protocolListHashMap.values()) {
+            if (!lst.isEmpty()) return false;
         }
         return true;
     }
 
     public void clear() {
-        for (Protocol protocol : Protocol.values()) {
-            protocolListHashMap.get(protocol).clear();
+        for (List<NetflowPacket> lst : protocolListHashMap.values()) {
+            lst.clear();
         }
     }
     /*

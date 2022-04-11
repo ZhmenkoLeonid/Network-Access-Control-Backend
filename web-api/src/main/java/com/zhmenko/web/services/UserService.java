@@ -3,9 +3,9 @@ package com.zhmenko.web.services;
 import java.util.List;
 
 public interface UserService {
-    public void save(String userIpAddress);
+    public void add(String userIpAddress);
 
-    public void saveList(List<String> usersIpAddresses);
+    public void addList(List<String> usersIpAddresses);
 
     public void remove(String userIpAddress);
 

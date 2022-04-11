@@ -1,8 +1,10 @@
 package com.zhmenko.web.services.impl;
 
 import com.zhmenko.dao.UserDao;
+import com.zhmenko.model.user.User;
 import com.zhmenko.web.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,13 +14,18 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserDao dao;
 
+    @Value("${netflow.analyze.updateMeanValueTimeMillis}")
+    private long updateMeanValueTimeMillis;
+
     @Override
-    public void save(String userIpAddress) {
+    public void add(String userIpAddress) {
         dao.save(userIpAddress);
+        //TODO це х**ня, надо по-другому создавать (addUser??)
+        new User(userIpAddress, updateMeanValueTimeMillis);
     }
 
     @Override
-    public void saveList(List<String> usersIpAddresses) {
+    public void addList(List<String> usersIpAddresses) {
         dao.saveList(usersIpAddresses);
     }
 

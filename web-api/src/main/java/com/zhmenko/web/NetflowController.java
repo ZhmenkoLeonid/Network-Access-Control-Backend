@@ -1,4 +1,4 @@
-package com.zhmenko.web.controller;
+package com.zhmenko.web;
 
 import com.zhmenko.model.netflow.NetflowPacket;
 import com.zhmenko.model.netflow.NetflowPacketV5;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @org.springframework.web.bind.annotation.RestController
-public class RestController {
+public class NetflowController {
     @Autowired
     NetflowService netflowService;
     @Autowired
@@ -22,7 +22,7 @@ public class RestController {
 
     private static final String template = "Hello, %s!";
 
-    public RestController(){
+    public NetflowController(){
     }
 
     @GetMapping("/")

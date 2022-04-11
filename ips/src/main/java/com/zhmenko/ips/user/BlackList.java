@@ -15,11 +15,14 @@ public class BlackList {
     private List<String> blockedIpAddressessList;
     private boolean busy;
 
-    BlackListDao blackListDao;
-    NetflowDao netflowDao;
+    private BlackListDao blackListDao;
+    private NetflowDao netflowDao;
+    private UserList userList;
 
     public BlackList(@Autowired BlackListDao blackListDao,
-                     @Autowired NetflowDao netflowDao) {
+                     @Autowired NetflowDao netflowDao,
+                     @Autowired UserList userList) {
+        this.userList = userList;
         this.blackListDao = blackListDao;
         this.netflowDao = netflowDao;
 
@@ -31,7 +34,7 @@ public class BlackList {
         boolean result = false;
         if (!blockedIpAddressessList.contains(ipAddress)) {
             blockedIpAddressessList.add(ipAddress);
-            User.deleteUser(ipAddress);
+            userList.deleteUser(ipAddress);
             blackListDao.insertIpIntoBlackList(ipAddress);
             netflowDao.deleteUserFlowsByIp(ipAddress);
             result = true;

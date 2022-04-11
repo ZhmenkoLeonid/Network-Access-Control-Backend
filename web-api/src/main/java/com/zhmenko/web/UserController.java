@@ -1,4 +1,4 @@
-package com.zhmenko.web.controller;
+package com.zhmenko.web;
 
 import com.zhmenko.web.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +17,16 @@ public class UserController {
     @PostMapping(value = "/save", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestBody String ipAddress) {
-        userService.save(ipAddress);
+        userService.add(ipAddress);
     }
 
     @PostMapping(value = "/saveList", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveList(@RequestBody List<String> ipAddresses) {
-        userService.saveList(ipAddresses);
+        userService.addList(ipAddresses);
     }
 
-    @GetMapping(value = "/exist", consumes = "application/json")
+    @GetMapping(value = "/exist")
     public String isExist(String ipAddress) {
         return userService.isExist(ipAddress);
     }

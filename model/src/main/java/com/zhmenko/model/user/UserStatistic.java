@@ -15,9 +15,9 @@ public class UserStatistic {
     private Map<Protocol,Integer> protocolPacketCountMap;
     private Map<Protocol,Integer> protocolUniqueDestinationPortCountMap;
     private Date oldestPacketTime;
-    private int meanValueIntervalMillis;
+    private long meanValueIntervalMillis;
 
-    public UserStatistic(int meanValueIntervalMillis){
+    public UserStatistic(long meanValueIntervalMillis){
         this.meanValueIntervalMillis = meanValueIntervalMillis;
     }
 

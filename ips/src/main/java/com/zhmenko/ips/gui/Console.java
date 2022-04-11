@@ -2,6 +2,7 @@ package com.zhmenko.ips.gui;
 
 
 import com.zhmenko.ips.user.BlackList;
+import com.zhmenko.ips.user.UserStatistics;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -24,7 +25,8 @@ public class Console {
     private JScrollPane consoleScrollPane;
 
 
-    public Console(@Autowired BlackList blackList) throws IOException {
+    public Console(@Autowired BlackList blackList,
+                   @Autowired UserStatistics userStatistics) throws IOException {
         consoleTextInput = new JTextField(20);
         consoleTextOutput = new JTextArea();
         consoleFrame = new JFrame();
@@ -40,7 +42,7 @@ public class Console {
 
         //chatPanel.add(chatTextField);
         consoleTextInput.setPreferredSize(new Dimension(700, 25));
-        consoleTextInput.addKeyListener(new EnterAction(this, blackList));
+        consoleTextInput.addKeyListener(new EnterAction(this, blackList, userStatistics));
         consoleTextInput.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         consoleFrame.getContentPane().add(BorderLayout.SOUTH, consoleTextInput);
         consoleFrame.getContentPane().add(BorderLayout.CENTER, consoleScrollPane);

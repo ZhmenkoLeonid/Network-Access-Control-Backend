@@ -11,6 +11,4 @@
     <packaging>jar</packaging>
     <artifactId>model</artifactId>
 
-    <dependencies>
-    </dependencies>
 </project>

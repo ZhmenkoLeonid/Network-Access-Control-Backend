@@ -1,8 +1,9 @@
+/*
 package com.zhmenko.ips.traffic_analyze;
 
 import com.zhmenko.model.netflow.NetflowPacket;
 import com.zhmenko.model.netflow.NetflowPacketV5;
-import com.zhmenko.model.user.ProtocolsList;
+import com.zhmenko.model.user.ProtocolsFlowsList;
 import com.zhmenko.model.user.User;
 import com.zhmenko.dao.NetflowDao;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +28,14 @@ public class NetflowPacketSaveByTimeThread extends Thread {
         this.netflowDao = netflowDao;
         start();
     }
+*/
 /*
     public NetflowPacketDeleteByTimeThread() {
         // 30 sec - default value
         lifetimeMillis = 30 * 1000;
         start();
-    }*/
+    }*//*
+
 
     @Override
     public void run() {
@@ -68,7 +71,7 @@ public class NetflowPacketSaveByTimeThread extends Thread {
     }
 
     private List<NetflowPacketV5> deleteUserFlows(User user) {
-        List<List<NetflowPacket>> userAllProtocolLists = user.protocolsList.getUserAllProtocolLists();
+        List<List<NetflowPacket>> userAllProtocolLists = user.getProtocolsFlowsList().getUserAllProtocolLists();
         List<NetflowPacketV5> deletedPackets = new ArrayList<>();
         for (List<NetflowPacket> protocolList : userAllProtocolLists) {
             for (NetflowPacket packet : protocolList) {
@@ -80,18 +83,18 @@ public class NetflowPacketSaveByTimeThread extends Thread {
     }
 
     private Date getOldestTimestamp() {
-        List<ProtocolsList> protocolsLists = new ArrayList<>(User.getUserHashMap().values()
+        List<ProtocolsFlowsList> protocolsFlowsLists = new ArrayList<>(User.getUserHashMap().values()
                 .stream()
-                .map(user -> user.protocolsList)
+                .map(user -> user.getProtocolsFlowsList())
                 .collect(Collectors.toList())
         );
         List<Date> minTimestamp = new ArrayList<>();
-        for (ProtocolsList protocolsList : protocolsLists) {
-            for (List<NetflowPacket> packetList : protocolsList.getUserAllProtocolLists()) {
+        for (ProtocolsFlowsList protocolsFlowsList : protocolsFlowsLists) {
+            for (List<NetflowPacket> packetList : protocolsFlowsList.getUserAllProtocolLists()) {
                 if (packetList.size() == 0) continue;
                 minTimestamp.add(packetList.get(0).getTimestamp());
             }
         }
         return minTimestamp.stream().min(Date::compareTo).orElse(null);
     }
-}
+}*/

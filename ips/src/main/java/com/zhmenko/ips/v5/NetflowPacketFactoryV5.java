@@ -1,5 +1,6 @@
 package com.zhmenko.ips.v5;
 
+import com.zhmenko.ips.user.UserList;
 import com.zhmenko.model.exceptions.BlockedUserException;
 import com.zhmenko.model.exceptions.UnsupportedProtocolException;
 import com.zhmenko.model.netflow.NetflowPacket;
@@ -21,11 +22,15 @@ import java.util.*;
 public class NetflowPacketFactoryV5 {
     private static Map<String, Protocol> protocolHashMap;
     private BlackList blackList;
+    private UserList userList;
     private int meanValueIntervalMillis;
 
     public NetflowPacketFactoryV5(@Autowired BlackList blackList,
+                                  @Autowired UserList userList,
                                   @Value("${netflow.analyze.updateMeanValueTimeMillis}") int meanValueIntervalMillis) {
         this.blackList = blackList;
+        this.userList = userList;
+
         this.meanValueIntervalMillis = meanValueIntervalMillis;
         protocolHashMap = new HashMap<>();
         for (Protocol value : Protocol.values()) {
@@ -37,24 +42,30 @@ public class NetflowPacketFactoryV5 {
                                             String srcPort, String dstPort, Date timestamp, int tcpFlags)
             throws UnsupportedProtocolException, BlockedUserException {
 
-        if (!User.isExist(srcIpAddress)) {
-            if (!blackList.isBlocked(srcIpAddress)) {
+        if (!userList.isExist(srcIpAddress) || blackList.isBlocked(srcIpAddress)) {
+/*            if (!blackList.isBlocked(srcIpAddress)) {
                 new User(srcIpAddress, meanValueIntervalMillis);
             } else {
                 return null;
-            }
+            }*/
+            return null;
         }
+
         if (!protocolHashMap.containsKey(protocol)) {
             throw new UnsupportedProtocolException(protocol);
         }
 
-        return new NetflowPacketV5(srcIpAddress,
+        NetflowPacketV5 packetV5 = new NetflowPacketV5(srcIpAddress,
                 dstIpAddress,
                 Integer.parseInt(srcPort),
                 Integer.parseInt(dstPort),
                 protocolHashMap.get(protocol),
                 timestamp,
                 getTcpFlagsFromInt(tcpFlags));
+
+        userList.getUserByIpAddress(srcIpAddress).getProtocolsFlowsList().addFlow(packetV5);
+
+        return packetV5;
     }
 
     private static String getTcpFlagsFromInt(int tcpFlags) {

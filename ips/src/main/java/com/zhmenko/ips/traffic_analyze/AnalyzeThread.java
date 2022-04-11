@@ -1,6 +1,7 @@
 package com.zhmenko.ips.traffic_analyze;
 
 import com.jcraft.jsch.JSchException;
+import com.zhmenko.ips.user.UserList;
 import com.zhmenko.model.netflow.NetflowPacket;
 import com.zhmenko.model.netflow.Protocol;
 import com.zhmenko.model.user.User;
@@ -13,8 +14,11 @@ import com.zhmenko.web.services.NetflowService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.swing.text.BadLocationException;
 import java.sql.SQLException;
 import java.util.*;
@@ -24,6 +28,7 @@ import java.io.IOException;
 @Scope("singleton")
 @Slf4j
 //
+@Order()
 public class AnalyzeThread extends Thread {
 
     /* берём 3000 пакетов в час для каждого протокола как средние */
@@ -35,16 +40,19 @@ public class AnalyzeThread extends Thread {
     private SSH ssh;
     private NetflowService netflowService;
     private BlackList blackList;
+    private UserList userList;
 
     private AnalyzeProperties properties;
 
     public AnalyzeThread(@Autowired AnalyzeProperties properties,
                          @Autowired NetflowService netflowService,
                          @Autowired Console console,
-                         @Autowired BlackList blackList)
+                         @Autowired BlackList blackList,
+                         @Autowired UserList userList)
             throws InterruptedException, JSchException, IOException {
         this.properties = properties;
         this.blackList = blackList;
+        this.userList = userList;
         this.netflowService = netflowService;
         this.console = console;
         this.defaultMeanValue = (long) (defaultMeanValueMillisMultiplier
@@ -82,11 +90,11 @@ public class AnalyzeThread extends Thread {
         //HashMap<Protocol,Long> protocolLongHashMap;
         while (true) {
             try {
-                for (User user : User.getUserList()) {
+                for (User user : userList.getUserList()) {
                     // Получаем последнюю статистику, если она обновлялась
-                    if (!user.protocolsList.isEmpty()) {
-                        netflowService.saveProtocolListMap(user.getProtocolsList().getProtocolListHashMap());
-                        user.getProtocolsList().clear();
+                    if (!user.getProtocolsFlowsList().isEmpty()) {
+                        netflowService.saveProtocolListMap(user.getProtocolsFlowsList().getProtocolListHashMap());
+                        user.getProtocolsFlowsList().clear();
                         log.info("save flows");
                         user.updateUserStatistic(netflowService.getUserStatisticByIpAddress(user.getIpAddress()));
                     }
@@ -129,7 +137,7 @@ public class AnalyzeThread extends Thread {
 
     private void checkUserMeanPacketValue(User user) throws BadLocationException {
         Map<Protocol, Integer> userMeanValues = user.getUserStatistic().getFlowMeanValues();
-        for (List<NetflowPacket> protocolList : user.protocolsList.getUserAllProtocolLists()) {
+        for (List<NetflowPacket> protocolList : user.getProtocolsFlowsList().getUserAllProtocolLists()) {
             if (protocolList.size() > 0)
                 if (protocolList.size() >
                         userMeanValues
@@ -139,7 +147,7 @@ public class AnalyzeThread extends Thread {
                             protocolList.get(0).getProtocol() + " пакетов!");
                     String userIp = user.getIpAddress();
                     blackList.blockUser(userIp);
-                    User.deleteUser(userIp);
+                    userList.deleteUser(userIp);
                     // ssh.denyUser(userIp);
                 }
         }
@@ -147,16 +155,18 @@ public class AnalyzeThread extends Thread {
 
     private void checkDstPortValues(User user) throws BadLocationException {
         Map<Protocol, Integer> protUniqueDstPortCntMap = user.getUserStatistic().getProtocolUniqueDestinationPortCountMap();
-        for (Protocol protocol : Protocol.values()) {
-            int protCnt;
-            if ((protCnt = protUniqueDstPortCntMap.get(protocol)) > properties.getMaxUniqueDestinationPortCount()) {
+        if (protUniqueDstPortCntMap == null) return;
+
+        for (Protocol protocol : protUniqueDstPortCntMap.keySet()) {
+            Integer protCnt = protUniqueDstPortCntMap.get(protocol);
+            if (protCnt != null && protCnt > properties.getMaxUniqueDestinationPortCount()) {
                 console.appendMsg("Пользователь " + user.getHostName() +
                         " с ip " + user.getIpAddress() + " превышает допустимое ("
                         + properties.getMaxUniqueDestinationPortCount() + ") количество обращений" +
                         " к уникальным портам по протоколу " + protocol + ": " + protCnt);
                 String userIp = user.getIpAddress();
                 blackList.blockUser(userIp);
-                User.deleteUser(userIp);
+                userList.deleteUser(userIp);
                 //ssh.denyUser(userIp);
             }
         }

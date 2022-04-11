@@ -1,7 +1,7 @@
 package com.zhmenko.ips.gui;
 
 import com.zhmenko.ips.user.BlackList;
-import com.zhmenko.model.user.UserStatistics;
+import com.zhmenko.ips.user.UserStatistics;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -9,8 +9,10 @@ import java.awt.event.KeyListener;
 public class EnterAction implements KeyListener {
     Console console;
     BlackList blackList;
+    UserStatistics userStatistics;
 
-    public EnterAction(Console console, BlackList blackList) {
+    public EnterAction(Console console, BlackList blackList, UserStatistics userStatistics) {
+        this.userStatistics = userStatistics;
         this.blackList = blackList;
         this.console = console;
     }
@@ -32,7 +34,7 @@ public class EnterAction implements KeyListener {
                     if ((msg = text.split(" ")).length > 1) {
                         switch (msg[1]) {
                             case "stats":
-                                text = UserStatistics.getAllUserStats();
+                                text = userStatistics.getAllUserStats();
                                 console.appendMsg("show stats\n" + text);
                                 break;
                             case "flows":

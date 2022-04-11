@@ -1,14 +1,21 @@
-package com.zhmenko.model.user;
+package com.zhmenko.ips.user;
 
 import com.zhmenko.model.netflow.NetflowPacket;
 import com.zhmenko.model.netflow.Protocol;
+import com.zhmenko.model.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+@Component
 public class UserStatistics {
 
-    private UserStatistics(){
-        throw new AssertionError();
+    private UserList userList;
+
+    public UserStatistics(@Autowired UserList userList) {
+        this.userList = userList;
+        //throw new AssertionError();
     }
 
     /*public static String getAllUserStats(){
@@ -31,10 +38,10 @@ public class UserStatistics {
         userList.clear();
         return  result;
     }*/
-    public static String getAllUserStats(){
+    public String getAllUserStats() {
         String result = "";
-        List<User> userList = User.getUserList();
-        for (User user : userList) {
+        List<User> usrList = userList.getUserList();
+        for (User user : usrList) {
             result += "User " + user.getHostName() + ": " + user.getIpAddress() +'\n';
             result+="Средние значения пакетов:\n";
             Map<Protocol,Integer> flowMeanValues = user.getUserStatistic().getFlowMeanValues();
@@ -43,7 +50,7 @@ public class UserStatistics {
                     result += protocol + ": " + flowMeanValues.get(protocol) + '\n';
                 }
             }
-            result += UserStatistics.getUserPacketStats(user)+'\n';
+            result += getUserPacketStats(user)+'\n';
             Map<Protocol,Integer> dstPortValues = user.getUserStatistic().getProtocolUniqueDestinationPortCountMap();
             if ( dstPortValues != null && dstPortValues.size() > 0) {
                 for (Protocol protocol : dstPortValues.keySet()) {
@@ -53,8 +60,7 @@ public class UserStatistics {
         }
         //result+=("Время до обновления: "+ new java.text.SimpleDateFormat("ss.S")
         //        .format(new java.util.Date(AnalyzeMainThread.getTimeLeftBfrUpdateMillis())));
-        userList.clear();
-        return  result;
+        return result;
     }
 /*    public static String getAllUserFlows(){
         String result ="";
@@ -75,10 +81,10 @@ public class UserStatistics {
         return result;
     }*/
 
- public static String getUserPacketStats(User user){
+ public String getUserPacketStats(User user){
      String result = "";
-     List<List<NetflowPacket>> allProtocolsList = user.protocolsList.getUserAllProtocolLists();
-     for (List<NetflowPacket> protocolList:allProtocolsList){
+     List<List<NetflowPacket>> allProtocolsList = user.getProtocolsFlowsList().getUserAllProtocolLists();
+     for (List<NetflowPacket> protocolList: allProtocolsList){
          if (protocolList.size() == 0) {continue;}
          result+="Количество "+protocolList.get(0).getProtocol()+" пакетов: "+ protocolList.size()+"\n";
      }

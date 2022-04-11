@@ -18,7 +18,6 @@ public class HandlerAction implements Accountant {
         this.factory = factory;
     }
 
-    static int count = 1;
     public void account(Flow f) {
         try {
             factory.createNetflowClass(IpAddr.toString(f.getSrcAddr()),IpAddr.toString(f.getDstAddr())

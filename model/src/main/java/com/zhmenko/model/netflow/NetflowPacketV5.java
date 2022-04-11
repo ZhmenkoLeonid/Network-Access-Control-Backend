@@ -30,7 +30,6 @@ public class NetflowPacketV5 extends NetflowPacket {
         hostname = "";
         version = 5;
         dateFormat = new SimpleDateFormat("HH:mm:ss.S");
-        User.getUserByIpAddress(srcIpAddress).protocolsList.addFlow(this);
     }
 
     public NetflowPacketV5(NetflowPacketV5 packet){
