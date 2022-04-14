@@ -27,7 +27,7 @@
     </properties>
 
     <modules>
-        <module>ips</module>
+<!--        <module>ips</module>-->
         <module>web-api</module>
         <module>model</module>
         <module>application</module>
@@ -41,19 +41,4 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
-<!--
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-        </pluginRepository>
-    </pluginRepositories>-->
 </project>

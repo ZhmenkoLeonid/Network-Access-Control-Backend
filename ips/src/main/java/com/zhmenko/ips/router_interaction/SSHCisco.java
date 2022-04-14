@@ -15,14 +15,10 @@ public class SSHCisco extends SSH{
     public SSHCisco(String usr, String pass, String hostIP, String accessListName, String enableModePassword)
             throws InterruptedException, JSchException, IOException {
         super(usr, pass, hostIP,accessListName);
-        isEnableMode = false;
-        isConfigMode = false;
         this.enableModePassword = enableModePassword;
     }
     public SSHCisco() throws InterruptedException, JSchException, IOException {
         super();
-        isEnableMode = false;
-        isConfigMode = false;
         this.enableModePassword = "cisco";
     }
 

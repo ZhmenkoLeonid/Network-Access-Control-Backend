@@ -6,7 +6,6 @@
     <packaging>jar</packaging>
     <artifactId>application</artifactId>
 
-
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.zhmenko</groupId>
@@ -26,11 +25,11 @@
             <version>${app.version}</version>
         </dependency>
 
-        <dependency>
+<!--        <dependency>
             <groupId>com.zhmenko</groupId>
             <artifactId>ips</artifactId>
             <version>${app.version}</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>com.zhmenko</groupId>
@@ -44,17 +43,6 @@
             <version>${app.version}</version>
         </dependency>
 
-
-<!--        &lt;!&ndash; Actuator and DevTools...just because &ndash;&gt;
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>-->
     </dependencies>
 
     <build>

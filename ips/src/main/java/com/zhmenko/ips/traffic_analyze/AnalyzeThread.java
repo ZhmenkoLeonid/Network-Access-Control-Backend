@@ -90,12 +90,13 @@ public class AnalyzeThread extends Thread {
         //HashMap<Protocol,Long> protocolLongHashMap;
         while (true) {
             try {
+                log.info("analyze invoke");
                 for (User user : userList.getUserList()) {
                     // Получаем последнюю статистику, если она обновлялась
                     if (!user.getProtocolsFlowsList().isEmpty()) {
                         netflowService.saveProtocolListMap(user.getProtocolsFlowsList().getProtocolListHashMap());
                         user.getProtocolsFlowsList().clear();
-                        log.info("save flows");
+                        log.info("save flows for user: " + user.getIpAddress());
                         user.updateUserStatistic(netflowService.getUserStatisticByIpAddress(user.getIpAddress()));
                     }
                     // тип от дудоса
@@ -104,6 +105,7 @@ public class AnalyzeThread extends Thread {
                     checkDstPortValues(user);
                 }
                 timerExecuteTimeMillis = properties.getAnalyzeFrequencyMillis() + System.currentTimeMillis();
+                properties.setAnalyzeExecuteTime(timerExecuteTimeMillis);
                 Thread.sleep(properties.getAnalyzeFrequencyMillis());
             } catch (InterruptedException | BadLocationException | SQLException exception) {
                 exception.printStackTrace();

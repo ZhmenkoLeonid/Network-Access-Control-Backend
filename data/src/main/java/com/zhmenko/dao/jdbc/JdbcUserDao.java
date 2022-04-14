@@ -4,9 +4,11 @@ import com.zhmenko.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 public class JdbcUserDao implements UserDao {
     private static String SELECT_ALL_USERS = "SELECT * FROM USER";
     private static String SELECT_USER_BY_IP = "SELECT * FROM USER WHERE IP_ADDRESS=?";
+    private static String COUNT_USERS_BY_IP = "SELECT COUNT(*) FROM USER WHERE IP_ADDRESS=?";
     private static String INSERT_USER = "INSERT INTO USER (IP_ADDRESS) values (?)";
     private static String DELETE_USER = "ALTER TABLE USER DELETE WHERE IP_ADDRESS=?";
 
@@ -23,10 +26,11 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public boolean isExist(String ipAddress) {
-        return jdbcTemplate.queryForObject(
-                SELECT_USER_BY_IP,
-                (rs, rowNum) -> rs.getFetchSize() > 0,
+        int cnt = jdbcTemplate.queryForObject(
+                COUNT_USERS_BY_IP,
+                Integer.class,
                 ipAddress);
+        return cnt > 0;
     }
 
     @Override

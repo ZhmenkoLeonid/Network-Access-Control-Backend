@@ -1,10 +1,12 @@
 package com.zhmenko.ips.gui;
 
 
+import com.zhmenko.ips.traffic_analyze.AnalyzeProperties;
 import com.zhmenko.ips.user.BlackList;
 import com.zhmenko.ips.user.UserStatistics;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +28,8 @@ public class Console {
 
 
     public Console(@Autowired BlackList blackList,
-                   @Autowired UserStatistics userStatistics) throws IOException {
+                   @Autowired UserStatistics userStatistics)
+            throws IOException {
         consoleTextInput = new JTextField(20);
         consoleTextOutput = new JTextArea();
         consoleFrame = new JFrame();
