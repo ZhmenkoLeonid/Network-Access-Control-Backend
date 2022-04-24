@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties("netflow.analyze")
 @Data
-@Scope("singleton")
 public class AnalyzeProperties {
     private Router routerType;
     private long analyzeFrequencyMillis;

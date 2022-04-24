@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  app:
+    build:
+      context: ../application
+      dockerfile: application/Dockerfile
+    container_name: app
+    ports:
+    - 443:443
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:ch://db:8123
+      - SPRING_DATASOURCE_USERNAME=default
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - JASYPT_ENCRYPTOR_PASSWORD=123
+
+  db:
+    build:
+      context: ../application
+      dockerfile: db/Dockerfile
+    ports:
+    - 8123:8123
+    container_name: db
+    environment:
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_PASSWORD=123456

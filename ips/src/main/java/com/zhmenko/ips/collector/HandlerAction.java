@@ -2,7 +2,7 @@ package com.zhmenko.ips.collector;
 
 import com.zhmenko.model.exceptions.BlockedUserException;
 import com.zhmenko.model.exceptions.UnsupportedProtocolException;
-import com.zhmenko.ips.v5.NetflowPacketFactoryV5;
+import com.zhmenko.ips.factory.v5.NetflowPacketFactoryV5;
 import nettrack.net.IpAddr;
 import nettrack.net.netflow.*;
 import org.springframework.beans.factory.annotation.Autowired;

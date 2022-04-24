@@ -1,8 +1,9 @@
-package com.zhmenko.web;
+package com.zhmenko.web.controller.rest;
 
 import com.zhmenko.web.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,18 +17,19 @@ public class UserController {
 
     @PostMapping(value = "/save", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
+    @Transactional
     public void save(@RequestBody String ipAddress) {
-        userService.add(ipAddress);
+        userService.addUser(ipAddress);
     }
 
     @PostMapping(value = "/saveList", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveList(@RequestBody List<String> ipAddresses) {
-        userService.addList(ipAddresses);
+        userService.addUserList(ipAddresses);
     }
 
     @GetMapping(value = "/exist")
     public String isExist(String ipAddress) {
-        return userService.isExist(ipAddress);
+        return userService.isUserExist(ipAddress);
     }
 }

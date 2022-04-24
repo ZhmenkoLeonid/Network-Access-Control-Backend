@@ -25,10 +25,8 @@ import java.util.*;
 import java.io.IOException;
 
 @Component
-@Scope("singleton")
 @Slf4j
 //
-@Order()
 public class AnalyzeThread extends Thread {
 
     /* берём 3000 пакетов в час для каждого протокола как средние */
@@ -44,11 +42,11 @@ public class AnalyzeThread extends Thread {
 
     private AnalyzeProperties properties;
 
-    public AnalyzeThread(@Autowired AnalyzeProperties properties,
-                         @Autowired NetflowService netflowService,
-                         @Autowired Console console,
-                         @Autowired BlackList blackList,
-                         @Autowired UserList userList)
+    public AnalyzeThread(AnalyzeProperties properties,
+                         NetflowService netflowService,
+                         Console console,
+                         BlackList blackList,
+                         UserList userList)
             throws InterruptedException, JSchException, IOException {
         this.properties = properties;
         this.blackList = blackList;
@@ -150,7 +148,11 @@ public class AnalyzeThread extends Thread {
                     String userIp = user.getIpAddress();
                     blackList.blockUser(userIp);
                     userList.deleteUser(userIp);
-                    // ssh.denyUser(userIp);
+                    try {
+                        ssh.denyUser(userIp);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
         }
     }
@@ -169,7 +171,11 @@ public class AnalyzeThread extends Thread {
                 String userIp = user.getIpAddress();
                 blackList.blockUser(userIp);
                 userList.deleteUser(userIp);
-                //ssh.denyUser(userIp);
+                try {
+                    ssh.denyUser(userIp);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

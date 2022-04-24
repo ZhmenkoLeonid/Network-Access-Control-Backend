@@ -16,7 +16,7 @@ server:
 
     enabled-protocols: TLSv1.2
     #client-auth: need
-    #trust store location
+    #trust store location TODO при деплое папка с сеертификатами должна заливаться отдельно (рядом с jar-ником)
     #trust-store: classpath:keystore/server-truststore.p12
     #trust store password
     #trust-store-password: changeit
@@ -24,14 +24,19 @@ server:
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL} #jdbc:ch://db
-    username: admin #default
-    password: admin #123456
+    url: ${SPRING_DATASOURCE_URL:jdbc:ch://localhost:8123} #
+    username: ${SPRING_DATASOURCE_USERNAME:default}
+    password: ${SPRING_DATASOURCE_PASSWORD:ENC(0/obL1mG+pElxepQtZwba9q9eD60e7l2H6gYA2ocMqcWtuP5uSOm743w3N6BEAcB)}
     driverClassName: com.clickhouse.jdbc.ClickHouseDriver
  # for swagger-ui
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  # liquibase changelog path${JASYPT_ENCRYPTOR_PASSWORD:}
+
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD:123}
 
 # ips configure
 netflow:
@@ -48,3 +53,7 @@ netflow:
     maxUniqueDestinationPortCount: 40
     flowMultiplierLimitation: 20
 
+logging:
+  level:
+    org.springframework.orm.jpa: DEBUG
+    org.springframework.transaction: DEBUG

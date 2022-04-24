@@ -16,7 +16,7 @@ public class UserStatistic {
     private Map<Protocol,Integer> protocolUniqueDestinationPortCountMap;
     private Date oldestPacketTime;
     private long meanValueIntervalMillis;
-
+	// TODO сделать переменную, которая содержит данные за последние meanValueIntervalMillis (напр. за последний час) для подсчёта отклонения от среднего значения
     public UserStatistic(long meanValueIntervalMillis){
         this.meanValueIntervalMillis = meanValueIntervalMillis;
     }

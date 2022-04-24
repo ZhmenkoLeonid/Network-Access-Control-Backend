@@ -15,6 +15,8 @@ public class SSHKeenetic extends SSH{
         super();
     }
 
+    // permit tcp 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0 port eq 443
+
 // access-list 1 deny ip <ip_address> 255.255.255.255 0.0.0.0 0.0.0.0
 
 //   access-list 1 permit ip <ip_address> 255.255.255.255 0.0.0.0 0.0.0.0
@@ -25,7 +27,8 @@ public class SSHKeenetic extends SSH{
 //   no access-list 1 deny ip 192.168.1.0 255.255.255.0 0.0.0.0 0.0.0.0
 //   access-list 1 deny ip 192.168.1.0 255.255.255.0 0.0.0.0 0.0.0.0
     @Override
-    public String sendCommand(String command) throws JSchException, IOException, InterruptedException {
+    public String sendCommand(String command, boolean isReqEnableMode,boolean isReqConfigMode)
+            throws JSchException, IOException, InterruptedException {
         if (!session.isConnected()) { establishConnection(); }
         out.write((command + '\n').getBytes());
         out.flush();

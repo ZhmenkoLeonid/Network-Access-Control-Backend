@@ -4,20 +4,19 @@ import com.zhmenko.dao.UserDao;
 import com.zhmenko.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Component
-@Scope("singleton")
 public class UserList {
     private Map<String, User> usersMap;
     private UserDao userDao;
     private long updateMeanValueTimeMillis;
 
-    public UserList(@Autowired UserDao userDao,
+    public UserList(UserDao userDao,
                     @Value("${netflow.analyze.updateMeanValueTimeMillis}") long updateMeanValueTimeMillis) {
         this.userDao = userDao;
         this.updateMeanValueTimeMillis = updateMeanValueTimeMillis;
@@ -35,6 +34,7 @@ public class UserList {
         usersMap.putIfAbsent(ipAddress, new User(ipAddress,updateMeanValueTimeMillis));
         userDao.save(ipAddress);
     }
+
     @Transactional
     public void deleteUser(String ipAddress) {
         usersMap.remove(ipAddress);

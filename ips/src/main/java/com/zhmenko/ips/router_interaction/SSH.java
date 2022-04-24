@@ -21,8 +21,7 @@ public abstract class SSH {
     protected OutputStream out;
     protected String accessListName;
 
-    public SSH(String usr, String pass, String hostIP,String accessListName) throws InterruptedException,
-            IOException, JSchException {
+    public SSH(String usr, String pass, String hostIP,String accessListName) throws JSchException {
         user = usr;
         password = pass;
         host = hostIP;
@@ -33,7 +32,7 @@ public abstract class SSH {
         session.setConfig("StrictHostKeyChecking", "no");
     }
 
-    public SSH() throws IOException, InterruptedException, JSchException {
+    public SSH() throws JSchException {
         user = "admin";
         password = "135790";
         host = "192.168.1.1";
@@ -44,19 +43,14 @@ public abstract class SSH {
         session.setConfig("StrictHostKeyChecking", "no");
     }
 
-    public String sendCommand(String command) throws JSchException, IOException, InterruptedException {
-        return "";
-    }
+    public abstract String sendCommand(String command, boolean isReqEnableMode,boolean isReqConfigMode)
+            throws JSchException, IOException, InterruptedException;
 
-    public void permitUser(String ipAddress) throws InterruptedException, JSchException, IOException {
+    public abstract void permitUser(String ipAddress) throws InterruptedException, JSchException, IOException;
 
-    }
+    public abstract void denyUser(String ipAddress) throws InterruptedException, JSchException, IOException;
 
-    public void denyUser(String ipAddress) throws InterruptedException, JSchException, IOException {
-
-    }
-
-    void establishConnection() throws JSchException, IOException, InterruptedException {
+    protected void establishConnection() throws JSchException, IOException, InterruptedException {
         session.connect();
         channel = session.openChannel("shell");
         channel.setOutputStream(System.out);

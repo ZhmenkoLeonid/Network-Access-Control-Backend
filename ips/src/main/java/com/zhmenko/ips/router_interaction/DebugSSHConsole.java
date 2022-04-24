@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+@Deprecated()
 public class DebugSSHConsole {
     private static final int port = 22;
     private static String user = "admin";

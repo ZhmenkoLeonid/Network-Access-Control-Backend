@@ -1,4 +1,4 @@
-package com.zhmenko.ips.v5;
+package com.zhmenko.ips.factory.v5;
 
 import com.zhmenko.ips.user.UserList;
 import com.zhmenko.model.exceptions.BlockedUserException;
@@ -7,18 +7,15 @@ import com.zhmenko.model.netflow.NetflowPacket;
 import com.zhmenko.model.netflow.NetflowPacketV5;
 import com.zhmenko.model.netflow.Protocol;
 import com.zhmenko.model.netflow.TcpFlags;
-import com.zhmenko.model.user.User;
 import com.zhmenko.ips.user.BlackList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.util.*;
 
 @Component
-@Scope("singleton")
 public class NetflowPacketFactoryV5 {
     private static Map<String, Protocol> protocolHashMap;
     private BlackList blackList;
@@ -69,10 +66,10 @@ public class NetflowPacketFactoryV5 {
     }
 
     private static String getTcpFlagsFromInt(int tcpFlags) {
-        if (tcpFlags < 0) throw new NumberFormatException("неправильные входные данные, число должно быть не меньше нуля");
+        if (tcpFlags < 0) throw new NumberFormatException("Число должно быть >= 0");
         String result = "";
         String binarySet = Integer.toBinaryString(tcpFlags);
-        for (int i = 0; i < binarySet.length() - 1; i++) {
+        for (int i = 0; i < binarySet.length(); i++) {
             if (binarySet.charAt(i) == '1') {
                 result += TcpFlags.fromInt(binarySet.length() - 1 - i).name() + " ";
             }

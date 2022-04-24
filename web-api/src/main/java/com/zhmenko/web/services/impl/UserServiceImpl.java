@@ -18,29 +18,29 @@ public class UserServiceImpl implements UserService {
     private long updateMeanValueTimeMillis;
 
     @Override
-    public void add(String userIpAddress) {
+    public void addUser(String userIpAddress) {
         dao.save(userIpAddress);
         //TODO це х**ня, надо по-другому создавать (addUser??)
         new User(userIpAddress, updateMeanValueTimeMillis);
     }
 
     @Override
-    public void addList(List<String> usersIpAddresses) {
+    public void addUserList(List<String> usersIpAddresses) {
         dao.saveList(usersIpAddresses);
     }
 
     @Override
-    public void remove(String userIpAddress) {
+    public void removeUser(String userIpAddress) {
         dao.remove(userIpAddress);
     }
 
     @Override
-    public void removeList(List<String> usersIpAddresses) {
+    public void removeUserList(List<String> usersIpAddresses) {
         dao.removeList(usersIpAddresses);
     }
 
     @Override
-    public String isExist(String userIpAddress) {
+    public String isUserExist(String userIpAddress) {
         String answer = "Пользователь с ip " + userIpAddress;
         if (!dao.isExist(userIpAddress)) answer += " не";
         answer += " существует!";
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> findAll() {
+    public List<String> findAllUsers() {
         return dao.findAll();
     }
 }

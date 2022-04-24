@@ -1,4 +1,4 @@
-package com.zhmenko.web;
+package com.zhmenko.web.controller.rest;
 
 import com.zhmenko.model.netflow.NetflowPacket;
 import com.zhmenko.model.netflow.NetflowPacketV5;
@@ -31,12 +31,10 @@ public class NetflowController {
     }
 
     @GetMapping("/findByIp")
-    public List<String> findById(String ip) throws URISyntaxException, SQLException {
-
-        System.out.println("ky");
+    public List<String> findPacketsByUserIp(String ip) throws URISyntaxException, SQLException {
         return netflowService.getByIp(ip)
                 .stream()
-                .map(a -> a.toString())
+                .map(NetflowPacket::toString)
                 .collect(Collectors.toList());
     }
 

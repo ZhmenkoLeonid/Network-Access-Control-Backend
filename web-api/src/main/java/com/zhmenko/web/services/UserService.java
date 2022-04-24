@@ -3,15 +3,15 @@ package com.zhmenko.web.services;
 import java.util.List;
 
 public interface UserService {
-    public void add(String userIpAddress);
+    public void addUser(String userIpAddress);
 
-    public void addList(List<String> usersIpAddresses);
+    public void addUserList(List<String> usersIpAddresses);
 
-    public void remove(String userIpAddress);
+    public void removeUser(String userIpAddress);
 
-    public void removeList(List<String> usersIpAddresses);
+    public void removeUserList(List<String> usersIpAddresses);
 
-    public String isExist(String userIpAddress);
+    public String isUserExist(String userIpAddress);
 
-    public List<String> findAll();
+    public List<String> findAllUsers();
 }
