@@ -23,3 +23,10 @@ create table USER_FLOW_DATA
     TCP_FLAGS              String
 )
     engine = MergeTree ORDER BY SOURCE_IP_ADDRESS;
+
+create table USER_OPENED_PORT
+(
+    USER_ID String,
+    PORT int
+)
+    engine = MergeTree ORDER BY USER_ID;

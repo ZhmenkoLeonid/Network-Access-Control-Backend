@@ -1,10 +1,10 @@
-package com.zhmenko.ips.router_interaction;
+package com.zhmenko.router;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import com.zhmenko.ips.socket.ReadThread;
+import com.zhmenko.router.socket.ReadThread;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -2,15 +2,23 @@ package com.zhmenko.main;
 
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import com.ulisesbocchio.jasyptspringboot.annotation.EncryptablePropertySource;
+import com.zhmenko.router.SSH;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootApplication(scanBasePackages = {"com.zhmenko.*"})
 @EnableEncryptableProperties
-@EncryptablePropertySource(name = "mainconf",value = "classpath:application.yml")
+@EncryptablePropertySource(name = "mainconf", value = "classpath:application.yml")
 @OpenAPIDefinition
 @EnableTransactionManagement
 public class IpsSpringApplication {
@@ -36,4 +44,27 @@ public class IpsSpringApplication {
         //new AnalyzeThread(Router.KEENETIC).start();
     }
 
+    @Component
+
+    public class Run implements CommandLineRunner {
+        @Autowired
+        private SSH ssh;
+
+        @Override
+        public void run(String... args) throws InterruptedException {
+            List<Integer> ports = List.of(90,1900,32,17);
+            String ipAddress = "192.168.12.5";
+            ThreadLocalRandom current = ThreadLocalRandom.current();
+            List<Integer> randPorts = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                randPorts.add(current.nextInt(9000)+1);
+            }
+
+            ssh.permitUserPorts(ipAddress,randPorts);
+
+            Thread.sleep(10000);
+
+            ssh.denyUserPorts(ipAddress,randPorts);
+        }
+    }
 }

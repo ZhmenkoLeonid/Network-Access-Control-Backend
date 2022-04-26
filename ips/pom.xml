@@ -26,6 +26,12 @@
             <version>${app.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.zhmenko</groupId>
+            <artifactId>router</artifactId>
+            <version>${app.version}</version>
+        </dependency>
+
         <!-- For the sake of the configuration properties class -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -33,25 +39,11 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Ssh libraries -->
-        <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-            <version>0.1.55</version>
-        </dependency>
-
         <!-- Netflow libraries -->
         <dependency>
             <groupId>nettrack</groupId>
             <artifactId>jflow</artifactId>
             <version>1.0</version>
-        </dependency>
-
-        <!-- lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
         </dependency>
 
     </dependencies>

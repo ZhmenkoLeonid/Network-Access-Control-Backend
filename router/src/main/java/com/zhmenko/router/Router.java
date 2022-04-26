@@ -1,4 +1,4 @@
-package com.zhmenko.ips.router_interaction;
+package com.zhmenko.router;
 
 public enum Router {
     CISCO,

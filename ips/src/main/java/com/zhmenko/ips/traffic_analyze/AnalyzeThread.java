@@ -1,24 +1,20 @@
 package com.zhmenko.ips.traffic_analyze;
 
 import com.jcraft.jsch.JSchException;
-import com.zhmenko.ips.user.UserList;
+import com.zhmenko.dao.list.user.UserList;
 import com.zhmenko.model.netflow.NetflowPacket;
 import com.zhmenko.model.netflow.Protocol;
 import com.zhmenko.model.user.User;
-import com.zhmenko.ips.user.BlackList;
+import com.zhmenko.dao.list.user.BlackList;
 import com.zhmenko.ips.gui.Console;
-import com.zhmenko.ips.router_interaction.SSH;
-import com.zhmenko.ips.router_interaction.SSHCisco;
-import com.zhmenko.ips.router_interaction.SSHKeenetic;
+import com.zhmenko.router.Router;
+import com.zhmenko.router.SSH;
+import com.zhmenko.router.SSHCisco;
+import com.zhmenko.router.SSHKeenetic;
 import com.zhmenko.web.services.NetflowService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.swing.text.BadLocationException;
 import java.sql.SQLException;
 import java.util.*;
@@ -46,22 +42,24 @@ public class AnalyzeThread extends Thread {
                          NetflowService netflowService,
                          Console console,
                          BlackList blackList,
-                         UserList userList)
+                         UserList userList,
+                         SSH ssh)
             throws InterruptedException, JSchException, IOException {
         this.properties = properties;
         this.blackList = blackList;
         this.userList = userList;
         this.netflowService = netflowService;
+        this.ssh = ssh;
         this.console = console;
         this.defaultMeanValue = (long) (defaultMeanValueMillisMultiplier
                 * properties.getUpdateMeanValueTimeMillis());
-        switch (properties.getRouterType()) {
+/*        switch (properties.getRouterType()) {
             case CISCO:
                 ssh = new SSHCisco();
                 break;
             case KEENETIC:
                 ssh = new SSHKeenetic();
-        }
+        }*/
         this.start();
     }
 /*

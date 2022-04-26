@@ -1,4 +1,4 @@
-package com.zhmenko.ips.socket;
+package com.zhmenko.router.socket;
 import com.jcraft.jsch.Channel;
 
 import java.io.InputStream;

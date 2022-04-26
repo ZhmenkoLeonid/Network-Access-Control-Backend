@@ -8,8 +8,8 @@
         <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>data</artifactId>
-    <packaging>jar</packaging>
+
+    <artifactId>verification</artifactId>
 
     <dependencies>
         <dependency>
@@ -18,17 +18,10 @@
             <version>${app.version}</version>
         </dependency>
 
-        <!-- Jdbc libs-->
         <dependency>
-            <groupId>com.clickhouse</groupId>
-            <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.3.2-patch7</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-
     </dependencies>
+
 </project>

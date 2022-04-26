@@ -1,7 +1,7 @@
 package com.zhmenko.ips.gui;
 
-import com.zhmenko.ips.user.BlackList;
-import com.zhmenko.ips.user.UserStatistics;
+import com.zhmenko.dao.list.user.BlackList;
+import com.zhmenko.dao.list.user.UserStatistics;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

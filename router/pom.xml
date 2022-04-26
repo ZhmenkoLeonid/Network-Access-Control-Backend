@@ -8,27 +8,21 @@
         <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>data</artifactId>
-    <packaging>jar</packaging>
+
+    <artifactId>router</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>com.zhmenko</groupId>
-            <artifactId>model</artifactId>
-            <version>${app.version}</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
         </dependency>
 
-        <!-- Jdbc libs-->
+        <!-- Ssh libraries -->
         <dependency>
-            <groupId>com.clickhouse</groupId>
-            <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.3.2-patch7</version>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>0.1.55</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-
     </dependencies>
+
 </project>

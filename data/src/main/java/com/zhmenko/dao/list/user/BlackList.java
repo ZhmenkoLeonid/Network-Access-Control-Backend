@@ -1,27 +1,23 @@
-package com.zhmenko.ips.user;
+package com.zhmenko.dao.list.user;
 
 import com.zhmenko.dao.BlackListDao;
 import com.zhmenko.dao.NetflowDao;
-import com.zhmenko.model.user.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-@Scope("singleton")
 public class BlackList {
-    private List<String> blockedIpAddressessList;
+    private final List<String> blockedIpAddressessList;
     private boolean busy;
 
-    private BlackListDao blackListDao;
-    private NetflowDao netflowDao;
-    private UserList userList;
+    private final BlackListDao blackListDao;
+    private final NetflowDao netflowDao;
+    private final UserList userList;
 
-    public BlackList(@Autowired BlackListDao blackListDao,
-                     @Autowired NetflowDao netflowDao,
-                     @Autowired UserList userList) {
+    public BlackList(BlackListDao blackListDao,
+                     NetflowDao netflowDao,
+                     UserList userList) {
         this.userList = userList;
         this.blackListDao = blackListDao;
         this.netflowDao = netflowDao;

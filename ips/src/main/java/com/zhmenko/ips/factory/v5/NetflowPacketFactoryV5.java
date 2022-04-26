@@ -1,13 +1,13 @@
 package com.zhmenko.ips.factory.v5;
 
-import com.zhmenko.ips.user.UserList;
+import com.zhmenko.dao.list.user.UserList;
 import com.zhmenko.model.exceptions.BlockedUserException;
 import com.zhmenko.model.exceptions.UnsupportedProtocolException;
 import com.zhmenko.model.netflow.NetflowPacket;
 import com.zhmenko.model.netflow.NetflowPacketV5;
 import com.zhmenko.model.netflow.Protocol;
 import com.zhmenko.model.netflow.TcpFlags;
-import com.zhmenko.ips.user.BlackList;
+import com.zhmenko.dao.list.user.BlackList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

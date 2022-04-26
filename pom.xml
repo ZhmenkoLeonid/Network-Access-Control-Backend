@@ -31,7 +31,17 @@
         <module>model</module>
         <module>application</module>
         <module>data</module>
+        <module>verification</module>
+        <module>router</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>

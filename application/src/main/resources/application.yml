@@ -33,6 +33,8 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   # liquibase changelog path${JASYPT_ENCRYPTOR_PASSWORD:}
+  profiles:
+    active: KEENETIC
 
 jasypt:
   encryptor:

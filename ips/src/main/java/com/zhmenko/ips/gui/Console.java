@@ -1,12 +1,10 @@
 package com.zhmenko.ips.gui;
 
 
-import com.zhmenko.ips.traffic_analyze.AnalyzeProperties;
-import com.zhmenko.ips.user.BlackList;
-import com.zhmenko.ips.user.UserStatistics;
+import com.zhmenko.dao.list.user.BlackList;
+import com.zhmenko.dao.list.user.UserStatistics;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

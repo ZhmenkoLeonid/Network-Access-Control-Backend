@@ -4,6 +4,7 @@ package com.zhmenko.model.user;
 import com.zhmenko.model.netflow.NetflowPacket;
 import com.zhmenko.model.netflow.Protocol;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -24,7 +25,8 @@ public class ProtocolsFlowsList {
     }
 
     public List<List<NetflowPacket>> getUserAllProtocolLists() {
-        return new CopyOnWriteArrayList<>(protocolListHashMap.values());
+        // TODO CONCURRENT TRIGGER
+        return new ArrayList<>(protocolListHashMap.values());
     }
 
     public Map<Protocol, List<NetflowPacket>> getProtocolListHashMap() {

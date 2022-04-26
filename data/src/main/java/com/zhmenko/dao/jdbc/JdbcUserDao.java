@@ -1,6 +1,7 @@
 package com.zhmenko.dao.jdbc;
 
 import com.zhmenko.dao.UserDao;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,8 +13,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
+@AllArgsConstructor
 public class JdbcUserDao implements UserDao {
     private static String SELECT_ALL_USERS = "SELECT * FROM USER";
     private static String SELECT_USER_BY_IP = "SELECT * FROM USER WHERE IP_ADDRESS=?";
@@ -21,15 +24,14 @@ public class JdbcUserDao implements UserDao {
     private static String INSERT_USER = "INSERT INTO USER (IP_ADDRESS) values (?)";
     private static String DELETE_USER = "ALTER TABLE USER DELETE WHERE IP_ADDRESS=?";
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public boolean isExist(String ipAddress) {
-        int cnt = jdbcTemplate.queryForObject(
+        int cnt = Optional.ofNullable(jdbcTemplate.queryForObject(
                 COUNT_USERS_BY_IP,
                 Integer.class,
-                ipAddress);
+                ipAddress)).orElse(0);
         return cnt > 0;
     }
 

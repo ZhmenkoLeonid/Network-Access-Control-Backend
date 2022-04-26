@@ -1,9 +1,8 @@
-package com.zhmenko.ips.user;
+package com.zhmenko.dao.list.user;
 
 import com.zhmenko.model.netflow.NetflowPacket;
 import com.zhmenko.model.netflow.Protocol;
 import com.zhmenko.model.user.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -13,7 +12,7 @@ public class UserStatistics {
 
     private UserList userList;
 
-    public UserStatistics(@Autowired UserList userList) {
+    public UserStatistics(UserList userList) {
         this.userList = userList;
         //throw new AssertionError();
     }

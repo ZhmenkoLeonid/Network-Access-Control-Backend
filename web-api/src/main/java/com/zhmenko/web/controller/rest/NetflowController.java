@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@org.springframework.web.bind.annotation.RestController
+@RestController
 public class NetflowController {
     @Autowired
     NetflowService netflowService;

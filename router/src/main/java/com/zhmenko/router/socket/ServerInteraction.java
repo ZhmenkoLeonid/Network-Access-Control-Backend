@@ -1,4 +1,4 @@
-package com.zhmenko.ips.socket;
+package com.zhmenko.router.socket;
 
 import java.io.*;
 import java.net.Socket;
