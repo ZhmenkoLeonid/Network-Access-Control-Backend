@@ -16,7 +16,7 @@ server:
 
     enabled-protocols: TLSv1.2
     #client-auth: need
-    #trust store location TODO при деплое папка с сеертификатами должна заливаться отдельно (рядом с jar-ником)
+    #trust store location
     #trust-store: classpath:keystore/server-truststore.p12
     #trust store password
     #trust-store-password: changeit
