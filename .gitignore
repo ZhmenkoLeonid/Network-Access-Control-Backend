@@ -1,3 +1,8 @@
 /host-validation/
 /web/src/main/java/com/zhmenko/web/certificate/
 /data/
+/web/target/
+/application/target/
+/ids/target/
+/router/target/
+/security/target/
