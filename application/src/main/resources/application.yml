@@ -8,7 +8,7 @@ server:
     # keystore location
     key-store: classpath:keystore/server.p12
     # keystore password
-    key-store-password: changeit
+    key-store-password: ENC(wiMOCNAAHFLBhhpIgvQQ/g/Ox7vw9oitELOx7bJCPOgmGrZac9lAWJ7QGPrp7CyL)
 
   # SSL protocol to use
     protocol: TLS
