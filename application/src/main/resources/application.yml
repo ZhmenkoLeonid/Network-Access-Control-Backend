@@ -33,15 +33,10 @@ spring:
       matching-strategy: ant_path_matcher
   profiles:
     active: keenetic
-  boot:
-    admin:
-      client:
-        url: http://localhost:9090
-  application:
-    name: spring-ips
+
   security:
     jwt:
-      jwtSecret: justJwtSecret
+      jwtSecret: ENC(3DNdSzuVKsOicKHSLgyXFVDP7rD0CVSAS2kzm1rYiMKFEhf/z5RmDHRkT9jwk3Rp)
       jwtExpirationMs: 8640000
 
 jasypt:
@@ -68,8 +63,3 @@ netflow:
     accessListName: netflow
     collector:
       port: 2055
-
-logging:
-  level:
-    org.springframework.orm.jpa: DEBUG
-    org.springframework.transaction: DEBUG
