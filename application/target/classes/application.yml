@@ -21,20 +21,28 @@ server:
     #trust store password
     #trust-store-password: changeit
 
-
 spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:ch://localhost:8123} #
     username: ${SPRING_DATASOURCE_USERNAME:default}
-    password: ${SPRING_DATASOURCE_PASSWORD:ENC(0/obL1mG+pElxepQtZwba9q9eD60e7l2H6gYA2ocMqcWtuP5uSOm743w3N6BEAcB)}
+    password: ${SPRING_DATASOURCE_PASSWORD:ENC(Xj8TLRm6L2Eto5ufBdLQg0MXaEUgtVCXJoGttMLdSJxVUFN+bqEw2/iVD66OP/vp)}
     driverClassName: com.clickhouse.jdbc.ClickHouseDriver
  # for swagger-ui
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  # liquibase changelog path${JASYPT_ENCRYPTOR_PASSWORD:}
   profiles:
-    active: KEENETIC
+    active: keenetic
+  boot:
+    admin:
+      client:
+        url: http://localhost:9090
+  application:
+    name: spring-ips
+  security:
+    jwt:
+      jwtSecret: justJwtSecret
+      jwtExpirationMs: 8640000
 
 jasypt:
   encryptor:
@@ -43,17 +51,23 @@ jasypt:
 # ips configure
 netflow:
   saveFrequencyTime: 10000
-  # Свойства, связанные с сборщиком пакетом
-  collector:
-    routerAddress: 192.168.1.1
-    port: 2055
+
   # Свойства, связанные с анализатором пакетов
   analyze:
     routerType: KEENETIC
     analyzeFrequencyMillis: 5000
-    updateMeanValueTimeMillis: 3600000
+    updateMeanValueTimeMillis: 600000
     maxUniqueDestinationPortCount: 40
     flowMultiplierLimitation: 20
+    # Свойства, связанные с сборщиком пакетом
+
+  router:
+    ipAddress: 192.168.1.1
+    username: admin
+    password: ENC(6bdk1Xm4ha9jye1A7Jp1AFv+Oq3Snl98Isontn4n7pN+Mqam1UWc9s9KoCxdiwzN)
+    accessListName: netflow
+    collector:
+      port: 2055
 
 logging:
   level:

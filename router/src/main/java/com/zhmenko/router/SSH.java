@@ -34,17 +34,6 @@ public abstract class SSH {
         this.session.setConfig("StrictHostKeyChecking", "no");
     }
 
-    public SSH() throws JSchException {
-        this.user = "admin";
-        this.password = "135790";
-        this.host = "192.168.1.1";
-        this.accessListName = "netflow";
-        this.jsch = new JSch();
-        this.session = this.jsch.getSession(user, host, port);
-        this.session.setPassword(password);
-        this.session.setConfig("StrictHostKeyChecking", "no");
-    }
-
     public abstract String sendCommand(String command, boolean isReqEnableMode,boolean isReqConfigMode);
 
     public abstract void permitUser(String ipAddress);

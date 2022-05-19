@@ -8,16 +8,14 @@ import java.io.*;
 import java.util.List;
 
 @Component
-@Profile("KEENETIC")
+@Profile("keenetic")
 public class SSHKeenetic extends SSH {
-    //String remoteFile = "/home/john/test.txt";
-    public SSHKeenetic(String usr, String pass, String hostIP, String accessListName) throws InterruptedException,
+    public SSHKeenetic(SSHProperties sshProperties) throws InterruptedException,
             IOException, JSchException {
-        super(usr, pass, hostIP, accessListName);
-    }
-
-    public SSHKeenetic() throws IOException, InterruptedException, JSchException {
-        super();
+        super(sshProperties.getUsername(),
+                sshProperties.getPassword(),
+                sshProperties.getIpAddress(),
+                sshProperties.getAccessListName());
     }
 
     // permit tcp 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0 port eq 443
@@ -61,9 +59,7 @@ public class SSHKeenetic extends SSH {
         }
         write("access-list " + accessListName + " permit ip " + ipAddress +
                 " 255.255.255.255 0.0.0.0 0.0.0.0" + '\n');
-        // от беды подальше пока закомменчу
         addDenyRuleToEndList();
-        // TODO опасное место, закомментить от беды подальше!!!!
     }
 
     @Override
@@ -144,7 +140,5 @@ public class SSHKeenetic extends SSH {
         write("access-list " + accessListName +
                 " deny ip 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0" + '\n');
     }
-
-
 }
 

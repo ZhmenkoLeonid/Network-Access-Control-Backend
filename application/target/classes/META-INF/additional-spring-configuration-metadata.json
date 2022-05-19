@@ -1,0 +1,43 @@
+{
+  "properties": [
+    {
+      "name": "netflow.saveFrequencyTime",
+      "type": "java.lang.Long",
+      "description": "Периодичность сохранения пакетов в БД в миллисекундах."
+    },
+    {
+      "name": "netflow.collector.routerAddress",
+      "type": "java.lang.String",
+      "description": "Адрес роутера, с которого слушать пакеты."
+    },
+    {
+      "name": "netflow.collector.port",
+      "type": "java.lang.Integer",
+      "description": "Номер порта, на котором слушать пакеты."
+    },
+    {
+      "name": "netflow.analyze.routerType",
+      "type": "java.lang.String",
+      "description": "Description for netflow.analyze.routerType."
+    },
+    {
+      "name": "netflow.analyze.updateMeanValueTimeMillis",
+      "type": "java.lang.Long",
+      "description": "Период времени, за который считается среднее значение пакетов в миллисекундах."
+    },
+    {
+      "name": "netflow.analyze.analyzeFrequencyMillis",
+      "type": "java.lang.Long",
+      "description": "Частота анализа пакетов в миллисекундах."
+    },
+    {
+      "name": "netflow.analyze.maxUniqueDestinationPortCount",
+      "type": "java.lang.Integer",
+      "description": "Максимальное число уникальных портов, к которым хосты могут обращаться."
+    },
+    {
+      "name": "netflow.analyze.flowMultiplierLimitation",
+      "type": "java.lang.Integer",
+      "description": "Множитель, определяющий во сколько раз юзер может превышать своё среднее число пакетов за промежуток времени updateMeanValueTimeMillis."
+    }
+  ] }

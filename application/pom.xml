@@ -27,25 +27,19 @@
 
        <dependency>
             <groupId>com.zhmenko</groupId>
-            <artifactId>ips</artifactId>
+            <artifactId>ids</artifactId>
             <version>${app.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.zhmenko</groupId>
-            <artifactId>model</artifactId>
+            <artifactId>security</artifactId>
             <version>${app.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.zhmenko</groupId>
-            <artifactId>data</artifactId>
-            <version>${app.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.zhmenko</groupId>
-            <artifactId>verification</artifactId>
+            <artifactId>host-validation</artifactId>
             <version>${app.version}</version>
         </dependency>
 
@@ -60,7 +54,6 @@
             <artifactId>jasypt-spring-boot</artifactId>
             <version>3.0.4</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -81,8 +74,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>9</source>
-                    <target>9</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
         </plugins>

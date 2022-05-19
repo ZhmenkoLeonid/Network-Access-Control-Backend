@@ -1,0 +1,42 @@
+{
+  "groups": [
+    {
+      "name": "netflow.analyze",
+      "type": "com.zhmenko.ips.traffic_analyze.AnalyzeProperties",
+      "sourceType": "com.zhmenko.ips.traffic_analyze.AnalyzeProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "netflow.analyze.analyze-execute-time",
+      "type": "java.lang.Long",
+      "sourceType": "com.zhmenko.ips.traffic_analyze.AnalyzeProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "netflow.analyze.analyze-frequency-millis",
+      "type": "java.lang.Long",
+      "sourceType": "com.zhmenko.ips.traffic_analyze.AnalyzeProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "netflow.analyze.flow-multiplier-limitation",
+      "type": "java.lang.Integer",
+      "sourceType": "com.zhmenko.ips.traffic_analyze.AnalyzeProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "netflow.analyze.max-unique-destination-port-count",
+      "type": "java.lang.Integer",
+      "sourceType": "com.zhmenko.ips.traffic_analyze.AnalyzeProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "netflow.analyze.update-mean-value-time-millis",
+      "type": "java.lang.Long",
+      "sourceType": "com.zhmenko.ips.traffic_analyze.AnalyzeProperties",
+      "defaultValue": 0
+    }
+  ],
+  "hints": []
+}

@@ -13,21 +13,19 @@ import java.util.List;
 
 
 @Component
-@Profile("CISCO")
+@Profile("cisco")
 public class SSHCisco extends SSH {
     private boolean isEnableMode;
     private boolean isConfigMode;
     private String enableModePassword;
 
-    public SSHCisco(String usr, String pass, String hostIP, String accessListName, String enableModePassword)
-            throws InterruptedException, JSchException, IOException {
-        super(usr, pass, hostIP, accessListName);
-        this.enableModePassword = enableModePassword;
-    }
-
-    public SSHCisco() throws InterruptedException, JSchException, IOException {
-        super();
-        this.enableModePassword = "cisco";
+    public SSHCisco(SSHProperties sshProperties)
+            throws JSchException {
+        super(sshProperties.getUsername(),
+                sshProperties.getPassword(),
+                sshProperties.getIpAddress(),
+                sshProperties.getAccessListName());
+        this.enableModePassword = sshProperties.getEnabledModePassword();
     }
 
     public String sendCommand(String command, boolean isReqEnableMode, boolean isReqConfigMode) {

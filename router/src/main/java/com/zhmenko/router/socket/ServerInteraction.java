@@ -23,9 +23,6 @@ public class ServerInteraction extends Thread {
             while (true) {
                 msg = in.readLine();
                 System.out.println("Msg from client "+socket.getInetAddress()+":\n"+msg);
-                //for (ClientInteractionThread vr : SocketServerThread.getServerList()) {
-               //     System.out.println("Msg from client: "+socket.getInetAddress()+"\n"+msg);
-                //}
             }
 
         } catch (IOException e) {

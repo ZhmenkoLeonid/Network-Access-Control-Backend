@@ -1,16 +1,20 @@
+/*
 package com.zhmenko.dao;
 
 import java.util.List;
 
 public interface UserOpenedPortsDao {
 
-    public void save(String ipAddress, int port);
+    public void save(UserPortsRequest userPortsDto);
 
-    public void saveList(String ipAddress, List<Integer> ports);
+    public List<UserPortsResponse> findUsersPorts();
 
-    public void remove(String ipAddress, int port);
+    public UserPortsResponse findUserPortsByMacAddress(String macAddress);
 
-    public void removeAll(String ipAddress);
+    void removeUserPortsByMacAddress(String macAddress);
 
-    public List<Integer> findUserPorts(String ipAddress);
+    public List<Integer> findUserPortsByIp(String ipAddress);
+
+    void removeUserPorts(UserPortsRequest userPortsRequest);
 }
+*/

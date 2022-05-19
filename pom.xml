@@ -6,8 +6,8 @@
     <groupId>com.zhmenko</groupId>
     <artifactId>core</artifactId>
     <version>0.0.1</version>
-    <name>IPS-Spring</name>
-    <description>IPS-Spring course work</description>
+    <name>NAC-Spring</name>
+    <description>NAC-Spring course work</description>
 
     <packaging>pom</packaging>
 
@@ -18,7 +18,6 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -26,13 +25,12 @@
     </properties>
 
     <modules>
-        <module>ips</module>
-        <module>web-api</module>
-        <module>model</module>
+        <module>ids</module>
+        <module>web</module>
         <module>application</module>
-        <module>data</module>
-        <module>verification</module>
+        <module>host-validation</module>
         <module>router</module>
+        <module>security</module>
     </modules>
 
     <dependencies>
@@ -53,5 +51,6 @@
                 </configuration>
             </plugin>
         </plugins>
+
     </build>
 </project>
