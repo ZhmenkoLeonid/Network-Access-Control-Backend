@@ -1,9 +1,0 @@
-com\zhmenko\web\services\impl\ConnectServiceImpl.class
-com\zhmenko\web\certificate\CertificateUtil.class
-com\zhmenko\web\controller\rest\HostConnectController.class
-com\zhmenko\web\controller\rest\NacUserController.class
-com\zhmenko\web\services\NacUserService.class
-com\zhmenko\web\config\WebConfig.class
-com\zhmenko\web\services\ConnectService.class
-com\zhmenko\web\services\impl\NacUserServiceImpl.class
-com\zhmenko\web\config\SwaggerConfiguration.class
