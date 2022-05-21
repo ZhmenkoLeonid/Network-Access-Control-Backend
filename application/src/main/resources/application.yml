@@ -27,7 +27,9 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME:default}
     password: ${SPRING_DATASOURCE_PASSWORD:ENC(Xj8TLRm6L2Eto5ufBdLQg0MXaEUgtVCXJoGttMLdSJxVUFN+bqEw2/iVD66OP/vp)}
     driverClassName: com.clickhouse.jdbc.ClickHouseDriver
- # for swagger-ui
+    hikari:
+      maximum-pool-size: 100
+  # for swagger-ui
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -42,18 +44,18 @@ spring:
 jasypt:
   encryptor:
     password: ${JASYPT_ENCRYPTOR_PASSWORD:123}
-
-# ips configure
+# nac configure
+nac:
+  session-ttl: 3000000
+# ids configure
 netflow:
-  saveFrequencyTime: 10000
-
   # Свойства, связанные с анализатором пакетов
   analyze:
     routerType: KEENETIC
     analyzeFrequencyMillis: 5000
-    updateMeanValueTimeMillis: 600000
+    updateMeanValueTimeMillis: 60000
     maxUniqueDestinationPortCount: 40
-    flowMultiplierLimitation: 20
+    flowMultiplierLimitation: 5
     # Свойства, связанные с сборщиком пакетом
 
   router:

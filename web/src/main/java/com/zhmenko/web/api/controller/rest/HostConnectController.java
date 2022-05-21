@@ -24,11 +24,11 @@ public class HostConnectController {
 
     @PostMapping(value = "/connect"/*, consumes = "application/json"*/)
     @PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<String> connect(@RequestBody String json, HttpServletRequest request) {
+    public ResponseEntity<String> connect(@RequestBody String clientDeviceData, HttpServletRequest request) {
         ObjectMapper objectMapper = new ObjectMapper();
         ValidationPacket validationPacket = null;
         try {
-            validationPacket = objectMapper.readValue(json, ValidationPacket.class);
+            validationPacket = objectMapper.readValue(clientDeviceData, ValidationPacket.class);
         } catch (Exception e) {e.printStackTrace();}
 
         if (validationPacket == null) {
@@ -39,5 +39,23 @@ public class HostConnectController {
         return connectService.connect(validationPacket, request.getRemoteAddr())
                 ? new ResponseEntity<>("Good data!", HttpStatus.OK)
                 : new ResponseEntity<>("Bad data! :(", HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping("/post-connect")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<String> postConnect(@RequestBody String clientDeviceData, HttpServletRequest request) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ValidationPacket validationPacket = null;
+        try {
+            validationPacket = objectMapper.readValue(clientDeviceData, ValidationPacket.class);
+        } catch (Exception e) {e.printStackTrace();}
+
+        if (validationPacket == null) {
+            log.info("null data");
+            return new ResponseEntity<>("Bad post-connect refresh ! :(", HttpStatus.BAD_REQUEST);
+        }
+        return connectService.connect(validationPacket, request.getRemoteAddr())
+                ? new ResponseEntity<>("Post-connect refresh successful!", HttpStatus.OK)
+                : new ResponseEntity<>("Bad post-connect refresh ! :(", HttpStatus.UNAUTHORIZED);
     }
 }

@@ -1,5 +1,6 @@
 package com.zhmenko.ids.collector.factory.v5;
 
+import com.zhmenko.ids.model.nac.NacUserDto;
 import com.zhmenko.ids.model.netflow.user.NetflowUserList;
 import com.zhmenko.ids.model.exception.BlockedUserException;
 import com.zhmenko.ids.model.exception.UnsupportedProtocolException;
@@ -39,13 +40,13 @@ public class NetflowPacketFactoryV5 {
     public NetflowPacket createNetflowClass(String srcIpAddress, String dstIpAddress, String protocol,
                                             String srcPort, String dstPort, Timestamp timestamp, int tcpFlags)
             throws UnsupportedProtocolException, BlockedUserException {
-        if (!netflowUserList.isExistByIpAddress(srcIpAddress) || blackList.isBlocked(srcIpAddress)) {
+/*        if (!netflowUserList.isExistByIpAddress(srcIpAddress) || blackList.isBlocked(srcIpAddress)) {
             return null;
-        }
-        // DEV CODE
-/*        if (!netflowUserList.isExistByIpAddress(srcIpAddress)) {
-            netflowUserList.addUser(new NacUserDto(UUID.randomUUID().toString(), "tipa hostname", srcIpAddress));
         }*/
+        // DEV CODE
+        if (!netflowUserList.isExistByIpAddress(srcIpAddress)) {
+            netflowUserList.addUser(new NacUserDto(UUID.randomUUID().toString(), "tipa hostname", srcIpAddress));
+        }
 
         if (!protocolHashMap.containsKey(protocol)) {
             throw new UnsupportedProtocolException(protocol);

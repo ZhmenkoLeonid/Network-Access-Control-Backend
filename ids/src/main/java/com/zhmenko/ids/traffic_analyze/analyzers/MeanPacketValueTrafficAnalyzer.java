@@ -46,9 +46,7 @@ public class MeanPacketValueTrafficAnalyzer implements TrafficAnalyzer {
             String notificationMsg = "MVE. Пользователь " + hostname
                     + " с mac=" + macAddress
                     + ", с ip=" + netflowUser.getCurrentIpAddress()
-                    + " превышает допустимое количество пакетов!"
-                    + " Ограничение=" + flowLimit
-                    + ", полученное значение=" + userLastMeanPacketCount;
+                    + " превышает допустимое количество пакетов!";
             log.info(notificationMsg);
             return List.of(notificationMsg);
         }

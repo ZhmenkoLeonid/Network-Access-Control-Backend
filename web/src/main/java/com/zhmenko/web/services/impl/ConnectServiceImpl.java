@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +51,18 @@ public class ConnectServiceImpl implements ConnectService {
             ssh.permitUserPorts(ipAddress, openPortList);
             return true;
         }
-        log.info("Клиент с ip " + ipAddress + " не прошёл проверку");
+        log.info("Клиент с ip " + ipAddress + " не прошёл pre-connection проверку");
+        return false;
+    }
+
+    @Override
+    public boolean postConnect(ValidationPacket data, String ipAddress) {
+        NetflowUser user = Objects.requireNonNull(userList.getUserByIpAddress(ipAddress));
+        if (validation.check(data)) {
+            userList.updateUserTTLTimer(user);
+            return true;
+        }
+        log.info("Клиент с ip " + ipAddress + " не прошёл post-connection проверку");
         return false;
     }
 }

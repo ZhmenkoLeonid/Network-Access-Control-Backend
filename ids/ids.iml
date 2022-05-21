@@ -50,6 +50,9 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:5.3.16" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.16" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-configuration-processor:2.6.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.13.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:2.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest:2.2" level="project" />
     <orderEntry type="library" name="Maven: nettrack:jflow:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.18.22" level="project" />
   </component>

@@ -51,12 +51,17 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Netflow libraries -->
         <dependency>
             <groupId>nettrack</groupId>
             <artifactId>jflow</artifactId>
             <version>1.0</version>
         </dependency>
-
     </dependencies>
 </project>

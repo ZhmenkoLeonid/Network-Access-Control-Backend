@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @Profile("keenetic")
@@ -54,6 +55,8 @@ public class SSHKeenetic extends SSH {
 
     @Override
     public void permitUser(String ipAddress) {
+        Objects.requireNonNull(ipAddress);
+
         if (!session.isConnected()) {
             establishConnection();
         }
@@ -74,6 +77,10 @@ public class SSHKeenetic extends SSH {
 
     @Override
     public void permitUserPorts(String ipAddress, List<Integer> ports) {
+        Objects.requireNonNull(ipAddress);
+        Objects.requireNonNull(ports);
+        if (ports.size() == 0) return;
+
         if (!session.isConnected()) {
             establishConnection();
         }
@@ -95,6 +102,7 @@ public class SSHKeenetic extends SSH {
 
     @Override
     public void denyUser(String ipAddress) {
+        Objects.requireNonNull(ipAddress);
         if (!session.isConnected()) {
             establishConnection();
         }
@@ -104,6 +112,7 @@ public class SSHKeenetic extends SSH {
 
     @Override
     public void denyUserPort(String ipAddress, int port) {
+        Objects.requireNonNull(ipAddress);
         if (!session.isConnected()) {
             establishConnection();
         }
@@ -113,6 +122,10 @@ public class SSHKeenetic extends SSH {
 
     @Override
     public void denyUserPorts(String ipAddress, List<Integer> ports) {
+        Objects.requireNonNull(ipAddress);
+        Objects.requireNonNull(ports);
+        if (ports.size() == 0) return;
+
         if (!session.isConnected()) {
             establishConnection();
         }

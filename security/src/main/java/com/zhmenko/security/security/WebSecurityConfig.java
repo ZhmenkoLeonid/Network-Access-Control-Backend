@@ -60,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/nacUser/**").permitAll()
             .antMatchers("/netflow-user-stat/**").permitAll()
             .antMatchers("/connect/**").permitAll()
+            .antMatchers("/post-connect/**").permitAll()
             .anyRequest().authenticated();
 
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

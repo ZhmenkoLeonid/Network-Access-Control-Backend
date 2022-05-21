@@ -33,7 +33,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        System.out.println(userDetails.toString());
         UsernamePasswordAuthenticationToken authentication =
             new UsernamePasswordAuthenticationToken(
                 userDetails,

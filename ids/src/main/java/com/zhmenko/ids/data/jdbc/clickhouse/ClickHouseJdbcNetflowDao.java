@@ -20,6 +20,8 @@ public class ClickHouseJdbcNetflowDao implements NetflowDao {
 
     private final String DELETE_USER_FLOWS_BY_IP = "ALTER TABLE USER_FLOW_DATA DELETE WHERE SOURCE_IP_ADDRESS=?";
 
+    private final String DELETE_USER_FLOWS_BY_MAC_ADDRESS= "ALTER TABLE USER_FLOW_DATA DELETE WHERE MAC_ADDRESS=?";
+
     private final String FIND_USER_STATISTIC_BY_MAC_ADDRESS = "SELECT * FROM USER_STATISTIC WHERE MAC_ADDRESS=?";
 
     private final String INSERT_NETFLOW_PACKET = "INSERT INTO USER_FLOW_DATA (MAC_ADDRESS, HOSTNAME, NETFLOW_VERSION," +
@@ -51,7 +53,7 @@ public class ClickHouseJdbcNetflowDao implements NetflowDao {
 
     @Override
     public void deleteUserFlowsByMacAddress(String macAddress) {
-        jdbcTemplate.update(DELETE_USER_FLOWS_BY_IP, macAddress);
+        jdbcTemplate.update(DELETE_USER_FLOWS_BY_MAC_ADDRESS, macAddress);
     }
 
     @Override

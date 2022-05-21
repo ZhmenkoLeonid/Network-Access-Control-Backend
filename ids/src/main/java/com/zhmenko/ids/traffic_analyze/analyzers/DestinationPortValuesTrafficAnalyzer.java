@@ -29,8 +29,8 @@ public class DestinationPortValuesTrafficAnalyzer implements TrafficAnalyzer{
                 String notificationMsg = "DPE. Пользователь " + hostname
                         + " с mac=" + macAddress
                         + " с ip=" + ipAddress
-                        + " превышает допустимое (" + maxUniqueDestinationPortCount + ") количество обращений"
-                        + " к уникальным портам по протоколу " + protocol + ": " + protCnt;
+                        + " превышает допустимое количество обращений"
+                        + " к уникальным портам по протоколу " + protocol;
                 log.info(notificationMsg);
                 alerts.add(notificationMsg);
             }

@@ -1,14 +1,16 @@
 package com.zhmenko.ids.model.netflow.user;
 
+import com.zhmenko.ids.model.netflow.user.tasks.RemoveUserTimerTask;
 import lombok.Data;
 import lombok.ToString;
+
+import java.util.Timer;
 
 @Data
 public class NetflowUser {
     private String macAddress;
     private String hostname;
     private String currentIpAddress;
-
     @ToString.Exclude
     private ProtocolsFlowsList protocolsFlowsList;
     @ToString.Exclude
