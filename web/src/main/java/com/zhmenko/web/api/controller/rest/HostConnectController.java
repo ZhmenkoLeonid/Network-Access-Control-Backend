@@ -32,17 +32,7 @@ public class HostConnectController {
 
     @PostMapping("/post-connect")
     @PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<String> postConnect(@RequestBody String clientDeviceData, HttpServletRequest request) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ValidationPacket validationPacket = null;
-        try {
-            validationPacket = objectMapper.readValue(clientDeviceData, ValidationPacket.class);
-        } catch (Exception e) {e.printStackTrace();}
-
-        if (validationPacket == null) {
-            log.info("null data");
-            return new ResponseEntity<>("Bad post-connect refresh ! :(", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> postConnect(ValidationPacket validationPacket, HttpServletRequest request) {
         return connectService.connect(validationPacket, request.getRemoteAddr())
                 ? new ResponseEntity<>("Post-connect refresh successful!", HttpStatus.OK)
                 : new ResponseEntity<>("Bad post-connect refresh ! :(", HttpStatus.UNAUTHORIZED);
