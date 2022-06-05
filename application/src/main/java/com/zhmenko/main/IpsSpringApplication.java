@@ -2,10 +2,9 @@ package com.zhmenko.main;
 
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import com.ulisesbocchio.jasyptspringboot.annotation.EncryptablePropertySource;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+//import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(scanBasePackages = {"com.zhmenko.*"})
 // Jasypt
@@ -13,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EncryptablePropertySource(name = "mainconf", value = "classpath:application.yml")
 //
 // Swagger
-@OpenAPIDefinition
+//@OpenAPIDefinition
 //
 public class IpsSpringApplication {
     public static void main(String[] args) {

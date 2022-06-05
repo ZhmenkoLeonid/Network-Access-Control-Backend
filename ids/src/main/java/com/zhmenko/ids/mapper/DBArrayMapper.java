@@ -30,7 +30,6 @@ public class DBArrayMapper {
                     .append("', ");
         }
         builder.replace(builder.length() - 2, builder.length(), "]");
-        System.out.println("String List to arr" + builder.toString());
         return builder.toString();
     }
 }

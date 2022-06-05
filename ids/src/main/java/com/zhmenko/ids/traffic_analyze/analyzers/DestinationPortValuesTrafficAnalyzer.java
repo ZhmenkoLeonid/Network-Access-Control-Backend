@@ -2,8 +2,10 @@ package com.zhmenko.ids.traffic_analyze.analyzers;
 
 import com.zhmenko.ids.model.netflow.Protocol;
 import com.zhmenko.ids.model.netflow.user.NetflowUser;
+import com.zhmenko.ids.traffic_analyze.AnalyzeProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +13,9 @@ import java.util.Map;
 
 @Slf4j
 @AllArgsConstructor
-public class DestinationPortValuesTrafficAnalyzer implements TrafficAnalyzer{
-    private int maxUniqueDestinationPortCount;
+@Component
+public class DestinationPortValuesTrafficAnalyzer implements TrafficAnalyzer {
+    private AnalyzeProperties properties;
     @Override
     public List<String> analyze(NetflowUser netflowUser) {
         Map<Protocol, Long> protUniqueDstPortCntMap = netflowUser.getNetflowUserStatistic().getProtocolUniqueDestinationPortCountMap();
@@ -22,7 +25,7 @@ public class DestinationPortValuesTrafficAnalyzer implements TrafficAnalyzer{
 
         for (Protocol protocol : protUniqueDstPortCntMap.keySet()) {
             Long protCnt = protUniqueDstPortCntMap.get(protocol);
-            if (protCnt != null && protCnt > maxUniqueDestinationPortCount) {
+            if (protCnt != null && protCnt > properties.getMaxUniqueDestinationPortCount()) {
                 String macAddress = netflowUser.getMacAddress();
                 String ipAddress = netflowUser.getCurrentIpAddress();
                 String hostname = netflowUser.getHostname();

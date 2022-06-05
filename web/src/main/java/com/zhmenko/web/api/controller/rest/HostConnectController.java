@@ -22,20 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 public class HostConnectController {
     private final ConnectService connectService;
 
-    @PostMapping(value = "/connect"/*, consumes = "application/json"*/)
+    @PostMapping(value = "/connect", consumes = "application/json")
     @PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<String> connect(@RequestBody String clientDeviceData, HttpServletRequest request) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ValidationPacket validationPacket = null;
-        try {
-            validationPacket = objectMapper.readValue(clientDeviceData, ValidationPacket.class);
-        } catch (Exception e) {e.printStackTrace();}
-
-        if (validationPacket == null) {
-            log.info("null data");
-            return new ResponseEntity<>("Bad body :(", HttpStatus.BAD_REQUEST);
-        }
-
+    public ResponseEntity<String> connect(ValidationPacket validationPacket, HttpServletRequest request) {
         return connectService.connect(validationPacket, request.getRemoteAddr())
                 ? new ResponseEntity<>("Good data!", HttpStatus.OK)
                 : new ResponseEntity<>("Bad data! :(", HttpStatus.UNAUTHORIZED);

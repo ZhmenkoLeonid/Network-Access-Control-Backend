@@ -42,7 +42,8 @@ public class AnalyzeThread extends Thread {
                          NacUserDao nacUserDao,
                          BlackList blackList,
                          NetflowUserList netflowUserList,
-                         AnalyzeProperties properties) {
+                         AnalyzeProperties properties,
+                         List<TrafficAnalyzer> trafficAnalyzers) {
         this.ssh = ssh;
         this.netflowDao = netflowDao;
         this.userStatisticDao = userStatisticDao;
@@ -50,10 +51,7 @@ public class AnalyzeThread extends Thread {
         this.blackList = blackList;
         this.netflowUserList = netflowUserList;
         this.properties = properties;
-
-        this.trafficAnalyzers = new ArrayList<>();
-        this.trafficAnalyzers.add(new MeanPacketValueTrafficAnalyzer(properties.getFlowMultiplierLimitation()));
-        this.trafficAnalyzers.add(new DestinationPortValuesTrafficAnalyzer(properties.getMaxUniqueDestinationPortCount()));
+        this.trafficAnalyzers = trafficAnalyzers;
         this.start();
     }
 
@@ -77,7 +75,6 @@ public class AnalyzeThread extends Thread {
                     }
                     // проверяем по реализованным требованиям
                     List<String> alerts = new ArrayList<>();
-
                     for (TrafficAnalyzer trafficAnalyzer : trafficAnalyzers) {
                         alerts.addAll(trafficAnalyzer.analyze(netflowUser));
                     }

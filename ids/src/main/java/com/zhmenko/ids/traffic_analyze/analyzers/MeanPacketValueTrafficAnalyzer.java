@@ -2,8 +2,10 @@ package com.zhmenko.ids.traffic_analyze.analyzers;
 
 import com.zhmenko.ids.model.netflow.user.NetflowUser;
 import com.zhmenko.ids.model.netflow.user.NetflowUserStatistic;
+import com.zhmenko.ids.traffic_analyze.AnalyzeProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -13,8 +15,9 @@ import java.util.List;
 
 @AllArgsConstructor
 @Slf4j
+@Component
 public class MeanPacketValueTrafficAnalyzer implements TrafficAnalyzer {
-    private long flowMultiplierLimitation;
+    private AnalyzeProperties properties;
 
     @Override
     public List<String> analyze(NetflowUser netflowUser) {
@@ -38,7 +41,7 @@ public class MeanPacketValueTrafficAnalyzer implements TrafficAnalyzer {
         // Получаем граничный множитель числа пакетов - число, определяющее,
         // во сколько раз допустимо превышать среднее число пакетов
         // Считаем максимально допустимое ограничение
-        long flowLimit = userMeanPacketCount * flowMultiplierLimitation;
+        long flowLimit = userMeanPacketCount * properties.getFlowMultiplierLimitation();
         // Если выходим за границу - сообщаем о блокировке пользователя
         if (userLastMeanPacketCount > flowLimit) {
             String macAddress = netflowUser.getMacAddress();

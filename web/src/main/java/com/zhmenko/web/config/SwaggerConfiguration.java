@@ -1,3 +1,4 @@
+/*
 package com.zhmenko.web.config;
 
 import org.springframework.context.annotation.Bean;
@@ -38,3 +39,4 @@ public class SwaggerConfiguration {
     }
 }
 
+*/

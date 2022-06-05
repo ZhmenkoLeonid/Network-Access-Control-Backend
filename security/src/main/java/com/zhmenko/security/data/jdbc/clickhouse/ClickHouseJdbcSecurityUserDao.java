@@ -19,7 +19,7 @@ public class ClickHouseJdbcSecurityUserDao implements SecurityUserDao {
     private final String SELECT_USER_BY_USERNAME = "SELECT * FROM SECURITY_USER WHERE USERNAME=?";
     private final String SAVE_USER = "INSERT INTO SECURITY_USER (ID, USERNAME, PASSWORD, ROLES) VALUES (?,?,?,?)";
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public User findByUUID(UUID uuid) {
