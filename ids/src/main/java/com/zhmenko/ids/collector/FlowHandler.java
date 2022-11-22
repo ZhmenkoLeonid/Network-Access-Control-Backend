@@ -1,9 +1,8 @@
 package com.zhmenko.ids.collector;
 
-import com.zhmenko.ids.model.exception.BlockedUserException;
-import com.zhmenko.ids.model.exception.UnsupportedProtocolException;
+import com.zhmenko.data.netflow.models.exception.BlockedUserException;
+import com.zhmenko.data.netflow.models.exception.UnsupportedProtocolException;
 import com.zhmenko.ids.collector.factory.v5.NetflowPacketFactoryV5;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import nettrack.net.IpAddr;
 import nettrack.net.netflow.*;
@@ -18,7 +17,7 @@ public class FlowHandler implements Accountant {
 
     public void account(Flow f) {
         try {
-            factory.createNetflowClass(
+            factory.addNetflowRecord(
                     IpAddr.toString(f.getSrcAddr()),
                     IpAddr.toString(f.getDstAddr()),
                     String.valueOf(((V5Flow)f).getProt()),

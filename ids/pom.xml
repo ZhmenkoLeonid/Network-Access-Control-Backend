@@ -11,8 +11,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>9</source>
-                    <target>9</target>
+                    <source>10</source>
+                    <target>10</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -28,24 +28,13 @@
     <dependencies>
         <dependency>
             <groupId>com.zhmenko</groupId>
-            <artifactId>router</artifactId>
+            <artifactId>data</artifactId>
             <version>${app.version}</version>
         </dependency>
-
-        <!-- Jdbc libs-->
         <dependency>
-            <groupId>com.clickhouse</groupId>
-            <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.3.2-patch7</version>
-        </dependency>
-
-<!--        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jdbc</artifactId>
-        </dependency>-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <groupId>com.zhmenko</groupId>
+            <artifactId>router</artifactId>
+            <version>${app.version}</version>
         </dependency>
 
         <!-- For the sake of the configuration properties class -->

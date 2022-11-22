@@ -1,7 +1,7 @@
 package com.zhmenko.ids.traffic_analyze.analyzers;
 
-import com.zhmenko.ids.model.netflow.user.NetflowUser;
-import com.zhmenko.ids.model.netflow.user.NetflowUserStatistic;
+import com.zhmenko.data.netflow.models.user.NetflowUser;
+import com.zhmenko.data.netflow.models.user.NetflowUserStatistic;
 import com.zhmenko.ids.traffic_analyze.AnalyzeProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ public class MeanPacketValueTrafficAnalyzer implements TrafficAnalyzer {
         if (oldestPacketTime == null ||
                 (Timestamp.valueOf(LocalDateTime.now(ZoneId.of("UTC"))).getTime()
                         - oldestPacketTime.getTime()) < 2*meanValueIntervalMillis) {
-            log.debug("Пропуск "+ netflowUser.toString() +", т.к. данных недостаточно!");
+            log.debug("Пропуск "+ netflowUser +", т.к. данных недостаточно!");
             return Collections.emptyList();
         }
         // Берём среднее количество пакетов пользователя за всё время, кроме последнего периода

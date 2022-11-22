@@ -1,8 +1,8 @@
 package com.zhmenko.ids.mapper;
 
-import com.zhmenko.ids.model.netflow.user.NetflowUserList;
-import com.zhmenko.ids.model.netflow.user.NetflowUserStatistic;
-import com.zhmenko.ids.model.netflow.user.NetflowUserStatisticDto;
+import com.zhmenko.data.netflow.models.user.NetflowUserList;
+import com.zhmenko.data.netflow.models.user.NetflowUserStatistic;
+import com.zhmenko.data.netflow.models.user.NetflowUserStatisticDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

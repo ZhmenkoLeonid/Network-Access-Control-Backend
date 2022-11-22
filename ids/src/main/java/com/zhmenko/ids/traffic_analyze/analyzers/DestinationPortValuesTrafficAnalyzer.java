@@ -1,7 +1,7 @@
 package com.zhmenko.ids.traffic_analyze.analyzers;
 
-import com.zhmenko.ids.model.netflow.Protocol;
-import com.zhmenko.ids.model.netflow.user.NetflowUser;
+import com.zhmenko.data.netflow.models.Protocol;
+import com.zhmenko.data.netflow.models.user.NetflowUser;
 import com.zhmenko.ids.traffic_analyze.AnalyzeProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

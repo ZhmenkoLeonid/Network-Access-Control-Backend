@@ -1,20 +1,25 @@
 package com.zhmenko.ids.traffic_analyze;
 
-import com.zhmenko.ids.data.NacUserDao;
-import com.zhmenko.ids.data.NetflowDao;
-import com.zhmenko.ids.data.UserStatisticDao;
-import com.zhmenko.ids.model.nac.NacUserDto;
-import com.zhmenko.ids.model.netflow.user.NetflowUserList;
-import com.zhmenko.ids.model.netflow.user.NetflowUser;
-import com.zhmenko.ids.model.netflow.user.BlackList;
-import com.zhmenko.ids.traffic_analyze.analyzers.DestinationPortValuesTrafficAnalyzer;
-import com.zhmenko.ids.traffic_analyze.analyzers.MeanPacketValueTrafficAnalyzer;
+import com.zhmenko.data.nac.NetflowDao;
+import com.zhmenko.data.nac.UserStatisticDao;
+import com.zhmenko.data.nac.models.BlackListEntity;
+import com.zhmenko.data.nac.models.NacUserAlertEntity;
+import com.zhmenko.data.nac.models.NacUserEntity;
+import com.zhmenko.data.nac.repository.BlackListRepository;
+import com.zhmenko.data.nac.repository.NacUserRepository;
+import com.zhmenko.data.netflow.models.exception.UserNotExistException;
+import com.zhmenko.data.netflow.models.user.NetflowUser;
+import com.zhmenko.data.netflow.models.user.NetflowUserList;
 import com.zhmenko.ids.traffic_analyze.analyzers.TrafficAnalyzer;
 import com.zhmenko.router.SSH;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -25,11 +30,13 @@ public class AnalyzeThread extends Thread {
 
     //private long defaultMeanValue;
     private static long timerExecuteTimeMillis;
+    @Qualifier("keenetic")
     private SSH ssh;
     private NetflowDao netflowDao;
     private UserStatisticDao userStatisticDao;
-    private NacUserDao nacUserDao;
-    private BlackList blackList;
+    private NacUserRepository nacUserRepository;
+    //private BlackList blackList;
+    private BlackListRepository blackListRepository;
     private NetflowUserList netflowUserList;
 
     private AnalyzeProperties properties;
@@ -39,16 +46,18 @@ public class AnalyzeThread extends Thread {
     public AnalyzeThread(SSH ssh,
                          NetflowDao netflowDao,
                          UserStatisticDao userStatisticDao,
-                         NacUserDao nacUserDao,
-                         BlackList blackList,
+                         NacUserRepository nacUserRepository,
+                         //BlackList blackList,
+                         BlackListRepository blackListRepository,
                          NetflowUserList netflowUserList,
                          AnalyzeProperties properties,
                          List<TrafficAnalyzer> trafficAnalyzers) {
         this.ssh = ssh;
         this.netflowDao = netflowDao;
         this.userStatisticDao = userStatisticDao;
-        this.nacUserDao = nacUserDao;
-        this.blackList = blackList;
+        this.nacUserRepository = nacUserRepository;
+        //this.blackList = blackList;
+        this.blackListRepository = blackListRepository;
         this.netflowUserList = netflowUserList;
         this.properties = properties;
         this.trafficAnalyzers = trafficAnalyzers;
@@ -68,7 +77,7 @@ public class AnalyzeThread extends Thread {
                         netflowDao.saveList(netflowUser.getProtocolsFlowsList().getAllFlows(), macAddress);
                         //netflowService.saveProtocolListMap(user.getProtocolsFlowsList().getProtocolListHashMap(), user.getMacAddress());
                         netflowUser.getProtocolsFlowsList().clear();
-                        log.info("save flows for user: " + netflowUser.toString());
+                        log.info("save flows for user: " + netflowUser);
 
                         netflowUser.updateUserStatistic(userStatisticDao
                                 .findUserStatisticByMacAddress(macAddress, netflowUser.getNetflowUserStatistic().getMeanValueIntervalMillis() / 1000));
@@ -79,7 +88,18 @@ public class AnalyzeThread extends Thread {
                         alerts.addAll(trafficAnalyzer.analyze(netflowUser));
                     }
                     // Если нашлись нарушения, запоминаем их в базу данных
-                    if (alerts.size() > 0) nacUserDao.insertAlertsByMacAddress(netflowUser.getMacAddress(), alerts);
+                    if (alerts.size() > 0) {
+                        NacUserEntity user = nacUserRepository.findByMacAddress(netflowUser.getMacAddress());
+                        user.getAlerts().addAll(alerts.stream()
+                                .map(alert -> NacUserAlertEntity.builder()
+                                        .alertMessage(alert)
+                                        .nacUserEntity(user).build())
+                                .collect(Collectors.toList()));
+                        nacUserRepository.save(user);
+                        //nacUserDao.insertAlertsByMacAddress(netflowUser.getMacAddress(), alerts);
+                        // блокировка для теста
+                        blockUserByMac(netflowUser.getMacAddress());
+                    }
                 }
                 timerExecuteTimeMillis = properties.getAnalyzeFrequencyMillis() + System.currentTimeMillis();
                 properties.setAnalyzeExecuteTime(timerExecuteTimeMillis);
@@ -92,14 +112,22 @@ public class AnalyzeThread extends Thread {
 
     private void blockUserByMac(String macAddress) {
         // Добавляем в чс
-        blackList.blockUser(macAddress);
-        try {
-            NacUserDto nacUserDto = nacUserDao.findByMacAddress(macAddress);
-            // Закрываем открытые порты для всех ip адресов, связанных с mac-адресом юзера
-            ssh.denyUserPorts(nacUserDto.getIpAddress(), nacUserDto.getPorts());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        BlackListEntity blackListEntity = blackListRepository.findById(macAddress).orElseThrow(() ->  new UserNotExistException("Не удалось заблокировать пользователя! " +
+                "Пользователь с mac-адресом \"" + macAddress + "\" не существует!"));
+        if (blackListEntity.getIsBlocked()) throw new IllegalStateException(
+                "Пользователь с mac-адресом \"" + macAddress + "\" уже заблокирован!");
+        //blackList.blockUser(macAddress);
+        // Закрываем открытые порты для всех ip адресов, связанных с mac-адресом юзера
+        //ssh.denyUserPorts(nacUserEntity.getIpAddress(), nacUserEntity.getPorts());
+        netflowUserList.removeUserFromLocalNetflowListByMacAddress(macAddress);
+        blackListEntity.setIsBlocked(true);
+        blackListEntity.setWhenBlocked(OffsetDateTime.now());
+
+        blackListRepository.save(blackListEntity);
+
+        NacUserEntity byMacAddress = nacUserRepository.findByMacAddress(macAddress);
+        byMacAddress.setIpAddress(null);
+        nacUserRepository.save(byMacAddress);
     }
 
     public static long getTimeLeftBfrUpdateMillis() {

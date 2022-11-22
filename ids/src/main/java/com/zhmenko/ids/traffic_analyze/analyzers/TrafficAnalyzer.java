@@ -1,6 +1,6 @@
 package com.zhmenko.ids.traffic_analyze.analyzers;
 
-import com.zhmenko.ids.model.netflow.user.NetflowUser;
+import com.zhmenko.data.netflow.models.user.NetflowUser;
 
 import java.util.List;
 
