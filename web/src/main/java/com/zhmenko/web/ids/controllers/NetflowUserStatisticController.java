@@ -1,7 +1,7 @@
-package com.zhmenko.web.api.controller.rest;
+package com.zhmenko.web.ids.controllers;
 
-import com.zhmenko.ids.model.netflow.user.NetflowUserStatisticDto;
-import com.zhmenko.web.services.NetflowUserService;
+import com.zhmenko.data.netflow.models.user.NetflowUserStatisticDto;
+import com.zhmenko.web.ids.services.NetflowUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;

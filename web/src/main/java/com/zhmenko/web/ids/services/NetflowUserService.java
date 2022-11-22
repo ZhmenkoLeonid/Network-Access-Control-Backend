@@ -1,6 +1,6 @@
-package com.zhmenko.web.services;
+package com.zhmenko.web.ids.services;
 
-import com.zhmenko.ids.model.netflow.user.NetflowUserStatisticDto;
+import com.zhmenko.data.netflow.models.user.NetflowUserStatisticDto;
 
 import java.util.Map;
 

@@ -1,10 +1,10 @@
-package com.zhmenko.web.services.impl;
+package com.zhmenko.web.ids.services.impl;
 
-import com.zhmenko.ids.model.netflow.user.NetflowUser;
-import com.zhmenko.ids.model.netflow.user.NetflowUserList;
-import com.zhmenko.ids.model.netflow.user.NetflowUserStatisticDto;
+import com.zhmenko.data.netflow.models.user.NetflowUser;
+import com.zhmenko.data.netflow.models.user.NetflowUserList;
+import com.zhmenko.data.netflow.models.user.NetflowUserStatisticDto;
 import com.zhmenko.ids.mapper.NetflowUserStatisticMapper;
-import com.zhmenko.web.services.NetflowUserService;
+import com.zhmenko.web.ids.services.NetflowUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
