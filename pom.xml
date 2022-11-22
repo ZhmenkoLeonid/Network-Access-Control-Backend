@@ -22,7 +22,11 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <app.version>${project.version}</app.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
     </properties>
+
+    <dependencyManagement>
+    </dependencyManagement>
 
     <modules>
         <module>ids</module>
@@ -30,7 +34,7 @@
         <module>application</module>
         <module>host-validation</module>
         <module>router</module>
-        <module>security</module>
+        <module>data</module>
     </modules>
 
     <dependencies>
@@ -38,6 +42,10 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
         </dependency>
     </dependencies>
 
@@ -51,6 +59,5 @@
                 </configuration>
             </plugin>
         </plugins>
-
     </build>
 </project>
