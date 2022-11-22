@@ -1,4 +1,4 @@
-package com.zhmenko.security.security.jwt;
+package com.zhmenko.web.security.jwt;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     } catch (Exception e) {
-      log.error("Cannot set user authentication: {}", e);
+      log.error("Cannot set user authentication: {0}", e);
     }
 
     filterChain.doFilter(request, response);
@@ -51,11 +51,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
   private String parseJwt(HttpServletRequest request) {
     String headerAuth = request.getHeader("Authorization");
-
     if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
       return headerAuth.substring(7);
     }
-
     return null;
   }
 }

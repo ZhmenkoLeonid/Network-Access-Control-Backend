@@ -1,10 +1,8 @@
-package com.zhmenko.security.security.jwt;
+package com.zhmenko.web.security.jwt;
 
-import com.zhmenko.security.security.services.UserDetailsImpl;
+import com.zhmenko.web.security.services.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;

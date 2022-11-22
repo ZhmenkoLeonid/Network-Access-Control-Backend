@@ -1,7 +1,7 @@
-package com.zhmenko.security.security.services;
+package com.zhmenko.web.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zhmenko.security.models.User;
+import com.zhmenko.data.security.models.SecurityUserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @Data
 public class UserDetailsImpl implements UserDetails {
   private static final long serialVersionUID = 1L;
-
   private UUID id;
   private String username;
   @JsonIgnore
@@ -26,15 +25,15 @@ public class UserDetailsImpl implements UserDetails {
 
   private Collection<? extends GrantedAuthority> authorities;
 
-  public static UserDetailsImpl build(User user) {
-    List<GrantedAuthority> authorities = user.getRoles().stream()
-        .map(SimpleGrantedAuthority::new)
+  public static UserDetailsImpl build(SecurityUserEntity securityUser) {
+    List<GrantedAuthority> authorities = securityUser.getSecurityRoles().stream()
+        .map(r -> new SimpleGrantedAuthority(r.getName()))
         .collect(Collectors.toList());
 
     return new UserDetailsImpl(
-        user.getId(), 
-        user.getUsername(),
-        user.getPassword(), 
+        securityUser.getId(),
+        securityUser.getUsername(),
+        securityUser.getPassword(),
         authorities);
   }
 

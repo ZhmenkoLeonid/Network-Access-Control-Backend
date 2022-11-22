@@ -1,13 +1,11 @@
-package com.zhmenko.security.controllers;
+package com.zhmenko.web.security.controllers;
 
-import com.zhmenko.security.data.SecurityUserDao;
-import com.zhmenko.security.models.payload.request.LoginRequest;
-import com.zhmenko.security.models.payload.response.JwtResponse;
-import com.zhmenko.security.security.jwt.JwtUtils;
-import com.zhmenko.security.security.services.UserDetailsImpl;
+import com.zhmenko.data.security.models.payload.request.LoginRequest;
+import com.zhmenko.data.security.models.payload.response.JwtResponse;
+import com.zhmenko.web.security.jwt.JwtUtils;
+import com.zhmenko.web.security.services.UserDetailsImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,8 +26,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AuthController {
   private AuthenticationManager authenticationManager;
-
-  private final SecurityUserDao securityUserDao;
+//TODO vernut'
+  //private final SecurityUserDao securityUserDao;
 
   private final PasswordEncoder encoder;
 
