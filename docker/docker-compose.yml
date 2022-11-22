@@ -4,26 +4,39 @@ services:
   app:
     build:
       context: ../application
-      dockerfile: application/Dockerfile
+      dockerfile: ../docker/application/Dockerfile
     container_name: app
     ports:
     - 443:443
     depends_on:
-      - db
+      - clickhouse-db
+      - postgres-db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:ch://db:8123
-      - SPRING_DATASOURCE_USERNAME=default
-      - SPRING_DATASOURCE_PASSWORD=123456
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_CLICKHOUSE_DATASOURCE_URL=jdbc:ch://db:8123
+      - SPRING_CLICKHOUSE_DATASOURCE_USERNAME=default
+      - SPRING_CLICKHOUSE_DATASOURCE_PASSWORD=123456
+      - SPRING_CLICKHOUSE_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_POSTGRES_DATASOURCE_URL=jdbc:postgresql://postgresdb:5432/postgres
+      - SPRING_POSTGRES_DATASOURCE_USERNAME=postgres
+      - SPRING_POSTGRES_DATASOURCE_PASSWORD=postgres
+      - SPRING_POSTGRES_JPA_HIBERNATE_DDL_AUTO=update
       - JASYPT_ENCRYPTOR_PASSWORD=123
 
-  db:
+  clickhouse-db:
     build:
-      context: ../application
-      dockerfile: db/Dockerfile
+      context: db
     ports:
-    - 8123:8123
-    container_name: db
+    - "8123:8123"
+    container_name: clickhouse-db
     environment:
       - CLICKHOUSE_USER=default
       - CLICKHOUSE_PASSWORD=123456
+
+  postgres-db:
+      image: postgres
+      ports:
+        - "5432:5432"
+      container_name: postgres-db
+      environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres

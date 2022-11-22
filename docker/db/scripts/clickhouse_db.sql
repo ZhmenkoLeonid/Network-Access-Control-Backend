@@ -1,5 +1,4 @@
-
-create table USER_FLOW_DATA
+create table if not exists USER_FLOW_DATA
 (
     MAC_ADDRESS            String,
     HOSTNAME               String,
@@ -13,23 +12,3 @@ create table USER_FLOW_DATA
     TCP_FLAGS              String
 )
     engine = MergeTree ORDER BY MAC_ADDRESS;
-
-create table SECURITY_USER
-(
-    ID       UUID default generateUUIDv4(),
-    USERNAME String,
-    PASSWORD String,
-    ROLES    Array(String)
-)
-    engine = MergeTree ORDER BY ID;
-
-create table NAC_USER
-(
-    MAC_ADDRESS    String,
-    HOSTNAME       Nullable(String) default 'UNDEFINED',
-    IS_BLACKLISTED Int32            default 0,
-    IP_ADDRESS     String,
-    PORTS          Array(Int32) default [],
-    ALERTS         Array(String) default []
-)
-    engine = MergeTree ORDER BY MAC_ADDRESS
