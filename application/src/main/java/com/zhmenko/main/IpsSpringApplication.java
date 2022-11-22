@@ -2,21 +2,19 @@ package com.zhmenko.main;
 
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import com.ulisesbocchio.jasyptspringboot.annotation.EncryptablePropertySource;
-//import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication(scanBasePackages = {"com.zhmenko.*"})
 // Jasypt
 @EnableEncryptableProperties
 @EncryptablePropertySource(name = "mainconf", value = "classpath:application.yml")
-//
-// Swagger
-//@OpenAPIDefinition
-//
+//@EnableJpaRepositories(basePackages = {"com.zhmenko.security.data"})
+@EntityScan(basePackages = {"com.zhmenko.*"})
 public class IpsSpringApplication {
     public static void main(String[] args) {
-        SpringApplication.run(IpsSpringApplication.class, args);
-        //ApplicationContext context = new SpringApplicationBuilder(IpsSpringApplication.class).headless(false).run(args);
+        ConfigurableApplicationContext run = SpringApplication.run(IpsSpringApplication.class, args);
     }
 }

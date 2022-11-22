@@ -10,9 +10,9 @@ server:
     # keystore password
     key-store-password: ENC(wiMOCNAAHFLBhhpIgvQQ/g/Ox7vw9oitELOx7bJCPOgmGrZac9lAWJ7QGPrp7CyL)
 
-  # SSL protocol to use
+    # SSL protocol to use
     protocol: TLS
-  # Enabled SSL protocol
+    # Enabled SSL protocol
 
     enabled-protocols: TLSv1.2
     #client-auth: need
@@ -22,20 +22,16 @@ server:
     #trust-store-password: changeit
 
 spring:
-  datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:ch://localhost:8123} #
-    username: ${SPRING_DATASOURCE_USERNAME:default}
-    password: ${SPRING_DATASOURCE_PASSWORD:ENC(Xj8TLRm6L2Eto5ufBdLQg0MXaEUgtVCXJoGttMLdSJxVUFN+bqEw2/iVD66OP/vp)}
-    driverClassName: com.clickhouse.jdbc.ClickHouseDriver
-    hikari:
-      maximum-pool-size: 100
+  config:
+    import: application-data.yml
+  flyway:
+    baseline-on-migrate: true
   # for swagger-ui
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
   profiles:
-    active: keenetic
-
+    active: dev
   security:
     jwt:
       jwtSecret: ENC(3DNdSzuVKsOicKHSLgyXFVDP7rD0CVSAS2kzm1rYiMKFEhf/z5RmDHRkT9jwk3Rp)
