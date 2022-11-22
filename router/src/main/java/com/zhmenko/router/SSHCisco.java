@@ -5,19 +5,17 @@ package com.zhmenko.router;
 //int g0/0 -> ip access-group 1 in
 
 import com.jcraft.jsch.JSchException;
-import org.springframework.context.annotation.Profile;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.List;
 
-
 @Component
-@Profile("cisco")
+@Qualifier("cisco")
 public class SSHCisco extends SSH {
     private boolean isEnableMode;
     private boolean isConfigMode;
-    private String enableModePassword;
+    private final String enableModePassword;
 
     public SSHCisco(SSHProperties sshProperties)
             throws JSchException {
@@ -40,21 +38,21 @@ public class SSHCisco extends SSH {
         }
 
         write(command + '\n');
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
         try {
             byte[] answer = new byte[1024];
             Thread.sleep(1000);
             while (in.available() > 0) {
                 int i = in.read(answer, 0, 1024);
-                result += new String(answer, 0, i);
+                result.append(new String(answer, 0, i));
                 // if (i < 0) break;
             }
         } catch (Exception e) {
-            result = "Internal Error";
+            result = new StringBuilder("Internal Error");
             e.printStackTrace();
         }
-        return result;
+        return result.toString();
     }
 
     @Override

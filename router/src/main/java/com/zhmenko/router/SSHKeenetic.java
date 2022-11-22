@@ -1,18 +1,19 @@
 package com.zhmenko.router;
 
 import com.jcraft.jsch.JSchException;
-import org.springframework.context.annotation.Profile;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
 @Component
-@Profile("keenetic")
+@Qualifier("keenetic")
+@Primary
 public class SSHKeenetic extends SSH {
-    public SSHKeenetic(SSHProperties sshProperties) throws InterruptedException,
-            IOException, JSchException {
+    public SSHKeenetic(SSHProperties sshProperties) throws JSchException {
         super(sshProperties.getUsername(),
                 sshProperties.getPassword(),
                 sshProperties.getIpAddress(),
@@ -32,7 +33,7 @@ public class SSHKeenetic extends SSH {
 //   access-list 1 deny ip 192.168.1.0 255.255.255.0 0.0.0.0 0.0.0.0
     @Override
     public String sendCommand(String command, boolean isReqEnableMode, boolean isReqConfigMode) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
         if (!session.isConnected()) {
             establishConnection();
@@ -44,13 +45,13 @@ public class SSHKeenetic extends SSH {
             Thread.sleep(1000);
             while (in.available() > 0) {
                 int i = in.read(answer, 0, 1024);
-                result += new String(answer, 0, i);
+                result.append(new String(answer, 0, i));
             }
         } catch (InterruptedException | IOException e) {
-            result = "Error";
+            result = new StringBuilder("Error");
             e.printStackTrace();
         }
-        return result;
+        return result.toString();
     }
 
     @Override
