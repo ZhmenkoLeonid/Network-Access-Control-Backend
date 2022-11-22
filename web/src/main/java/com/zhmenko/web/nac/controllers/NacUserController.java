@@ -1,20 +1,20 @@
-package com.zhmenko.web.api.controller.rest;
+package com.zhmenko.web.nac.controllers;
 
-import com.zhmenko.ids.model.nac.NacUserDto;
-import com.zhmenko.web.services.NacUserService;
-import lombok.AllArgsConstructor;
+
+import com.zhmenko.data.nac.models.NacUserEntity;
+import com.zhmenko.web.nac.services.NacUserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/nac-user")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @CrossOrigin(origins = "*")
 public class NacUserController {
@@ -22,7 +22,7 @@ public class NacUserController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public List<NacUserDto> getAll() {
+    public List<NacUserEntity> getAll() {
         log.info("getAll Query");
         return nacUserService.findAllUsers();
     }
@@ -35,11 +35,10 @@ public class NacUserController {
         return new ResponseEntity<>("deleted" + macAddress, HttpStatus.OK);
     }
 
-    @PutMapping("/{mac}")
-    public void updateUser(@PathVariable("mac") String macAddress,
-                           @RequestBody NacUserDto nacUserDto) {
-        log.info("updating: " + nacUserDto.toString());
-        nacUserService.updateUser(nacUserDto);
+    @PutMapping
+    public void updateUser(@RequestBody NacUserEntity nacUserEntity) {
+        log.info("updating: " + nacUserEntity.toString());
+        nacUserService.updateUser(nacUserEntity);
     }
 
     @GetMapping("/{mac}")

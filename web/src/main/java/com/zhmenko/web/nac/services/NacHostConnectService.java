@@ -1,8 +1,8 @@
-package com.zhmenko.web.services;
+package com.zhmenko.web.nac.services;
 
 import com.zhmenko.hostvalidation.host.ValidationPacket;
 
-public interface ConnectService {
+public interface NacHostConnectService {
     boolean connect(ValidationPacket data, String ipAddress);
 
     boolean postConnect(ValidationPacket data, String ipAddress);
