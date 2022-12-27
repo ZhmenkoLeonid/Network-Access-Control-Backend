@@ -1,8 +1,7 @@
 package com.zhmenko.router.socket;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.util.LinkedList;
 
 public class SocketServerThread extends Thread {
@@ -24,18 +23,24 @@ public class SocketServerThread extends Thread {
     @Override
     public void run() {
         try {
-        ServerSocket server = new ServerSocket(port);
+        DatagramSocket server = new DatagramSocket(port);
+        //server.receive();
             while (true) {
+                byte[] buffer = new byte[512];
                 // Блокируется до возникновения нового соединения:
-                Socket socket = server.accept();
-                try {
+                DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+                server.receive(packet);
+                System.out.println(packet.toString());
+                //Socket socket = server.accept();
+                
+/*                try {
                     System.out.println("Новое соединение: "+socket.getInetAddress());
                     serverList.add(new ServerInteraction(socket)); // добавить новое соединенние в список
                 } catch (IOException e) {
                     // Если завершится неудачей, закрывается сокет,
                     // в противном случае, нить закроет его при завершении работы:
                     socket.close();
-                }
+                }*/
             }
         }catch (Exception e){
             e.printStackTrace();

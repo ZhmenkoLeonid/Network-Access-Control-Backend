@@ -8,7 +8,7 @@ import com.jcraft.jsch.JSchException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Set;
 
 @Component
 @Qualifier("cisco")
@@ -27,10 +27,6 @@ public class SSHCisco extends SSH {
     }
 
     public String sendCommand(String command, boolean isReqEnableMode, boolean isReqConfigMode) {
-        if (!session.isConnected()) {
-            establishConnection();
-        }
-
         if (isReqEnableMode) {
             enterEnableMode();
         } else if (isReqConfigMode) {
@@ -57,28 +53,22 @@ public class SSHCisco extends SSH {
 
     @Override
     public void permitUser(String ipAddress) {
-        if (!session.isConnected()) {
-            establishConnection();
-        }
         enterConfigMode();
         write("access-list " + accessListName + " permit host " + ipAddress + '\n');
     }
 
     @Override
-    public void permitUserPort(String ipAddress, int port) {
+    public String permitUserPort(String ipAddress, int port) {
         throw new AssertionError();
     }
 
     @Override
-    public void permitUserPorts(String ipAddress, List<Integer> ports) {
+    public String permitDevicePorts(String ipAddress, Set<Integer> ports) {
         throw new AssertionError();
     }
 
     @Override
     public void denyUser(String ipAddress) {
-        if (!session.isConnected()) {
-            establishConnection();
-        }
         enterConfigMode();
         write("access-list " + accessListName + " deny host " + ipAddress + '\n');
     }
@@ -89,7 +79,7 @@ public class SSHCisco extends SSH {
     }
 
     @Override
-    public void denyUserPorts(String ipAddress, List<Integer> ports) {
+    public String denyDevicePorts(String ipAddress, Iterable<Integer> ports) {
         throw new AssertionError();
     }
 
