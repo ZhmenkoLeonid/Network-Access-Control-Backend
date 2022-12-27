@@ -1,6 +1,6 @@
 package com.zhmenko.web.nac.controllers;
 
-import com.zhmenko.web.nac.exceptions.NetworkResourceNotFoundException;
+import com.zhmenko.web.nac.exceptions.not_found.NetworkResourceNotFoundException;
 import com.zhmenko.web.nac.model.NetworkResourceDto;
 import com.zhmenko.web.nac.model.networkresource.request.NetworkResourceRequest;
 import com.zhmenko.web.nac.model.networkresource.response.NetworkResourceResponse;
@@ -13,6 +13,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/network-resource")
@@ -24,8 +26,8 @@ public class NetworkResourceController {
 
     @DeleteMapping("/{port}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> deleteNetworkResource(@PathVariable("port") int port) {
-        log.info("Delete resource with port:" + port);
+    public ResponseEntity<String> deleteNetworkResource(@PathVariable("port") @Min(0) @Max(65535) int port) {
+        log.info("Delete resource with port: " + port);
         boolean result = networkResourceService.deleteNetworkResourceByPort(port);
         if (!result) throw new NetworkResourceNotFoundException(port);
         return new ResponseEntity<>("Успешно удалён ресурс с именем " + port, HttpStatus.OK);
@@ -35,9 +37,9 @@ public class NetworkResourceController {
             consumes = {"application/json"}
     )
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> updateNetworkResources(@RequestBody @Valid NetworkResourceRequest networkResourceRequest) {
-        log.info("update resources: " + networkResourceRequest);
-        networkResourceService.updateNetworkResources(networkResourceRequest.getResources());
+    public ResponseEntity<String> updateNetworkResource(@RequestBody @Valid NetworkResourceDto networkResourceDto) {
+        log.info("update resource: " + networkResourceDto);
+        networkResourceService.updateNetworkResource(networkResourceDto);
         return new ResponseEntity<>("Обновление ресурсов прошло успешно!", HttpStatus.OK);
     }
 
@@ -48,7 +50,7 @@ public class NetworkResourceController {
     public ResponseEntity<String> postNetworkResources(@RequestBody @Valid NetworkResourceRequest networkResourceRequest) {
         log.info("Add resources: " + networkResourceRequest);
         networkResourceService.addNetworkResources(networkResourceRequest.getResources());
-        return new ResponseEntity<>("Вставка ролей прошла успешно!", HttpStatus.CREATED);
+        return new ResponseEntity<>("Вставка ресурсов прошла успешно!", HttpStatus.CREATED);
     }
 
     @GetMapping(
@@ -65,8 +67,10 @@ public class NetworkResourceController {
 
     @GetMapping(produces = {"application/json"})
     @PreAuthorize("hasRole('ADMIN')")
-    public NetworkResourceResponse getAllNetworkResources() {
+    public ResponseEntity<NetworkResourceResponse> getAllNetworkResources() {
         log.info("Get all network resources request");
-        return new NetworkResourceResponse(networkResourceService.findAll());
+        return ResponseEntity.ok(
+                new NetworkResourceResponse(networkResourceService.findAll())
+        );
     }
 }

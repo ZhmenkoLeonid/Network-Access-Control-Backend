@@ -1,7 +1,7 @@
 package com.zhmenko.web.ids.controllers;
 
-import com.zhmenko.data.netflow.models.user.NetflowUserStatisticDto;
-import com.zhmenko.web.ids.services.NetflowUserService;
+import com.zhmenko.web.netflow.model.NetflowUserStatisticDto;
+import com.zhmenko.web.ids.services.NetflowUserStatisticService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,19 +17,19 @@ import java.util.Map;
 @RequestMapping("/netflow-user-stat")
 @Slf4j
 public class NetflowUserStatisticController {
-    private final NetflowUserService netflowUserService;
+    private final NetflowUserStatisticService netflowUserStatisticService;
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public Map<String, NetflowUserStatisticDto> getAll() {
         log.info("invoke getAllStats");
-        return netflowUserService.getAll();
+        return netflowUserStatisticService.getAll();
     }
 
     @GetMapping("/{mac}")
     @PreAuthorize("hasRole('ADMIN')")
     public NetflowUserStatisticDto getByMacAddress(@PathVariable("mac") String macAddress){
-        NetflowUserStatisticDto dto = netflowUserService.getUserStatisticByMacAddress(macAddress);
+        NetflowUserStatisticDto dto = netflowUserStatisticService.getUserStatisticByMacAddress(macAddress);
         log.info("get stat for user:" + macAddress +". ret: " + dto);
         return dto;
     }

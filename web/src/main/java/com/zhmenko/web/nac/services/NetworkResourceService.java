@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface NetworkResourceService {
-    void addNetworkResources(List<NetworkResourceDto> roles);
+    void addNetworkResources(List<NetworkResourceDto> networkResources);
 
-    void updateNetworkResources(List<NetworkResourceDto> roles);
+    void updateNetworkResources(List<NetworkResourceDto> networkResources);
+
+    void updateNetworkResource(NetworkResourceDto networkResource);
 
     boolean deleteNetworkResourceByPort(int port);
 

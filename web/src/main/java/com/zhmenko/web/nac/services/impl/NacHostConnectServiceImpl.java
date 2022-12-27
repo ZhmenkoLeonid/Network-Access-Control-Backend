@@ -1,88 +1,138 @@
 package com.zhmenko.web.nac.services.impl;
 
-import com.zhmenko.data.nac.models.BlackListEntity;
-import com.zhmenko.data.nac.models.NacUserEntity;
+import com.zhmenko.data.nac.models.UserBlockInfoEntity;
+import com.zhmenko.data.nac.models.UserDeviceEntity;
+import com.zhmenko.data.nac.repository.UserDeviceRepository;
+import com.zhmenko.data.netflow.models.device.NetflowDevice;
+import com.zhmenko.data.netflow.models.device.NetflowDeviceList;
+import com.zhmenko.data.netflow.models.exception.UserNotExistException;
 import com.zhmenko.data.security.repository.SecurityUserRepository;
 import com.zhmenko.hostvalidation.PacketValidation;
 import com.zhmenko.hostvalidation.host.ValidationPacket;
-import com.zhmenko.data.nac.repository.NacUserRepository;
-import com.zhmenko.data.netflow.models.user.NetflowUser;
-import com.zhmenko.data.netflow.models.user.NetflowUserList;
 import com.zhmenko.router.SSH;
+import com.zhmenko.web.nac.exceptions.connect.SessionException;
+import com.zhmenko.web.nac.exceptions.illegal_state.DeviceBannedException;
 import com.zhmenko.web.nac.services.NacHostConnectService;
-import lombok.RequiredArgsConstructor;
+import com.zhmenko.web.security.services.impl.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class NacHostConnectServiceImpl implements NacHostConnectService {
     private final PacketValidation validation;
     @Qualifier("keenetic")
     private final SSH ssh;
-    private final NetflowUserList userList;
 
-    private final NacUserRepository nacUserDao;
+    @Value("${nac.session-ttl}")
+    private long userSessionTTLMillis;
+    private final NetflowDeviceList deviceList;
+
+    private final UserDeviceRepository userDeviceRepository;
 
     private final SecurityUserRepository securityUserRepository;
 
-    @Override
-    @Transactional
-    public boolean connect(ValidationPacket data, String ipAddress) {
-        if (validation.check(data)) {
-            String macAddress = data.getWinObj().getMacAddress();
-            String hostName = data.getHostname();
-            NetflowUser netflowUser = userList.getUserByMacAddress(macAddress);
-            List<Integer> openPortList = Collections.emptyList();//List.of(45, 50, 1900);
-            NacUserEntity nacUserEntity;
-
-            if (netflowUser == null) {
-                log.info("User with mac: " + macAddress + " not exist. Create new");
-                nacUserEntity = new NacUserEntity(macAddress,
-                        hostName,
-                        new BlackListEntity(),
-                        securityUserRepository.findByUsername(data.getUsername())
-                                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + data.getUsername())),
-                        ipAddress,
-                        new HashSet<>(),
-                        Collections.emptySet());
-                userList.addUser(nacUserEntity);
-            } else {
-                log.info("User with mac: " + macAddress + " exist. Update user state");
-                // Закрываем порты предыдущего адреса
-                nacUserEntity = nacUserDao.findByMacAddress(macAddress);
-                ssh.denyUserPorts(netflowUser.getCurrentIpAddress(), nacUserEntity.getPorts());
-                // Ставим новый ip
-                netflowUser.setCurrentIpAddress(ipAddress);
-                nacUserEntity.setIpAddress(ipAddress);
-                // порты
-                nacUserEntity.setUserNacRoleEntities(Collections.emptySet());
-                // и обновляем юзера в бд
-                nacUserDao.save(nacUserEntity);
-            }
-            ssh.permitUserPorts(ipAddress, openPortList);
-            return true;
-        }
-        log.info("Клиент с ip " + ipAddress + " не прошёл pre-connection проверку");
-        return false;
+    public NacHostConnectServiceImpl(PacketValidation validation, SSH ssh, NetflowDeviceList deviceList, UserDeviceRepository userDeviceRepository, SecurityUserRepository securityUserRepository) {
+        this.validation = validation;
+        this.ssh = ssh;
+        this.deviceList = deviceList;
+        this.userDeviceRepository = userDeviceRepository;
+        this.securityUserRepository = securityUserRepository;
     }
 
     @Override
-    public boolean postConnect(ValidationPacket data, String ipAddress) {
-        NetflowUser user = Objects.requireNonNull(userList.getUserByIpAddress(ipAddress));
+    @Transactional
+    public boolean connect(ValidationPacket data) {
+        String ipAddress = data.getIpAddress();
+        String macAddress = data.getMacAddress();
+        String hostName = data.getHostname();
+        if (!validation.check(data)) {
+            log.info("Клиент с ip " + ipAddress + " не прошёл pre-connection проверку");
+            return false;
+        }
+        log.info("Клиент с ip " + ipAddress + " прошёл pre-connection проверку");
+        NetflowDevice userByIpAddress = deviceList.getUserByIpAddress(ipAddress);
+        log.info(userByIpAddress ==null ? "null":userByIpAddress.toString());
+        if (userByIpAddress != null) {
+            if (userByIpAddress.getDeviceSessionInfo().isSessionActiveState()) {
+                throw new SessionException("Не удалось совершить подключения, т.к. данный ip-адрес уже имеет активную сессию");
+                // Если ip адрес привязан к завершённой сессии, то удаляем адрес у неё
+            } else {
+                userByIpAddress.setCurrentIpAddress(null);
+                UserDeviceEntity userDeviceEntity = userDeviceRepository.findByIpAddress(ipAddress).orElseThrow(RuntimeException::new);
+                userDeviceEntity.setIpAddress(null);
+            }
+        }
+
+        NetflowDevice netflowDevice = deviceList.getUserByMacAddress(macAddress);
+        UserDeviceEntity userDeviceEntity;
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (netflowDevice == null) {
+            log.info("User with mac: " + macAddress + " not exist. Create new");
+            UserBlockInfoEntity userBlockInfoEntity = new UserBlockInfoEntity();
+            userBlockInfoEntity.setIsBlocked(false);
+            userDeviceEntity = new UserDeviceEntity(macAddress,
+                    hostName,
+                    userBlockInfoEntity,
+                    securityUserRepository.findByUsername(userDetails.getUsername())
+                            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + userDetails.getUsername())),
+                    ipAddress,
+                    new HashSet<>());
+            userBlockInfoEntity.setUserDeviceEntity(userDeviceEntity);
+            deviceList.addDevice(userDeviceEntity)
+                    .addTTLTimer(ssh,userSessionTTLMillis);
+        } else {
+            log.info("User with mac: " + macAddress + " exist. Update user state");
+            if (netflowDevice.getBlockedState())
+                throw new DeviceBannedException("Устройство с mac адресом " + macAddress + " заблокировано!");
+            // Закрываем порты предыдущего адреса
+            userDeviceEntity = userDeviceRepository.findByMacAddress(macAddress)
+                    .orElseThrow(() -> new IllegalStateException("Ошибка синхронизации списков"));
+            if (netflowDevice.getCurrentIpAddress() != null)
+                ssh.denyDevicePorts(netflowDevice.getCurrentIpAddress(), userDeviceEntity.getSecurityUserEntity().getPorts());
+            // Ставим новый ip
+            netflowDevice.setCurrentIpAddress(ipAddress);
+            userDeviceEntity.setIpAddress(ipAddress);
+            // и обновляем юзера в бд
+            userDeviceRepository.save(userDeviceEntity);
+            netflowDevice.addTTLTimer(ssh, userSessionTTLMillis);
+        }
+        ssh.permitDevicePorts(ipAddress, userDeviceEntity.getSecurityUserEntity().getPorts());
+        return true;
+    }
+
+    @Override
+    public boolean postConnect(ValidationPacket data) {
+        String ipAddress = data.getIpAddress();
+        String macAddress = data.getMacAddress();
+
+        NetflowDevice user = deviceList.getUserByIpAddress(ipAddress);
+        if (user == null)
+            throw new UserNotExistException("Устройство с ip-адресом \"" + ipAddress + "\" не найдено!");
+
+        if (!user.getMacAddress().equals(macAddress))
+            throw new SessionException("У устройства с mac-адресом " + macAddress
+                    + " нет активной сессии с ip адресом " + ipAddress);
+        if (user.getBlockedState())
+            throw new DeviceBannedException("Устройство с mac адресом " + macAddress + " заблокировано!");
+
         if (validation.check(data)) {
-            userList.updateUserTTLTimer(user);
+            log.info("Клиент с ip " + ipAddress + " прошёл post-connection проверку");
+            boolean oldSessionActiveState = user.getDeviceSessionInfo().isSessionActiveState();
+            user.updateTTLTimer(ssh, userSessionTTLMillis);
+            if (!oldSessionActiveState)
+                ssh.permitDevicePorts(user.getCurrentIpAddress(), user.getOpenedPorts());
             return true;
         }
+
         log.info("Клиент с ip " + ipAddress + " не прошёл post-connection проверку");
         return false;
     }

@@ -1,6 +1,6 @@
 package com.zhmenko.web.nac.controllers;
 
-import com.zhmenko.web.nac.exceptions.RoleNotFoundException;
+import com.zhmenko.web.nac.exceptions.not_found.RoleNotFoundException;
 import com.zhmenko.web.nac.model.nacrole.request.insert.NacRolesInsertRequest;
 import com.zhmenko.web.nac.model.nacrole.request.modify.NacRolesModifyRequest;
 import com.zhmenko.web.nac.model.nacrole.response.NacRoleDto;
@@ -66,8 +66,8 @@ public class NacRoleController {
 
     @GetMapping(produces = {"application/json"})
     @PreAuthorize("hasRole('ADMIN')")
-    public NacRolesResponse getAllRoles() {
+    public ResponseEntity<NacRolesResponse> getAllRoles() {
         log.info("Get all roles request");
-        return new NacRolesResponse(nacRoleService.findAll());
+        return ResponseEntity.ok(new NacRolesResponse(nacRoleService.findAll()));
     }
 }

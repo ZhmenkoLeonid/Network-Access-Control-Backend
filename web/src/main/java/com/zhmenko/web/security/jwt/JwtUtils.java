@@ -1,6 +1,6 @@
 package com.zhmenko.web.security.jwt;
 
-import com.zhmenko.web.security.services.UserDetailsImpl;
+import com.zhmenko.web.security.services.impl.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +31,7 @@ public class JwtUtils {
         .compact();
   }
 
-  public String getUserNameFromJwtToken(String token) {
+  public String getUsernameFromJwtToken(String token) {
     return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
   }
 

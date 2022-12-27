@@ -1,12 +1,15 @@
 package com.zhmenko.web.nac.handlers;
 
+import com.zhmenko.data.netflow.models.exception.UserNotExistException;
 import com.zhmenko.web.nac.exceptions.BadRequestException;
-import com.zhmenko.web.nac.exceptions.NetworkResourceNotFoundException;
-import com.zhmenko.web.nac.exceptions.RoleNotFoundException;
-import com.zhmenko.web.nac.model.Error;
+import com.zhmenko.web.nac.exceptions.connect.ConnectException;
+import com.zhmenko.web.nac.exceptions.illegal_state.IllegalStateException;
+import com.zhmenko.web.nac.exceptions.not_found.NotFoundException;
+import com.zhmenko.web.model.Error;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,13 +21,28 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ExceptionHandlerAdvice {
-    @ExceptionHandler({RoleNotFoundException.class, NetworkResourceNotFoundException.class})
+    @ExceptionHandler({NotFoundException.class, UserNotExistException.class})
     public ResponseEntity<Error> handleException(RuntimeException e) {
         return new ResponseEntity<>(new Error(HttpStatus.NOT_FOUND.value(), e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(BadRequestException.class)
+    @ExceptionHandler({BadRequestException.class})
     public ResponseEntity<Error> handleException(BadRequestException e) {
+        return new ResponseEntity<>(new Error(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({IllegalStateException.class})
+    public ResponseEntity<Error> handleException(IllegalStateException e) {
+        return new ResponseEntity<>(new Error(HttpStatus.FORBIDDEN.value(), e.getMessage()), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler({ConnectException.class})
+    public ResponseEntity<Error> handleException(ConnectException e) {
+        return new ResponseEntity<>(new Error(HttpStatus.FORBIDDEN.value(), e.getMessage()), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Error> handleException(BadCredentialsException e) {
         return new ResponseEntity<>(new Error(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
@@ -47,7 +65,12 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<Error> handleException(MethodArgumentNotValidException e) {
-        return new ResponseEntity<>(new Error(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(
+                new Error(HttpStatus.BAD_REQUEST.value(), e.getFieldErrors()
+                        .stream()
+                        .map(err -> err.getField() + ": " + err.getDefaultMessage())
+                        .collect(Collectors.joining("; "))),
+                HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
