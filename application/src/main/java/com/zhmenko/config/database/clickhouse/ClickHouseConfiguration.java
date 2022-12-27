@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @PropertySource(value = "classpath:application-data.yml")
-@Profile("dev")
+@Profile({"dev","prod"})
 public class ClickHouseConfiguration {
     @Bean(name = "clickhouse")
     @ConfigurationProperties(prefix = "spring.datasource.clickhouse")

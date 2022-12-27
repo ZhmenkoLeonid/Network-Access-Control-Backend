@@ -11,7 +11,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 // Jasypt
 @EnableEncryptableProperties
 @EncryptablePropertySource(name = "mainconf", value = "classpath:application.yml")
-//@EnableJpaRepositories(basePackages = {"com.zhmenko.security.data"})
 @EntityScan(basePackages = {"com.zhmenko.*"})
 public class IpsSpringApplication {
     public static void main(String[] args) {

@@ -20,6 +20,10 @@ server:
     #trust-store: classpath:keystore/server-truststore.p12
     #trust store password
     #trust-store-password: changeit
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain,application/javascript,text/css
+    min-response-size: 10240
 
 spring:
   config:
@@ -36,6 +40,8 @@ spring:
     jwt:
       jwtSecret: ENC(3DNdSzuVKsOicKHSLgyXFVDP7rD0CVSAS2kzm1rYiMKFEhf/z5RmDHRkT9jwk3Rp)
       jwtExpirationMs: 8640000
+  jpa:
+    show-sql: false
 
 jasypt:
   encryptor:
@@ -49,7 +55,7 @@ netflow:
   analyze:
     routerType: KEENETIC
     analyzeFrequencyMillis: 5000
-    updateMeanValueTimeMillis: 60000
+    updateMeanValueTimeMillis: 6000000
     maxUniqueDestinationPortCount: 40
     flowMultiplierLimitation: 5
     # Свойства, связанные с сборщиком пакетом

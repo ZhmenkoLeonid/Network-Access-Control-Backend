@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @PropertySource(value = "classpath:application-data.yml")
-@Profile("dev")
+@Profile({"dev","prod"})
 public class PostgresConfiguration {
     @Bean(name = "postgres")
     @ConfigurationProperties(prefix="spring.datasource.postgres")
@@ -23,9 +23,9 @@ public class PostgresConfiguration {
     @Primary
     public DataSource postgresDataSource() {
         return DataSourceBuilder.create().build();
-    }/*
+    }
 
-    @Bean
+/*    @Bean
     @Primary
     public LocalContainerEntityManagerFactoryBean postgresEntityManagerFactory(
             EntityManagerFactoryBuilder builder) {

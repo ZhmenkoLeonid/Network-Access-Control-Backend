@@ -1,12 +1,13 @@
 package com.zhmenko.main;
 
-import com.zhmenko.data.nac.models.BlackListEntity;
+import com.zhmenko.data.nac.models.UserBlockInfoEntity;
 import com.zhmenko.data.nac.models.NacRoleEntity;
-import com.zhmenko.data.nac.models.NacUserEntity;
+import com.zhmenko.data.nac.models.UserDeviceEntity;
 import com.zhmenko.data.nac.models.NetworkResourceEntity;
 import com.zhmenko.data.nac.repository.NacRoleRepository;
-import com.zhmenko.data.nac.repository.NacUserRepository;
+import com.zhmenko.data.nac.repository.UserDeviceRepository;
 import com.zhmenko.data.nac.repository.NetworkResourcesRepository;
+import com.zhmenko.data.netflow.models.exception.UserNotExistException;
 import com.zhmenko.data.security.models.SecurityRoleEntity;
 import com.zhmenko.data.security.models.SecurityUserEntity;
 import com.zhmenko.data.security.repository.SecurityRoleRepository;
@@ -25,38 +26,42 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 @Profile("dev")
-public class DatabaseLoader implements CommandLineRunner {
+public class DatabaseLoaderDev implements CommandLineRunner {
     private final SecurityUserRepository securityUserRepository;
     private final SecurityRoleRepository securityRoleRepository;
     private final NetworkResourcesRepository networkResourcesRepository;
 
     private final NacRoleRepository nacRoleRepository;
-    private final NacUserRepository nacUserRepository;
+    private final UserDeviceRepository userDeviceRepository;
 
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) {
-        createSecurityRoles();
-        SecurityRoleEntity adminRole = securityRoleRepository.findByName("ROLE_ADMIN").get();
-        SecurityRoleEntity clientRole = securityRoleRepository.findByName("ROLE_CLIENT").get();
-
-        createSecurityUsers(adminRole, clientRole);
-        SecurityUserEntity securityUser = securityUserRepository.findByUsername("client_vova").get();
-
+        // NETWORK RESOURCES
         createNetworkResources();
         NetworkResourceEntity mailServerResource = networkResourcesRepository.findById(40).orElseThrow(RuntimeException::new);
         NetworkResourceEntity ftpServerResource = networkResourcesRepository.findById(90).orElseThrow(RuntimeException::new);
         NetworkResourceEntity exampleServiceResource = networkResourcesRepository.findById(1900).orElseThrow(RuntimeException::new);
-        NetworkResourceEntity zeroPortServiceResource = networkResourcesRepository.findById(0).orElseThrow(RuntimeException::new);
-
+        NetworkResourceEntity zeroPortServiceResource = networkResourcesRepository.findById(1).orElseThrow(RuntimeException::new);
+        // NAC ROLES
         createNacRoles(mailServerResource, ftpServerResource, exampleServiceResource, zeroPortServiceResource);
-        NacRoleEntity dataRole = nacRoleRepository.findByName("DATA_EMPLOYEE").orElseThrow(RuntimeException::new);
-        NacRoleEntity employeeRole = nacRoleRepository.findByName("EXAMPLE_EMPLOYEE").orElseThrow(RuntimeException::new);
+        NacRoleEntity dataNacRole = nacRoleRepository.findByName("DATA_EMPLOYEE").orElseThrow(RuntimeException::new);
+        NacRoleEntity employeeNacRole = nacRoleRepository.findByName("EXAMPLE_EMPLOYEE").orElseThrow(RuntimeException::new);
+        // SECURITY USERS
+        createSecurityRoles();
+        SecurityRoleEntity adminSecurityRole = securityRoleRepository.findByName("ROLE_ADMIN").get();
+        SecurityRoleEntity clientSecurityRole = securityRoleRepository.findByName("ROLE_CLIENT").get();
 
-        createNacUsers(securityUser, dataRole, employeeRole);
-        NacUserEntity dataUser = nacUserRepository.findByMacAddress("02:C1:98:7D:36:EE");
-        NacUserEntity exampleUser = nacUserRepository.findByMacAddress("27:D8:96:7F:56:DF");
+        createSecurityUsers(adminSecurityRole, clientSecurityRole, dataNacRole, employeeNacRole);
+        SecurityUserEntity securityUser = securityUserRepository.findByUsername("client_vova").get();
+
+        // NAC USERS
+        createNacUsers(securityUser);
+        UserDeviceEntity dataUser = userDeviceRepository.findByMacAddress("02:C1:98:7D:36:EE")
+                .orElseThrow(UserNotExistException::new);
+        UserDeviceEntity exampleUser = userDeviceRepository.findByMacAddress("27:D8:96:7F:56:DF")
+                .orElseThrow(UserNotExistException::new);
         System.out.println(dataUser);
         System.out.println(exampleUser);
         System.out.println(securityUserRepository.findByUsername("client_vova").get());
@@ -101,46 +106,39 @@ public class DatabaseLoader implements CommandLineRunner {
             networkResourcesRepository.save(NetworkResourceEntity.builder().resourcePort(90).name("FTP Server").build());
         if (!networkResourcesRepository.existsById(1900))
             networkResourcesRepository.save(NetworkResourceEntity.builder().resourcePort(1900).name("Example Service").build());
-        if (!networkResourcesRepository.existsById(0))
-            networkResourcesRepository.save(NetworkResourceEntity.builder().resourcePort(0).name("Zero Port Service").build());
+        if (!networkResourcesRepository.existsById(1))
+            networkResourcesRepository.save(NetworkResourceEntity.builder().resourcePort(1).name("Zero Port Service").build());
     }
 
-    public void createNacUsers(SecurityUserEntity securityUser,
-                               NacRoleEntity dataRole,
-                               NacRoleEntity employeeRole) {
-        if (nacUserRepository.findById("02:C1:98:7D:36:EE").isEmpty()) {
-            Set<NacRoleEntity> dataRoles = new HashSet<>();
-            dataRoles.add(dataRole);
-            NacUserEntity sampleDataEmployee = NacUserEntity.builder()
+    public void createNacUsers(SecurityUserEntity securityUser) {
+        if (userDeviceRepository.findById("02:C1:98:7D:36:EE").isEmpty()) {
+            UserDeviceEntity sampleDataEmployee = UserDeviceEntity.builder()
                     .macAddress("02:C1:98:7D:36:EE")
                     .ipAddress("127.0.0.1")
-                    .hostname("sample data employee")
-                    .userNacRoleEntities(dataRoles)
-                    .blackListInfo(BlackListEntity.builder()
+                    .hostname("MacBook")
+                    .blackListInfo(UserBlockInfoEntity.builder()
                             .isBlocked(false).build())
                     .securityUserEntity(securityUser)
                     .build();
-            sampleDataEmployee.getBlackListInfo().setNacUserEntity(sampleDataEmployee);
-            nacUserRepository.save(sampleDataEmployee);
+            sampleDataEmployee.getBlackListInfo().setUserDeviceEntity(sampleDataEmployee);
+            userDeviceRepository.save(sampleDataEmployee);
         }
-        if (nacUserRepository.findById("27:D8:96:7F:56:DF").isEmpty()) {
-            Set<NacRoleEntity> exampleRoles = new HashSet<>();
-            exampleRoles.add(employeeRole);
-            NacUserEntity sampleExampleEmployee = NacUserEntity.builder()
+        if (userDeviceRepository.findById("27:D8:96:7F:56:DF").isEmpty()) {
+            UserDeviceEntity sampleExampleEmployee = UserDeviceEntity.builder()
                     .macAddress("27:D8:96:7F:56:DF")
                     .ipAddress("127.0.0.1")
-                    .hostname("sample example employee")
-                    .userNacRoleEntities(exampleRoles)
-                    .blackListInfo(BlackListEntity.builder()
+                    .hostname("Personal computer")
+                    .blackListInfo(UserBlockInfoEntity.builder()
                             .isBlocked(false).build())
                     .securityUserEntity(securityUser)
                     .build();
-            sampleExampleEmployee.getBlackListInfo().setNacUserEntity(sampleExampleEmployee);
-            nacUserRepository.save(sampleExampleEmployee);
+            sampleExampleEmployee.getBlackListInfo().setUserDeviceEntity(sampleExampleEmployee);
+            userDeviceRepository.save(sampleExampleEmployee);
         }
     }
 
-    public void createSecurityUsers(SecurityRoleEntity adminRole, SecurityRoleEntity clientRole) {
+    public void createSecurityUsers(SecurityRoleEntity adminRole, SecurityRoleEntity clientRole,
+                                    NacRoleEntity dataRole, NacRoleEntity employeeRole) {
         if (securityUserRepository.findByUsername("admin").isEmpty()) {
             Set<SecurityRoleEntity> roles = new HashSet<>();
             roles.add(adminRole);
@@ -148,6 +146,7 @@ public class DatabaseLoader implements CommandLineRunner {
                     "admin",
                     passwordEncoder.encode("changeit"),
                     roles,
+                    Collections.emptySet(),
                     Collections.emptySet());
             securityUserRepository.save(securityUser);
         }
@@ -158,16 +157,19 @@ public class DatabaseLoader implements CommandLineRunner {
                     "client_vova",
                     passwordEncoder.encode("vova_pass"),
                     roles,
+                    Collections.emptySet(),
                     Collections.emptySet());
             securityUserRepository.save(securityUser);
         }
-        if (securityUserRepository.findByUsername("test_client").isEmpty()) {
-            Set<SecurityRoleEntity> roles = new HashSet<>();
-            roles.add(clientRole);
+        if (securityUserRepository.findByUsername("sample example emp").isEmpty()) {
+            Set<SecurityRoleEntity> securityRoles = new HashSet<>();
+            securityRoles.add(clientRole);
+            Set<NacRoleEntity> nacRoles = Set.of(dataRole, employeeRole);
             SecurityUserEntity securityUser = new SecurityUserEntity(UUID.randomUUID(),
-                    "test_client",
-                    passwordEncoder.encode("test_client"),
-                    roles,
+                    "sample example emp",
+                    passwordEncoder.encode("sample example emp"),
+                    securityRoles,
+                    nacRoles,
                     Collections.emptySet());
             securityUserRepository.save(securityUser);
         }
