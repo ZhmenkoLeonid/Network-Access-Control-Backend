@@ -20,7 +20,11 @@ public class SecurityRoleEntity {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "securityRoles")
+    @ManyToMany
+    @JoinTable(
+            name = "security_user_security_role",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<SecurityUserEntity> roleOwners;

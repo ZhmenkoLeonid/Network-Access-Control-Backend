@@ -1,4 +1,4 @@
-package com.zhmenko.data.netflow.models.user;
+package com.zhmenko.data.netflow.models.device;
 
 
 import com.zhmenko.data.netflow.models.packet.NetflowPacket;

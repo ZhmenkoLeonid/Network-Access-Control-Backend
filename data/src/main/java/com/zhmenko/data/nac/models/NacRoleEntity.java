@@ -1,5 +1,6 @@
 package com.zhmenko.data.nac.models;
 
+import com.zhmenko.data.security.models.SecurityUserEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,15 +16,20 @@ public class NacRoleEntity {
     @Id
     @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "userNacRoleEntities", fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "security_user_nac_role",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<NacUserEntity> roleOwners;
+    private Set<SecurityUserEntity> roleOwners;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

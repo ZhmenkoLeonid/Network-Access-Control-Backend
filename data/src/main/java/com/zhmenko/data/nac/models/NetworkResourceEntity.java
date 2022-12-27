@@ -19,7 +19,10 @@ public class NetworkResourceEntity {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "networkResources")
+    @ManyToMany
+    @JoinTable(name = "nac_role_network_resource",
+            joinColumns = @JoinColumn(name = "resource_port"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<NacRoleEntity> nacRoleEntities;

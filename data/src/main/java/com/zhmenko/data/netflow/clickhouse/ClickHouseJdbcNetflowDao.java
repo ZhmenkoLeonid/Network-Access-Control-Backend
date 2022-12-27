@@ -1,6 +1,6 @@
-package com.zhmenko.data.nac.clickhouse;
+package com.zhmenko.data.netflow.clickhouse;
 
-import com.zhmenko.data.nac.NetflowDao;
+import com.zhmenko.data.netflow.NetflowDao;
 import com.zhmenko.data.netflow.models.Protocol;
 import com.zhmenko.data.netflow.models.packet.NetflowPacket;
 import com.zhmenko.data.netflow.models.packet.NetflowPacketV5;

@@ -3,17 +3,19 @@ package com.zhmenko.data.nac.models;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "nac_user_blacklist")
+@Table(name = "user_device_block_info")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BlackListEntity {
+public class UserBlockInfoEntity {
     @Id
-    @Column(name = "mac_address")
+    @Column(name = "mac_address", nullable = false)
+    @NotNull
     private String macAddress;
 
     @Column(name = "user_banned")
@@ -30,5 +32,6 @@ public class BlackListEntity {
     @JoinColumn(name = "mac_address")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private NacUserEntity nacUserEntity;
+    @NotNull
+    private UserDeviceEntity userDeviceEntity;
 }

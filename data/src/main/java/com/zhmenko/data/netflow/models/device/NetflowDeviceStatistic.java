@@ -1,4 +1,4 @@
-package com.zhmenko.data.netflow.models.user;
+package com.zhmenko.data.netflow.models.device;
 
 import com.zhmenko.data.netflow.models.Protocol;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Data
 @NoArgsConstructor
-public class NetflowUserStatistic {
+public class NetflowDeviceStatistic {
     private String macAddress;
     private long packetsCount;
     private long lastPacketsCount;
@@ -19,7 +19,7 @@ public class NetflowUserStatistic {
     private Timestamp oldestPacketTime;
     private long meanValueIntervalMillis;
 
-    public NetflowUserStatistic(long meanValueIntervalMillis){
+    public NetflowDeviceStatistic(long meanValueIntervalMillis){
         this.meanValueIntervalMillis = meanValueIntervalMillis;
     }
 

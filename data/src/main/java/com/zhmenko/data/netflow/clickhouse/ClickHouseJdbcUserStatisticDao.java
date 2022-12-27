@@ -1,8 +1,8 @@
-package com.zhmenko.data.nac.clickhouse;
+package com.zhmenko.data.netflow.clickhouse;
 
-import com.zhmenko.data.nac.UserStatisticDao;
+import com.zhmenko.data.netflow.UserStatisticDao;
 import com.zhmenko.data.netflow.models.Protocol;
-import com.zhmenko.data.netflow.models.user.NetflowUserStatistic;
+import com.zhmenko.data.netflow.models.device.NetflowDeviceStatistic;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -27,12 +27,12 @@ public class ClickHouseJdbcUserStatisticDao implements UserStatisticDao {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public NetflowUserStatistic findUserStatisticByMacAddress(String macAddress, long meanValueIntervalSecond) {
-        NetflowUserStatistic netflowUserStatistic = null;
+    public NetflowDeviceStatistic findUserStatisticByMacAddress(String macAddress, long meanValueIntervalSecond) {
+        NetflowDeviceStatistic netflowDeviceStatistic = null;
         try {
-            netflowUserStatistic = jdbcTemplate.queryForObject(FIND_USER_STATISTIC_BY_MAC_ADDRESS,
+            netflowDeviceStatistic = jdbcTemplate.queryForObject(FIND_USER_STATISTIC_BY_MAC_ADDRESS,
                     (rs, rowNum) -> {
-                        NetflowUserStatistic userStatistic = new NetflowUserStatistic();
+                        NetflowDeviceStatistic userStatistic = new NetflowDeviceStatistic();
 
                         userStatistic.setMacAddress(macAddress);
                         int idx = 1;
@@ -54,6 +54,6 @@ public class ClickHouseJdbcUserStatisticDao implements UserStatisticDao {
                     meanValueIntervalSecond,
                     macAddress);
         } catch (Exception e) { }
-        return netflowUserStatistic;
+        return netflowDeviceStatistic;
     }
 }

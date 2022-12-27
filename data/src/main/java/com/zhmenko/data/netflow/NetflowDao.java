@@ -1,4 +1,4 @@
-package com.zhmenko.data.nac;
+package com.zhmenko.data.netflow;
 
 import com.zhmenko.data.netflow.models.packet.NetflowPacket;
 
