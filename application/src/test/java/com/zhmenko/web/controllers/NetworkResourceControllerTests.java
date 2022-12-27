@@ -1,23 +1,30 @@
 package com.zhmenko.web.controllers;
 
+import com.zhmenko.data.nac.models.NetworkResourceEntity;
+import com.zhmenko.data.nac.repository.NetworkResourcesRepository;
+import com.zhmenko.web.nac.mapper.networkresource.NetworkResourceListMapper;
 import com.zhmenko.web.nac.model.NetworkResourceDto;
 import com.zhmenko.web.nac.model.networkresource.request.NetworkResourceRequest;
-import com.zhmenko.web.nac.model.networkresource.response.NetworkResourceResponse;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.Comparator;
 import java.util.List;
 
+import static com.zhmenko.entity.NetworkResourceEntityTestBuilder.aNetworkResourceEntity;
 import static com.zhmenko.web.controllers.util.StringUtils.mapStringBody;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class NetworkResourceControllerTests extends AbstractTest {
     private final String NETWORK_RESOURCE_CONTROLLER_URL = baseApiUrl + "/network-resource";
+    @Autowired
+    private NetworkResourceListMapper networkResourceListMapper;
+    @Autowired
+    private NetworkResourcesRepository networkResourcesRepository;
 
     // IMPORT SECTOR
     @Test
@@ -26,15 +33,28 @@ public class NetworkResourceControllerTests extends AbstractTest {
         NetworkResourceDto r1 = NetworkResourceDto.builder().resourcePort(1).name("r1").build();
         NetworkResourceDto r2 = NetworkResourceDto.builder().resourcePort(2).name("r2").build();
         NetworkResourceDto r3 = NetworkResourceDto.builder().resourcePort(3).name("r3").build();
-
+        var resources = List.of(r1, r2, r3);
         NetworkResourceRequest request = NetworkResourceRequest.builder()
-                .resources(List.of(r1, r2, r3))
+                .resources(resources)
                 .build();
         // when - then
-        List<NetworkResourceDto> actual = insertResourcesAndGetSorted(request);
+        mockMvc.perform(
+                        post(NETWORK_RESOURCE_CONTROLLER_URL)
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
 
-        assertEquals(request.getResources(), actual);
+        List<NetworkResourceEntity> all = networkResourcesRepository.findAll();
+        assertEquals(3, all.size());
+
+        for (int i = 0; i < all.size(); i++) {
+            var actual = all.get(i);
+            var expected = resources.get(i);
+            assertEquals(expected.getResourcePort(), actual.getResourcePort());
+            assertEquals(expected.getName(), actual.getName());
+        }
     }
+
     @Test
     void givenResource_WhenPostResourceWithBadPort_ThenStatus400() throws Exception {
         // given
@@ -61,17 +81,13 @@ public class NetworkResourceControllerTests extends AbstractTest {
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
+
     @Test
     void givenResource_WhenPostExistingResource_ThenStatus400() throws Exception {
         // given
-        NetworkResourceDto resourceDto = NetworkResourceDto.builder().resourcePort(1).name("r1").build();
-
-        //create resource
-        insertResources(NetworkResourceRequest.builder().resources(List.of(resourceDto)).build());
-
+        db.save(aNetworkResourceEntity().withPort(1).withName("r1"));
         // when
-        resourceDto.setName("r2");
-
+        NetworkResourceDto resourceDto = NetworkResourceDto.builder().resourcePort(1).name("r2").build();
         mockMvc.perform(
                         post(NETWORK_RESOURCE_CONTROLLER_URL)
                                 .content(objectMapper.writeValueAsString(
@@ -82,6 +98,7 @@ public class NetworkResourceControllerTests extends AbstractTest {
                 // then
                 .andExpect(status().isBadRequest());
     }
+
     @Test
     void givenResources_WhenPostResourcesWithDuplicatedPort_ThenStatus400() throws Exception {
         // given
@@ -103,52 +120,27 @@ public class NetworkResourceControllerTests extends AbstractTest {
 
     // UPDATE SECTOR
     @Test
-    void givenResources_WhenUpdateResources_ThenStatus200AndCorrectData() throws Exception {
+    void givenResource_WhenUpdateResource_ThenStatus200AndCorrectData() throws Exception {
         // given
-        NetworkResourceDto r1 = NetworkResourceDto.builder().resourcePort(1).name("r1").build();
-        NetworkResourceDto r2 = NetworkResourceDto.builder().resourcePort(2).name("r2").build();
-        NetworkResourceDto r3 = NetworkResourceDto.builder().resourcePort(3).name("r3").build();
-
-        NetworkResourceRequest request = NetworkResourceRequest.builder()
-                .resources(List.of(r1, r2, r3))
-                .build();
-
-        insertResources(request);
+        db.save(aNetworkResourceEntity().withPort(1).withName("r1"));
         // when
-        r1.setName("updated r1");
-        r2.setName("updated r2");
-        r3.setName("updated r3");
-
+        var dto = NetworkResourceDto.builder().resourcePort(1).name("updated r1").build();
         mockMvc.perform(
                         put(NETWORK_RESOURCE_CONTROLLER_URL)
-                                .content(objectMapper.writeValueAsString(request))
+                                .content(objectMapper.writeValueAsString(dto))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        MvcResult mvcResult = mockMvc.perform(
-                        get(NETWORK_RESOURCE_CONTROLLER_URL)
-                                .content(objectMapper.writeValueAsString(request))
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
+        var actual = db.find(1, NetworkResourceEntity.class);
+        assertNotNull(actual);
 
-        List<NetworkResourceDto> response = objectMapper
-                .readValue(mapStringBody(mvcResult), NetworkResourceResponse.class).getResources();
-
-        // sort by port num
-        response.sort(Comparator.comparingInt(NetworkResourceDto::getResourcePort));
-
-        assertEquals(request.getResources(), response);
+        assertEquals(dto.getName(), actual.getName());
     }
+
     @Test
     void givenResource_WhenUpdateResourceWithBadPort_ThenStatus400() throws Exception {
         // given
-        NetworkResourceDto r1 = NetworkResourceDto.builder().resourcePort(1).name("r1").build();
-
-        // insert
-        insertResources(NetworkResourceRequest.builder().resources(List.of(r1)).build());
-
+        db.save(aNetworkResourceEntity().withName("r1").withPort(1));
         // prepare updates
         NetworkResourceDto negativePortResource = NetworkResourceDto.builder().resourcePort(-1).name("r1").build();
         NetworkResourceDto tooMuchPortResource = NetworkResourceDto.builder().resourcePort(65536).name("r1").build();
@@ -159,7 +151,6 @@ public class NetworkResourceControllerTests extends AbstractTest {
         NetworkResourceRequest tooMuchPortRequest = NetworkResourceRequest.builder()
                 .resources(List.of(tooMuchPortResource))
                 .build();
-
         // when - then
         mockMvc.perform(
                         put(NETWORK_RESOURCE_CONTROLLER_URL)
@@ -173,7 +164,8 @@ public class NetworkResourceControllerTests extends AbstractTest {
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
-    @Test
+
+/*    @Test
     void givenResources_WhenUpdateResourcesWithDuplicatedPort_ThenStatus400() throws Exception {
         // given
         NetworkResourceDto r1 = NetworkResourceDto.builder().resourcePort(1).name("r1").build();
@@ -194,17 +186,14 @@ public class NetworkResourceControllerTests extends AbstractTest {
                                 .contentType(MediaType.APPLICATION_JSON))
                 // then
                 .andExpect(status().isBadRequest());
-    }
+    }*/
 
     // GET SECTOR
     @Test
     void givenNacRoles_WhenPostRoleAndGetByName_ThenStatus200AndCorrectData() throws Exception {
         // given
-        NetworkResourceDto r1 = NetworkResourceDto.builder().resourcePort(1).name("r1").build();
-        NetworkResourceRequest request = NetworkResourceRequest.builder().resources(List.of(r1)).build();
-
-        // when - then
-        insertResources(request);
+        db.save(aNetworkResourceEntity().withName("r1").withPort(1));
+        NetworkResourceDto expected = NetworkResourceDto.builder().resourcePort(1).name("r1").build();
 
         MvcResult mvcResult = mockMvc.perform(
                         get(NETWORK_RESOURCE_CONTROLLER_URL + "/1"))
@@ -215,8 +204,9 @@ public class NetworkResourceControllerTests extends AbstractTest {
         NetworkResourceDto response = objectMapper
                 .readValue(mapStringBody(mvcResult), NetworkResourceDto.class);
 
-        assertEquals(r1, response);
+        assertEquals(expected, response);
     }
+
     @Test
     void whenGetByPortNotExistingResource_ThenStatus404() throws Exception {
         mockMvc.perform(
@@ -228,44 +218,15 @@ public class NetworkResourceControllerTests extends AbstractTest {
 
     // DELETE SECTOR
     @Test
-    void givenNetwork_WhenDeleteResourceAndGetByName_ThenStatus404() throws Exception {
+    void givenNetworkResource_WhenDeleteResource_ThenStatus200AndResourceShouldBeDeleted() throws Exception {
         // given
-        NetworkResourceDto r1 = NetworkResourceDto.builder().resourcePort(1).name("r1").build();
-        NetworkResourceRequest request = NetworkResourceRequest.builder().resources(List.of(r1)).build();
-        insertResources(request);
+        db.save(aNetworkResourceEntity().withPort(1).withName("r1"));
         // when
+        assertNotNull(db.find(1, NetworkResourceEntity.class));
         mockMvc.perform(
                         delete(NETWORK_RESOURCE_CONTROLLER_URL + "/1"))
                 .andExpect(status().isOk());
-
-        mockMvc.perform(
-                        get(NETWORK_RESOURCE_CONTROLLER_URL + "/1"))
-                // then
-                .andExpect(status().isNotFound());
-    }
-    void insertResources(NetworkResourceRequest networkResourceRequest) throws Exception {
-        mockMvc.perform(
-                        post(NETWORK_RESOURCE_CONTROLLER_URL)
-                                .content(objectMapper.writeValueAsString(networkResourceRequest))
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
-    }
-
-    List<NetworkResourceDto> insertResourcesAndGetSorted(NetworkResourceRequest networkResourceRequest)
-            throws Exception {
-        insertResources(networkResourceRequest);
-
-        MvcResult mvcResult = mockMvc.perform(
-                        get(NETWORK_RESOURCE_CONTROLLER_URL))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        List<NetworkResourceDto> response = objectMapper
-                .readValue(mapStringBody(mvcResult), NetworkResourceResponse.class).getResources();
-
-        // sort by port num
-        response.sort(Comparator.comparingInt(NetworkResourceDto::getResourcePort));
-        return response;
+        // then
+        assertNull(db.find(1, NetworkResourceEntity.class));
     }
 }

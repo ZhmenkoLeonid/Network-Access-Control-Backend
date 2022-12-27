@@ -1,0 +1,31 @@
+# nac configure
+nac:
+  session-ttl: 30000 #3000000
+# ids configure
+netflow:
+  # Свойства, связанные с анализатором пакетов
+  analyze:
+    routerType: KEENETIC
+    analyzeFrequencyMillis: 5000
+    updateMeanValueTimeMillis: 60000
+    maxUniqueDestinationPortCount: 40
+    flowMultiplierLimitation: 5
+    # Свойства, связанные с сборщиком пакетом
+
+  router:
+    ipAddress: 192.168.1.1
+    username: admin
+    password: ENC(6bdk1Xm4ha9jye1A7Jp1AFv+Oq3Snl98Isontn4n7pN+Mqam1UWc9s9KoCxdiwzN)
+    accessListName: netflow
+    collector:
+      port: 2055
+spring:
+  jpa:
+    show-sql: true
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa:
+            JpaTransactionManager: DEBUG

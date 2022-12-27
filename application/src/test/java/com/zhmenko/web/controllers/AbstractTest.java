@@ -2,33 +2,35 @@ package com.zhmenko.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.zhmenko.data.nac.repository.NacRoleRepository;
 import com.zhmenko.data.nac.repository.NetworkResourcesRepository;
 import com.zhmenko.data.security.models.SecurityRoleEntity;
-import com.zhmenko.data.security.models.SecurityUserEntity;
 import com.zhmenko.data.security.repository.SecurityRoleRepository;
 import com.zhmenko.data.security.repository.SecurityUserRepository;
+import com.zhmenko.router.SSH;
+import com.zhmenko.entity.SecurityRoleEntityTestBuilder;
+import com.zhmenko.entity.SecurityUserEntityTestBuilder;
+import com.zhmenko.util.TestDBFacade;
 import com.zhmenko.web.controllers.util.JwtTokenHeaderMockMvcBuilderCustomizer;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
+
+import static org.mockito.ArgumentMatchers.anyString;
 
 @SpringBootTest(classes = {TestSpringApplication.class, JwtTokenHeaderMockMvcBuilderCustomizer.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -37,50 +39,54 @@ import java.util.TimeZone;
 @ActiveProfiles("test")
 @Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(TestDBFacade.Config.class)
 public class AbstractTest {
     @LocalServerPort
     private int port;
     protected final String baseApiUrl = "http://localhost:" + port;
     @Autowired
     protected MockMvc mockMvc;
-
-    @MockBean
-    private SecurityUserRepository securityUserRepository;
-
     @Autowired
-    private NacRoleRepository nacRoleRepository;
-
-    @Autowired
-    private NetworkResourcesRepository networkResourcesRepository;
-
-    @MockBean
-    private SecurityRoleRepository mockSecurityRoleRepository;
+    protected TestDBFacade db;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     protected static ObjectMapper objectMapper;
 
+    private static final UUID uuid = UUID.randomUUID();
+
+    @MockBean
+    private SSH ssh;
+
     @BeforeEach
-    public void mockAdminSecurityUser() {
-        SecurityRoleEntity roleAdmin = SecurityRoleEntity.builder().name("ROLE_ADMIN").build();
-        Mockito.when(mockSecurityRoleRepository.findByName("ROLE_ADMIN"))
-                .thenReturn(Optional.of(roleAdmin));
-
-        SecurityUserEntity adminUser = SecurityUserEntity.builder()
-                .securityRoles(Set.of(roleAdmin))
-                .username("admin")
-                .password(passwordEncoder.encode("changeit"))
-                .nacUserEntities(Collections.emptySet())
-                .build();
-
-        Mockito.when(securityUserRepository.findByUsername("admin"))
-                .thenReturn(Optional.of(adminUser));
+    public void adminSecurityUser() {
+        SecurityRoleEntity roleAdmin = db.save(SecurityRoleEntityTestBuilder.aSecurityRoleEntity().withName("ROLE_ADMIN"));
+        db.save(
+                SecurityUserEntityTestBuilder.aSecurityUserEntity()
+                        .withId(uuid)
+                        .withUsername("admin")
+                        .withPassword(passwordEncoder.encode("changeit"))
+                        .withSecurityRoles(Set.of(roleAdmin))
+        );
     }
 
-    @AfterEach
+    @BeforeEach
+    public void sshMockRequest() {
+        Mockito
+                .when(ssh.connectAndExecuteCommand(anyString()))
+                .thenAnswer((Answer<String>) invocationOnMock -> {
+                    String argument = invocationOnMock.getArgument(0, String.class);
+                    return argument.contains("no") ? "Rule deleted" : "Rule accepted";
+                });
+    }
+
+    @BeforeEach
     public void databaseClear() {
-        nacRoleRepository.deleteAll();
+        db.cleanDatabase();
+/*        nacRoleRepository.deleteAll();
         networkResourcesRepository.deleteAll();
+        securityUserRepository.deleteAll();
+        securityRoleRepository.deleteAll();*/
     }
 
     @BeforeAll

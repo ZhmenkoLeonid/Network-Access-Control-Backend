@@ -2,11 +2,16 @@ package com.zhmenko.web.controllers.config.database.postgres;
 
 import org.springframework.boot.autoconfigure.flyway.FlywayDataSource;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.*;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.testcontainers.containers.PostgreSQLContainer;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 @EnableJpaRepositories(basePackages = {"com.zhmenko.data.**.repository"},
@@ -31,15 +36,16 @@ public class PostgresTestConfiguration {
     @Bean
     public PostgreSQLContainer<?> postgreSQLContainer() {
         PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
-/*                .withUsername("default")
-                .withPassword("default")
-                .withDatabaseName("default");*/
         postgreSQLContainer.start();
         return postgreSQLContainer;
     }
-    /*
 
     @Bean
+    public TestEntityManager testEntityManager(EntityManagerFactory entityManagerFactory) {
+        return new TestEntityManager(entityManagerFactory);
+    }
+
+/*    @Bean
     @Primary
     public LocalContainerEntityManagerFactoryBean postgresEntityManagerFactory(
             EntityManagerFactoryBuilder builder) {

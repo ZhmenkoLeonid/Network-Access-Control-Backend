@@ -9,9 +9,9 @@ import org.testcontainers.containers.ClickHouseContainer;
 
 import javax.sql.DataSource;
 
-@Configuration
+//@Configuration
 //@PropertySource(value = "classpath:application-test.yml")
-@Profile("test")
+/*@Profile("test")
 public class ClickHouseTestConfiguration {
     @Bean(name = "clickhouse")
     //@ConfigurationProperties(prefix = "spring.datasource.clickhouse")
@@ -37,5 +37,5 @@ public class ClickHouseTestConfiguration {
         DataSource dataSource = clickHouseDataSource();
         return new JdbcTemplate(dataSource);
     }
-}
+}*/
 
