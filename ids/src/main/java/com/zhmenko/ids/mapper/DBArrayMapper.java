@@ -1,5 +1,6 @@
 package com.zhmenko.ids.mapper;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.sql.Array;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@Profile({"dev","prod"})
 public class DBArrayMapper {
     public List<Integer> toIntegerList(Array intArray) throws SQLException {
         int[] arr = (int[]) intArray.getArray();

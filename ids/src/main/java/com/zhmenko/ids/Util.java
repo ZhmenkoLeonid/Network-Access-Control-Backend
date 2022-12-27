@@ -1,10 +1,10 @@
+/*
 package com.zhmenko.ids;
 
-
-import com.zhmenko.ids.gui.Console;
-import com.zhmenko.ids.model.netflow.packet.NetflowPacket;
+import com.zhmenko.data.netflow.models.packet.NetflowPacket;
 
 import javax.swing.text.BadLocationException;
+import java.io.Console;
 import java.util.*;
 
 public class Util {
@@ -39,7 +39,8 @@ public class Util {
             console.appendMsg(flow.toString());
         }
     }
-    /*public static long getMaxDstPortCount(List<NetflowPacket> netflowPackets){
+    */
+/*public static long getMaxDstPortCount(List<NetflowPacket> netflowPackets){
         HashMap<String, HashSet<String>> uniqieDstPorts = new HashMap<>();
         String dstIpAddress;
         for (NetflowPacket packet:netflowPackets){
@@ -55,5 +56,7 @@ public class Util {
                 collect(Collectors.toList()));
 
         return count.size() > 0 ? Collections.max(count) : 0;
-    }*/
+    }*//*
+
 }
+*/

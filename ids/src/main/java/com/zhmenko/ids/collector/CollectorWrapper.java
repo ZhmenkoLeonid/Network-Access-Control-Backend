@@ -3,11 +3,13 @@ package com.zhmenko.ids.collector;
 import nettrack.net.netflow.Collector;
 import nettrack.net.netflow.V5FlowHandler;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.net.SocketException;
 
 @Component
+@Profile({"dev","prod"})
 public class CollectorWrapper extends Collector {
     public CollectorWrapper(@Value("${netflow.router.collector.port}") int port,
                             V5FlowHandler flowHandler)
@@ -16,4 +18,6 @@ public class CollectorWrapper extends Collector {
         this.addFlowHandler(flowHandler);
         this.start();
     }
+
+
 }

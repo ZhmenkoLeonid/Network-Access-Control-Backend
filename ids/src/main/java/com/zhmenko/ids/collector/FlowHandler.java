@@ -5,13 +5,17 @@ import com.zhmenko.data.netflow.models.exception.UnsupportedProtocolException;
 import com.zhmenko.ids.collector.factory.v5.NetflowPacketFactoryV5;
 import lombok.RequiredArgsConstructor;
 import nettrack.net.IpAddr;
-import nettrack.net.netflow.*;
+import nettrack.net.netflow.Accountant;
+import nettrack.net.netflow.Flow;
+import nettrack.net.netflow.V5Flow;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 
 @Component
 @RequiredArgsConstructor
+@Profile({"dev","prod"})
 public class FlowHandler implements Accountant {
     private final NetflowPacketFactoryV5 factory;
 

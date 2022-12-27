@@ -1,3 +1,4 @@
+/*
 package com.zhmenko.ids.gui;
 
 import com.zhmenko.ids.traffic_analyze.AnalyzeThread;
@@ -34,3 +35,4 @@ public class TimeToUpdateThread extends Thread {
         }
     }
 }
+*/

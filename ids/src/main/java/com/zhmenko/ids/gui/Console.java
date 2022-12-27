@@ -1,8 +1,9 @@
+/*
 package com.zhmenko.ids.gui;
 
 
-import com.zhmenko.ids.model.netflow.user.BlackList;
-import com.zhmenko.ids.mapper.NetflowUserStatisticMapper;
+import com.zhmenko.data.netflow.models.user.BlackList;
+import com.zhmenko.web.netflow.mapper.NetflowUserStatisticMapper;
 import lombok.Getter;
 
 import javax.imageio.ImageIO;
@@ -51,3 +52,4 @@ public class Console {
         consoleTextOutput.setCaretPosition(consoleTextOutput.getText().length());
     }
 }
+*/

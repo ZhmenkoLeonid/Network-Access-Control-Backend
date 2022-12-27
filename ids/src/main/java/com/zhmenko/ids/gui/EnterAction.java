@@ -1,7 +1,8 @@
+/*
 package com.zhmenko.ids.gui;
 
-import com.zhmenko.ids.model.netflow.user.BlackList;
-import com.zhmenko.ids.mapper.NetflowUserStatisticMapper;
+import com.zhmenko.data.netflow.models.user.BlackList;
+import com.zhmenko.web.netflow.mapper.NetflowUserStatisticMapper;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -34,8 +35,10 @@ public class EnterAction implements KeyListener {
                     if ((msg = text.split(" ")).length > 1) {
                         switch (msg[1]) {
                             case "stats":
+*/
 /*                                text = userStatistics.getAllUserStats();
-                                console.appendMsg("show stats\n" + text);*/
+                                console.appendMsg("show stats\n" + text);*//*
+
                                 break;
                             case "flows":
                                 text = "UserStatistics.getAllUserFlows()";
@@ -79,3 +82,4 @@ public class EnterAction implements KeyListener {
 
     }
 }
+*/
