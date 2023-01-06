@@ -1,0 +1,16 @@
+spring:
+  #  enabled: false
+  datasource:
+    clickhouse:
+      url: ${SPRING_CLICKHOUSE_DATASOURCE_URL:jdbc:ch://localhost:8123} #
+      jdbcUrl: ${SPRING_CLICKHOUSE_DATASOURCE_URL:jdbc:ch://localhost:8123}
+      username: ${SPRING_CLICKHOUSE_DATASOURCE_USERNAME:default}
+      password: ${SPRING_CLICKHOUSE_DATASOURCE_PASSWORD:ENC(Xj8TLRm6L2Eto5ufBdLQg0MXaEUgtVCXJoGttMLdSJxVUFN+bqEw2/iVD66OP/vp)}
+      driverClassName: com.clickhouse.jdbc.ClickHouseDriver
+      hikari:
+        maximum-pool-size: 100
+    postgres:
+      jdbcUrl: ${SPRING_POSTGRES_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
+      driverClassName: org.postgresql.Driver
+      username: ${SPRING_POSTGRES_DATASOURCE_USERNAME:postgres}
+      password: ${SPRING_POSTGRES_DATASOURCE_PASSWORD:ENC(gNQXKd42OkOPt+EagohhQsyjoQNcyR2slA4KlVdhIJFYITM7M0QeR0VpdvaO3SGX)}
