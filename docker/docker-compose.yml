@@ -12,15 +12,16 @@ services:
       - clickhouse-db
       - postgres-db
     environment:
-      - SPRING_CLICKHOUSE_DATASOURCE_URL=jdbc:ch://db:8123
+      - SPRING_CLICKHOUSE_DATASOURCE_URL=jdbc:ch://clickhouse-db:8123
       - SPRING_CLICKHOUSE_DATASOURCE_USERNAME=default
       - SPRING_CLICKHOUSE_DATASOURCE_PASSWORD=123456
       - SPRING_CLICKHOUSE_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_POSTGRES_DATASOURCE_URL=jdbc:postgresql://postgresdb:5432/postgres
+      - SPRING_POSTGRES_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/postgres
       - SPRING_POSTGRES_DATASOURCE_USERNAME=postgres
       - SPRING_POSTGRES_DATASOURCE_PASSWORD=postgres
       - SPRING_POSTGRES_JPA_HIBERNATE_DDL_AUTO=update
       - JASYPT_ENCRYPTOR_PASSWORD=123
+    restart: always
 
   clickhouse-db:
     build:
@@ -31,6 +32,7 @@ services:
     environment:
       - CLICKHOUSE_USER=default
       - CLICKHOUSE_PASSWORD=123456
+    restart: always
 
   postgres-db:
       image: postgres
@@ -40,3 +42,4 @@ services:
       environment:
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=postgres
+      restart: always
