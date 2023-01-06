@@ -1,0 +1,17 @@
+
+		NETFLOW
+
+В режиме конфигурации:
+	ip flow-cache timeout inactive 15
+	ip flow-cache timeout active 1
+	ip flow-export destination <ip сервера> 2055
+
+В режиме интерфейса:
+	ip flow ingress - подключение интерфейса к протоколу netflow в направлении "ingress" (входящий трафик)
+
+		СПИСОК ДОСТУПА:
+В режиме конфигурации:
+	access-list netflow - создание acl с именем "netflow"
+
+В режиме интерфейса:
+	ip access-group netflow - подключение acl с именем "netflow"
