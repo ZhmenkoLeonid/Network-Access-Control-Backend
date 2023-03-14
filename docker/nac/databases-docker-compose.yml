@@ -1,0 +1,23 @@
+version: "2"
+
+services:
+  clickhouse-db:
+    build:
+      context: db
+    ports:
+      - "8123:8123"
+    container_name: clickhouse-db
+    environment:
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_PASSWORD=123456
+    restart: always
+
+  postgres-db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    container_name: postgres-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: always

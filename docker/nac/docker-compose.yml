@@ -3,8 +3,8 @@ version: '2'
 services:
   app:
     build:
-      context: ../application
-      dockerfile: ../docker/application/Dockerfile
+      context: ../../application
+      dockerfile: application/Dockerfile
     container_name: app
     ports:
     - 443:443

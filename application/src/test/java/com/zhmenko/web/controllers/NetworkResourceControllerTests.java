@@ -1,6 +1,6 @@
 package com.zhmenko.web.controllers;
 
-import com.zhmenko.data.nac.models.NetworkResourceEntity;
+import com.zhmenko.data.nac.entity.NetworkResourceEntity;
 import com.zhmenko.data.nac.repository.NetworkResourcesRepository;
 import com.zhmenko.web.nac.mapper.networkresource.NetworkResourceListMapper;
 import com.zhmenko.web.nac.model.NetworkResourceDto;

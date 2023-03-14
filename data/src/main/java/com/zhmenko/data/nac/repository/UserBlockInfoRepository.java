@@ -1,7 +1,7 @@
 package com.zhmenko.data.nac.repository;
 
 
-import com.zhmenko.data.nac.models.UserBlockInfoEntity;
+import com.zhmenko.data.nac.entity.UserBlockInfoEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

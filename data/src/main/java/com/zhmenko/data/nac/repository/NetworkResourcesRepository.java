@@ -1,7 +1,7 @@
 package com.zhmenko.data.nac.repository;
 
 
-import com.zhmenko.data.nac.models.NetworkResourceEntity;
+import com.zhmenko.data.nac.entity.NetworkResourceEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

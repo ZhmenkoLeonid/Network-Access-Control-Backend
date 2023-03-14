@@ -1,7 +1,7 @@
 package com.zhmenko.entity;
 
-import com.zhmenko.data.nac.models.NacRoleEntity;
-import com.zhmenko.data.nac.models.NetworkResourceEntity;
+import com.zhmenko.data.nac.entity.NacRoleEntity;
+import com.zhmenko.data.nac.entity.NetworkResourceEntity;
 import com.zhmenko.util.TestBuilder;
 
 import java.util.HashSet;

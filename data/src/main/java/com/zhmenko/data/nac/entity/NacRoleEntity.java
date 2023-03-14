@@ -1,4 +1,4 @@
-package com.zhmenko.data.nac.models;
+package com.zhmenko.data.nac.entity;
 
 import com.zhmenko.data.security.models.SecurityUserEntity;
 import lombok.*;

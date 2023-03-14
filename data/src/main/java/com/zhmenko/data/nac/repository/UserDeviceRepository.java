@@ -1,6 +1,6 @@
 package com.zhmenko.data.nac.repository;
 
-import com.zhmenko.data.nac.models.UserDeviceEntity;
+import com.zhmenko.data.nac.entity.UserDeviceEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

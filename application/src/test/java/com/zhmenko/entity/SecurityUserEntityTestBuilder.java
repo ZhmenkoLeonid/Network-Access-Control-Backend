@@ -1,7 +1,7 @@
 package com.zhmenko.entity;
 
-import com.zhmenko.data.nac.models.NacRoleEntity;
-import com.zhmenko.data.nac.models.UserDeviceEntity;
+import com.zhmenko.data.nac.entity.NacRoleEntity;
+import com.zhmenko.data.nac.entity.UserDeviceEntity;
 import com.zhmenko.data.security.models.SecurityRoleEntity;
 import com.zhmenko.data.security.models.SecurityUserEntity;
 import com.zhmenko.util.TestBuilder;

@@ -40,6 +40,7 @@ spring:
     jwt:
       jwtSecret: ENC(3DNdSzuVKsOicKHSLgyXFVDP7rD0CVSAS2kzm1rYiMKFEhf/z5RmDHRkT9jwk3Rp)
       jwtExpirationMs: 8640000
+      refreshExpirationMs: 18640000
   jpa:
     show-sql: false
 

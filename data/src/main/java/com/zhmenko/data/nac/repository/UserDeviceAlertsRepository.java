@@ -1,7 +1,7 @@
 package com.zhmenko.data.nac.repository;
 
 
-import com.zhmenko.data.nac.models.UserDeviceAlertEntity;
+import com.zhmenko.data.nac.entity.UserDeviceAlertEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

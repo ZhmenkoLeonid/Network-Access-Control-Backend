@@ -1,9 +1,9 @@
 package com.zhmenko.main;
 
-import com.zhmenko.data.nac.models.UserBlockInfoEntity;
-import com.zhmenko.data.nac.models.NacRoleEntity;
-import com.zhmenko.data.nac.models.UserDeviceEntity;
-import com.zhmenko.data.nac.models.NetworkResourceEntity;
+import com.zhmenko.data.nac.entity.UserBlockInfoEntity;
+import com.zhmenko.data.nac.entity.NacRoleEntity;
+import com.zhmenko.data.nac.entity.UserDeviceEntity;
+import com.zhmenko.data.nac.entity.NetworkResourceEntity;
 import com.zhmenko.data.nac.repository.NacRoleRepository;
 import com.zhmenko.data.nac.repository.UserDeviceRepository;
 import com.zhmenko.data.nac.repository.NetworkResourcesRepository;

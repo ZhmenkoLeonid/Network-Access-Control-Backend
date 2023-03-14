@@ -1,4 +1,4 @@
-package com.zhmenko.data.netflow.models.config;
+package com.zhmenko.ids.config;
 
 import com.zhmenko.data.netflow.models.device.NetflowDeviceList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +10,13 @@ import org.springframework.context.event.EventListener;
 
 @Configuration
 @Import(NetflowDeviceList.class)
-@Profile("dev")
-public class NetflowLoadEntitiesConfigurationDev {
+@Profile("prod")
+public class NetflowLoadEntitiesConfiguration {
     @Autowired
     private NetflowDeviceList netflowDeviceList;
 
     @EventListener(ApplicationReadyEvent.class)
-    public void loadNetflowEntitiesDev() {
-        netflowDeviceList.loadUsersFromDbDebug();
+    public void loadNetflowEntitiesProd() {
+        netflowDeviceList.loadUsersFromDb();
     }
 }

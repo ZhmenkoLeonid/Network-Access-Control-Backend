@@ -1,8 +1,8 @@
 package com.zhmenko.web.controllers;
 
 
-import com.zhmenko.data.nac.models.NacRoleEntity;
-import com.zhmenko.data.nac.models.NetworkResourceEntity;
+import com.zhmenko.data.nac.entity.NacRoleEntity;
+import com.zhmenko.data.nac.entity.NetworkResourceEntity;
 import com.zhmenko.data.nac.repository.NacRoleRepository;
 import com.zhmenko.entity.NacRoleEntityTestBuilder;
 import com.zhmenko.web.nac.model.NetworkResourceDto;

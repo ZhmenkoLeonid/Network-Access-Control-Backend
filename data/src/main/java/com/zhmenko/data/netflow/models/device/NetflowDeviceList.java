@@ -1,6 +1,6 @@
 package com.zhmenko.data.netflow.models.device;
 
-import com.zhmenko.data.nac.models.UserDeviceEntity;
+import com.zhmenko.data.nac.entity.UserDeviceEntity;
 import com.zhmenko.data.nac.repository.UserDeviceRepository;
 import com.zhmenko.data.netflow.UserStatisticDao;
 import com.zhmenko.data.netflow.models.exception.UserNotExistException;
@@ -60,7 +60,7 @@ public class NetflowDeviceList {
                             updateMeanValueTimeMillis / 1000);
             if (userStatistic != null) netflowDevice.updateUserStatistic(userStatistic);
 
-            log.info("Add device: " + netflowDevice.toString());
+            log.info("Add device: " + netflowDevice);
             usersMap.put(netflowDevice.getMacAddress(), netflowDevice);
             // TODO должна быть авторизация,
             //  поэтому в конечной версии надо убрать вызов метода тут
@@ -91,13 +91,13 @@ public class NetflowDeviceList {
                     .findUserStatisticByMacAddress(netflowDevice.getMacAddress(),
                             updateMeanValueTimeMillis / 1000);
             if (userStatistic != null) netflowDevice.updateUserStatistic(userStatistic);
-            log.info("Add device: " + netflowDevice.toString());
+            log.info("Add device: " + netflowDevice);
             usersMap.put(netflowDevice.getMacAddress(), netflowDevice);
         }
     }
 
     /**
-     * Сохраняет сущность в локальный список и сохраняет её в бд
+     * Сохраняет сущность в локальный список и в бд
      * @param userDeviceEntity
      * @return Сохранённый объект
      */
