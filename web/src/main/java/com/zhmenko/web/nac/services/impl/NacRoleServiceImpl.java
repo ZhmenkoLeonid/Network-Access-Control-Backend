@@ -1,8 +1,8 @@
 package com.zhmenko.web.nac.services.impl;
 
-import com.zhmenko.data.nac.models.NacRoleEntity;
-import com.zhmenko.data.nac.models.UserDeviceEntity;
-import com.zhmenko.data.nac.models.NetworkResourceEntity;
+import com.zhmenko.data.nac.entity.NacRoleEntity;
+import com.zhmenko.data.nac.entity.UserDeviceEntity;
+import com.zhmenko.data.nac.entity.NetworkResourceEntity;
 import com.zhmenko.data.nac.repository.NacRoleRepository;
 import com.zhmenko.data.nac.repository.NetworkResourcesRepository;
 import com.zhmenko.data.netflow.models.device.NetflowDeviceList;

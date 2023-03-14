@@ -1,6 +1,6 @@
 package com.zhmenko.web.nac.mapper.nacrole;
 
-import com.zhmenko.data.nac.models.NacRoleEntity;
+import com.zhmenko.data.nac.entity.NacRoleEntity;
 import com.zhmenko.web.nac.model.nacrole.request.modify.NacRoleModifyDto;
 import com.zhmenko.web.nac.model.nacrole.request.insert.NacRoleInsertDto;
 import com.zhmenko.web.nac.model.nacrole.response.NacRoleDto;

@@ -9,9 +9,7 @@ import java.util.UUID;
 
 public interface SecurityUserService {
     List<SecurityUserDto> findAll();
-
     Optional<SecurityUserDto> findById(UUID id);
-
     void updateUser(SecurityUserModifyDto securityUserModifyDto);
 
     boolean deleteUserById(UUID id);

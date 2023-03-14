@@ -1,7 +1,7 @@
 package com.zhmenko.web.nac.services.impl;
 
-import com.zhmenko.data.nac.models.UserBlockInfoEntity;
-import com.zhmenko.data.nac.models.UserDeviceEntity;
+import com.zhmenko.data.nac.entity.UserBlockInfoEntity;
+import com.zhmenko.data.nac.entity.UserDeviceEntity;
 import com.zhmenko.data.nac.repository.UserDeviceRepository;
 import com.zhmenko.data.netflow.models.device.NetflowDevice;
 import com.zhmenko.data.netflow.models.device.NetflowDeviceList;

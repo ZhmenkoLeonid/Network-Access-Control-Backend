@@ -1,9 +1,9 @@
 package com.zhmenko.data.security.models;
 
 
-import com.zhmenko.data.nac.models.NacRoleEntity;
-import com.zhmenko.data.nac.models.NetworkResourceEntity;
-import com.zhmenko.data.nac.models.UserDeviceEntity;
+import com.zhmenko.data.nac.entity.NacRoleEntity;
+import com.zhmenko.data.nac.entity.NetworkResourceEntity;
+import com.zhmenko.data.nac.entity.UserDeviceEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,7 +29,7 @@ public class SecurityUserEntity {
 
   @NotBlank
   @Size(max = 20)
-  @Column(name = "username")
+  @Column(name = "username", nullable = false)
   private String username;
 
   @NotBlank
