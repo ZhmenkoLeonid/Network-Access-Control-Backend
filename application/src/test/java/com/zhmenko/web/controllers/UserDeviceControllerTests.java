@@ -1,16 +1,16 @@
 package com.zhmenko.web.controllers;
 
-import com.zhmenko.data.nac.entity.UserBlockInfoEntity;
-import com.zhmenko.data.nac.entity.NacRoleEntity;
-import com.zhmenko.data.nac.entity.UserDeviceEntity;
-import com.zhmenko.data.nac.entity.NetworkResourceEntity;
-import com.zhmenko.data.nac.repository.NacRoleRepository;
-import com.zhmenko.data.nac.repository.UserDeviceRepository;
-import com.zhmenko.data.nac.repository.NetworkResourcesRepository;
-import com.zhmenko.data.netflow.models.device.NetflowDevice;
-import com.zhmenko.data.netflow.models.device.NetflowDeviceList;
-import com.zhmenko.data.security.models.SecurityUserEntity;
-import com.zhmenko.data.security.repository.SecurityUserRepository;
+import com.zhmenko.ids.data.nac.entity.NacRoleEntity;
+import com.zhmenko.ids.data.nac.entity.NetworkResourceEntity;
+import com.zhmenko.ids.data.nac.entity.UserBlockInfoEntity;
+import com.zhmenko.ids.data.nac.entity.UserDeviceEntity;
+import com.zhmenko.ids.data.nac.repository.UserDeviceRepository;
+import com.zhmenko.ids.data.security.entity.SecurityUserEntity;
+import com.zhmenko.ids.data.security.repository.SecurityUserRepository;
+import com.zhmenko.ids.models.ids.device.NetflowDevice;
+import com.zhmenko.ids.models.ids.device.NetflowDeviceList;
+import com.zhmenko.web.nac.data.repository.NacRoleRepository;
+import com.zhmenko.web.nac.data.repository.NetworkResourcesRepository;
 import com.zhmenko.web.nac.model.user_device.UserDeviceDto;
 import com.zhmenko.web.nac.model.user_device.request.modify.UserDeviceModifyDto;
 import lombok.extern.slf4j.Slf4j;

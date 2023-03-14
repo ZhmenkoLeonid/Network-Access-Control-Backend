@@ -1,8 +1,8 @@
 package com.zhmenko.entity;
 
-import com.zhmenko.data.nac.entity.NacRoleEntity;
-import com.zhmenko.data.nac.entity.NetworkResourceEntity;
-import com.zhmenko.data.security.models.SecurityUserEntity;
+import com.zhmenko.ids.data.nac.entity.NacRoleEntity;
+import com.zhmenko.ids.data.nac.entity.NetworkResourceEntity;
+import com.zhmenko.ids.data.security.entity.SecurityUserEntity;
 import com.zhmenko.util.TestBuilder;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

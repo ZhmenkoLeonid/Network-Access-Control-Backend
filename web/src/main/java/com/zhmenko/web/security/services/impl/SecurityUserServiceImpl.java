@@ -1,16 +1,16 @@
 package com.zhmenko.web.security.services.impl;
 
-import com.zhmenko.data.nac.entity.NacRoleEntity;
-import com.zhmenko.data.nac.entity.UserDeviceEntity;
-import com.zhmenko.data.nac.entity.NetworkResourceEntity;
-import com.zhmenko.data.nac.repository.NacRoleRepository;
-import com.zhmenko.data.netflow.models.exception.UserNotExistException;
-import com.zhmenko.data.netflow.models.device.NetflowDeviceList;
-import com.zhmenko.data.security.models.SecurityRoleEntity;
-import com.zhmenko.data.security.models.SecurityUserEntity;
-import com.zhmenko.data.security.repository.SecurityRoleRepository;
-import com.zhmenko.data.security.repository.SecurityUserRepository;
+import com.zhmenko.ids.data.nac.entity.NacRoleEntity;
+import com.zhmenko.ids.data.nac.entity.NetworkResourceEntity;
+import com.zhmenko.ids.data.nac.entity.UserDeviceEntity;
+import com.zhmenko.ids.data.security.entity.SecurityRoleEntity;
+import com.zhmenko.ids.data.security.entity.SecurityUserEntity;
+import com.zhmenko.ids.data.security.repository.SecurityUserRepository;
+import com.zhmenko.ids.models.ids.exception.UserNotExistException;
+import com.zhmenko.ids.models.ids.device.NetflowDeviceList;
+import com.zhmenko.web.nac.data.repository.NacRoleRepository;
 import com.zhmenko.web.nac.exceptions.BadRequestException;
+import com.zhmenko.web.security.data.repository.SecurityRoleRepository;
 import com.zhmenko.web.security.mapper.securityuser.SecurityUserListMapper;
 import com.zhmenko.web.security.mapper.securityuser.SecurityUserMapper;
 import com.zhmenko.web.security.model.securityusercontroller.SecurityUserDto;

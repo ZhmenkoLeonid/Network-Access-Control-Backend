@@ -1,6 +1,6 @@
 package com.zhmenko.web.netflow.model;
 
-import com.zhmenko.data.netflow.models.Protocol;
+import com.zhmenko.ids.models.ids.Protocol;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

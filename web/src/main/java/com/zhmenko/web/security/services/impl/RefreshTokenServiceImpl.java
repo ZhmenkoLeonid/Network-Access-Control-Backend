@@ -1,9 +1,9 @@
 package com.zhmenko.web.security.services.impl;
 
-import com.zhmenko.data.netflow.models.exception.UserNotExistException;
-import com.zhmenko.data.security.models.RefreshTokenEntity;
-import com.zhmenko.data.security.repository.RefreshTokenRepository;
-import com.zhmenko.data.security.repository.SecurityUserRepository;
+import com.zhmenko.ids.data.security.repository.SecurityUserRepository;
+import com.zhmenko.ids.models.ids.exception.UserNotExistException;
+import com.zhmenko.web.security.data.entity.RefreshTokenEntity;
+import com.zhmenko.web.security.data.repository.RefreshTokenRepository;
 import com.zhmenko.web.security.exceptions.TokenRefreshException;
 import com.zhmenko.web.security.services.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;

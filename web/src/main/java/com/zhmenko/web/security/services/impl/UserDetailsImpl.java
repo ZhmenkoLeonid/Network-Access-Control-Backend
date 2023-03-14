@@ -1,7 +1,7 @@
 package com.zhmenko.web.security.services.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zhmenko.data.security.models.SecurityUserEntity;
+import com.zhmenko.ids.data.security.entity.SecurityUserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

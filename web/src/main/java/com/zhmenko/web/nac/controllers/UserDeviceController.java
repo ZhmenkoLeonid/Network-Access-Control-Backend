@@ -1,7 +1,7 @@
 package com.zhmenko.web.nac.controllers;
 
 
-import com.zhmenko.data.netflow.models.exception.UserNotExistException;
+import com.zhmenko.ids.models.ids.exception.UserNotExistException;
 import com.zhmenko.web.nac.model.user_device.UserDeviceDto;
 import com.zhmenko.web.nac.model.user_device.request.modify.UserDeviceModifyDto;
 import com.zhmenko.web.nac.model.user_device.response.UserDeviceResponse;

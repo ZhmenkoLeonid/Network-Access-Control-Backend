@@ -1,11 +1,11 @@
 package com.zhmenko.web.nac.services.impl;
 
-import com.zhmenko.data.nac.entity.NacRoleEntity;
-import com.zhmenko.data.nac.entity.NetworkResourceEntity;
-import com.zhmenko.data.nac.entity.UserDeviceEntity;
-import com.zhmenko.data.nac.repository.NetworkResourcesRepository;
-import com.zhmenko.data.netflow.models.device.NetflowDeviceList;
-import com.zhmenko.data.security.models.SecurityUserEntity;
+import com.zhmenko.ids.data.nac.entity.NacRoleEntity;
+import com.zhmenko.ids.data.nac.entity.NetworkResourceEntity;
+import com.zhmenko.ids.data.nac.entity.UserDeviceEntity;
+import com.zhmenko.ids.data.security.entity.SecurityUserEntity;
+import com.zhmenko.ids.models.ids.device.NetflowDeviceList;
+import com.zhmenko.web.nac.data.repository.NetworkResourcesRepository;
 import com.zhmenko.web.nac.exceptions.BadRequestException;
 import com.zhmenko.web.nac.mapper.networkresource.NetworkResourceListMapper;
 import com.zhmenko.web.nac.mapper.networkresource.NetworkResourceMapper;

@@ -2,10 +2,7 @@ package com.zhmenko.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.zhmenko.data.nac.repository.NetworkResourcesRepository;
-import com.zhmenko.data.security.models.SecurityRoleEntity;
-import com.zhmenko.data.security.repository.SecurityRoleRepository;
-import com.zhmenko.data.security.repository.SecurityUserRepository;
+import com.zhmenko.ids.data.security.entity.SecurityRoleEntity;
 import com.zhmenko.router.SSH;
 import com.zhmenko.entity.SecurityRoleEntityTestBuilder;
 import com.zhmenko.entity.SecurityUserEntityTestBuilder;

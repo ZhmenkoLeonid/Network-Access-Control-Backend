@@ -1,10 +1,9 @@
 package com.zhmenko.web.controllers;
 
-
-import com.zhmenko.data.nac.entity.NacRoleEntity;
-import com.zhmenko.data.nac.entity.NetworkResourceEntity;
-import com.zhmenko.data.nac.repository.NacRoleRepository;
 import com.zhmenko.entity.NacRoleEntityTestBuilder;
+import com.zhmenko.ids.data.nac.entity.NacRoleEntity;
+import com.zhmenko.ids.data.nac.entity.NetworkResourceEntity;
+import com.zhmenko.web.nac.data.repository.NacRoleRepository;
 import com.zhmenko.web.nac.model.NetworkResourceDto;
 import com.zhmenko.web.nac.model.nacrole.request.insert.NacRoleInsertDto;
 import com.zhmenko.web.nac.model.nacrole.request.insert.NacRolesInsertRequest;

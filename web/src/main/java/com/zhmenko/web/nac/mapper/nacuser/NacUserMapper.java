@@ -1,6 +1,6 @@
 package com.zhmenko.web.nac.mapper.nacuser;
 
-import com.zhmenko.data.nac.entity.UserDeviceEntity;
+import com.zhmenko.ids.data.nac.entity.UserDeviceEntity;
 import com.zhmenko.web.nac.mapper.nacrole.NacRoleMapper;
 import com.zhmenko.web.nac.model.user_device.UserDeviceDto;
 import org.mapstruct.Mapper;

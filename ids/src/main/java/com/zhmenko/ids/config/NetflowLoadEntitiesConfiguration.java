@@ -1,6 +1,6 @@
 package com.zhmenko.ids.config;
 
-import com.zhmenko.data.netflow.models.device.NetflowDeviceList;
+import com.zhmenko.ids.models.ids.device.NetflowDeviceList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;

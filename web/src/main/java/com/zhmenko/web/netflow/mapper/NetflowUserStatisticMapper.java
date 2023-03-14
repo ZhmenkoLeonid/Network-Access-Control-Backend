@@ -1,7 +1,7 @@
 package com.zhmenko.web.netflow.mapper;
 
-import com.zhmenko.data.netflow.models.device.NetflowDeviceList;
-import com.zhmenko.data.netflow.models.device.NetflowDeviceStatistic;
+import com.zhmenko.ids.models.ids.device.NetflowDeviceList;
+import com.zhmenko.ids.models.ids.device.NetflowDeviceStatistic;
 import com.zhmenko.web.netflow.model.NetflowUserStatisticDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

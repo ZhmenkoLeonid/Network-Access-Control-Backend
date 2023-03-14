@@ -1,8 +1,7 @@
 package com.zhmenko.web.security.services.impl;
 
-
-import com.zhmenko.data.security.models.SecurityUserEntity;
-import com.zhmenko.data.security.repository.SecurityUserRepository;
+import com.zhmenko.ids.data.security.entity.SecurityUserEntity;
+import com.zhmenko.ids.data.security.repository.SecurityUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;

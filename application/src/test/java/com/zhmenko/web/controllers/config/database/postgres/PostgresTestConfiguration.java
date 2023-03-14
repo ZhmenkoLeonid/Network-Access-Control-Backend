@@ -14,7 +14,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-@EnableJpaRepositories(basePackages = {"com.zhmenko.data.**.repository"},
+@EnableJpaRepositories(basePackages = {"com.zhmenko.**.data.**.repository"},
         entityManagerFactoryRef = "entityManagerFactory",
         transactionManagerRef = "transactionManager")
 @Configuration

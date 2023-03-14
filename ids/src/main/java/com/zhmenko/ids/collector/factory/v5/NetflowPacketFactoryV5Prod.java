@@ -1,11 +1,12 @@
 package com.zhmenko.ids.collector.factory.v5;
 
-import com.zhmenko.data.netflow.models.Protocol;
-import com.zhmenko.data.netflow.models.TcpFlags;
-import com.zhmenko.data.netflow.models.device.NetflowDevice;
-import com.zhmenko.data.netflow.models.device.NetflowDeviceList;
-import com.zhmenko.data.netflow.models.exception.UnsupportedProtocolException;
-import com.zhmenko.data.netflow.models.packet.NetflowPacketV5;
+
+import com.zhmenko.ids.models.ids.Protocol;
+import com.zhmenko.ids.models.ids.TcpFlags;
+import com.zhmenko.ids.models.ids.device.NetflowDevice;
+import com.zhmenko.ids.models.ids.device.NetflowDeviceList;
+import com.zhmenko.ids.models.ids.exception.UnsupportedProtocolException;
+import com.zhmenko.ids.models.ids.packet.NetflowPacketV5;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

@@ -1,10 +1,10 @@
 package com.zhmenko.web.nac.services.impl;
 
-import com.zhmenko.data.nac.entity.UserDeviceEntity;
-import com.zhmenko.data.nac.repository.UserDeviceRepository;
-import com.zhmenko.data.netflow.models.device.NetflowDevice;
-import com.zhmenko.data.netflow.models.device.NetflowDeviceList;
-import com.zhmenko.data.netflow.models.exception.UserNotExistException;
+import com.zhmenko.ids.data.nac.entity.UserDeviceEntity;
+import com.zhmenko.ids.data.nac.repository.UserDeviceRepository;
+import com.zhmenko.ids.models.ids.device.NetflowDevice;
+import com.zhmenko.ids.models.ids.device.NetflowDeviceList;
+import com.zhmenko.ids.models.ids.exception.UserNotExistException;
 import com.zhmenko.router.SSH;
 import com.zhmenko.web.ids.services.NetflowUserStatisticService;
 import com.zhmenko.web.nac.mapper.nacuser.NacUserListMapper;

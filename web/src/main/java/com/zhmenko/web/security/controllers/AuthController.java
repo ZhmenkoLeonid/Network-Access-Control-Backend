@@ -1,15 +1,15 @@
 package com.zhmenko.web.security.controllers;
 
-import com.zhmenko.data.security.models.ERole;
-import com.zhmenko.data.security.models.RefreshTokenEntity;
-import com.zhmenko.data.security.models.SecurityRoleEntity;
-import com.zhmenko.data.security.models.SecurityUserEntity;
-import com.zhmenko.data.security.repository.SecurityRoleRepository;
-import com.zhmenko.data.security.repository.SecurityUserRepository;
+import com.zhmenko.ids.data.security.entity.SecurityRoleEntity;
+import com.zhmenko.ids.data.security.entity.SecurityUserEntity;
+import com.zhmenko.ids.data.security.repository.SecurityUserRepository;
 import com.zhmenko.web.model.Error;
 import com.zhmenko.web.nac.exceptions.not_found.RoleNotFoundException;
+import com.zhmenko.web.security.data.entity.RefreshTokenEntity;
+import com.zhmenko.web.security.data.repository.SecurityRoleRepository;
 import com.zhmenko.web.security.exceptions.TokenRefreshException;
 import com.zhmenko.web.security.jwt.JwtUtils;
+import com.zhmenko.web.security.model.ERole;
 import com.zhmenko.web.security.model.authcontroller.request.LoginRequest;
 import com.zhmenko.web.security.model.authcontroller.request.SignupRequest;
 import com.zhmenko.web.security.model.authcontroller.response.MessageResponse;

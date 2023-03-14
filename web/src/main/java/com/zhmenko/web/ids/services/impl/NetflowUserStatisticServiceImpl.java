@@ -1,7 +1,7 @@
 package com.zhmenko.web.ids.services.impl;
 
-import com.zhmenko.data.netflow.models.device.NetflowDevice;
-import com.zhmenko.data.netflow.models.device.NetflowDeviceList;
+import com.zhmenko.ids.models.ids.device.NetflowDevice;
+import com.zhmenko.ids.models.ids.device.NetflowDeviceList;
 import com.zhmenko.web.netflow.model.NetflowUserStatisticDto;
 import com.zhmenko.web.netflow.mapper.NetflowUserStatisticMapper;
 import com.zhmenko.web.ids.services.NetflowUserStatisticService;

@@ -1,6 +1,6 @@
 package com.zhmenko.web.security.services;
 
-import com.zhmenko.data.security.models.RefreshTokenEntity;
+import com.zhmenko.web.security.data.entity.RefreshTokenEntity;
 
 import java.util.Optional;
 import java.util.UUID;

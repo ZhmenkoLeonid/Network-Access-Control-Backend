@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
-@EnableJpaRepositories(basePackages = {"com.zhmenko.data.**.repository"},
+@EnableJpaRepositories(basePackages = {"com.zhmenko.**.data.**.repository"},
         entityManagerFactoryRef = "entityManagerFactory",
         transactionManagerRef = "transactionManager")
 @Configuration

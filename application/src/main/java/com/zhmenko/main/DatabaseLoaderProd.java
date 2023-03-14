@@ -1,9 +1,9 @@
 package com.zhmenko.main;
 
-import com.zhmenko.data.security.models.SecurityRoleEntity;
-import com.zhmenko.data.security.models.SecurityUserEntity;
-import com.zhmenko.data.security.repository.SecurityRoleRepository;
-import com.zhmenko.data.security.repository.SecurityUserRepository;
+import com.zhmenko.ids.data.security.entity.SecurityRoleEntity;
+import com.zhmenko.ids.data.security.entity.SecurityUserEntity;
+import com.zhmenko.ids.data.security.repository.SecurityUserRepository;
+import com.zhmenko.web.security.data.repository.SecurityRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;

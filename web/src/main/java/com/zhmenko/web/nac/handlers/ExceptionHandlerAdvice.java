@@ -1,6 +1,6 @@
 package com.zhmenko.web.nac.handlers;
 
-import com.zhmenko.data.netflow.models.exception.UserNotExistException;
+import com.zhmenko.ids.models.ids.exception.UserNotExistException;
 import com.zhmenko.web.nac.exceptions.BadRequestException;
 import com.zhmenko.web.nac.exceptions.connect.ConnectException;
 import com.zhmenko.web.nac.exceptions.illegal_state.IllegalStateException;

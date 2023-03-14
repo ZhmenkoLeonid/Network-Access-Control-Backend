@@ -1,6 +1,6 @@
 package com.zhmenko.web.security.controllers;
 
-import com.zhmenko.data.netflow.models.exception.UserNotExistException;
+import com.zhmenko.ids.models.ids.exception.UserNotExistException;
 import com.zhmenko.web.security.model.securityusercontroller.SecurityUserDto;
 import com.zhmenko.web.security.model.securityusercontroller.request.modify.SecurityUserModifyDto;
 import com.zhmenko.web.security.model.securityusercontroller.response.SecurityUserResponse;

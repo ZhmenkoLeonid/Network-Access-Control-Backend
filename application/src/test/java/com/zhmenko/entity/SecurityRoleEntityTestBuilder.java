@@ -1,6 +1,6 @@
 package com.zhmenko.entity;
 
-import com.zhmenko.data.security.models.SecurityRoleEntity;
+import com.zhmenko.ids.data.security.entity.SecurityRoleEntity;
 import com.zhmenko.util.TestBuilder;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

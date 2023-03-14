@@ -1,6 +1,6 @@
 package com.zhmenko.web.security.mapper.securityrole;
 
-import com.zhmenko.data.security.models.SecurityUserEntity;
+import com.zhmenko.ids.data.security.entity.SecurityUserEntity;
 import com.zhmenko.web.security.model.securityusercontroller.SecurityUserDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

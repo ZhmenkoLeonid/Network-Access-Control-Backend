@@ -1,6 +1,6 @@
 package com.zhmenko.ids.config;
 
-import com.zhmenko.data.netflow.models.device.NetflowDeviceList;
+import com.zhmenko.ids.models.ids.device.NetflowDeviceList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;

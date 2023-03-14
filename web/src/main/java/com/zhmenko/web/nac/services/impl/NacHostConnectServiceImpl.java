@@ -1,12 +1,12 @@
 package com.zhmenko.web.nac.services.impl;
 
-import com.zhmenko.data.nac.entity.UserBlockInfoEntity;
-import com.zhmenko.data.nac.entity.UserDeviceEntity;
-import com.zhmenko.data.nac.repository.UserDeviceRepository;
-import com.zhmenko.data.netflow.models.device.NetflowDevice;
-import com.zhmenko.data.netflow.models.device.NetflowDeviceList;
-import com.zhmenko.data.netflow.models.exception.UserNotExistException;
-import com.zhmenko.data.security.repository.SecurityUserRepository;
+import com.zhmenko.ids.data.nac.entity.UserBlockInfoEntity;
+import com.zhmenko.ids.data.nac.entity.UserDeviceEntity;
+import com.zhmenko.ids.data.nac.repository.UserDeviceRepository;
+import com.zhmenko.ids.data.security.repository.SecurityUserRepository;
+import com.zhmenko.ids.models.ids.device.NetflowDevice;
+import com.zhmenko.ids.models.ids.device.NetflowDeviceList;
+import com.zhmenko.ids.models.ids.exception.UserNotExistException;
 import com.zhmenko.hostvalidation.PacketValidation;
 import com.zhmenko.hostvalidation.host.ValidationPacket;
 import com.zhmenko.router.SSH;

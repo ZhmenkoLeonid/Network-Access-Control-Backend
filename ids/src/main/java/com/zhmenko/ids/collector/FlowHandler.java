@@ -1,8 +1,8 @@
 package com.zhmenko.ids.collector;
 
-import com.zhmenko.data.netflow.models.exception.BlockedUserException;
-import com.zhmenko.data.netflow.models.exception.UnsupportedProtocolException;
 import com.zhmenko.ids.collector.factory.v5.NetflowPacketFactoryV5;
+import com.zhmenko.ids.models.ids.exception.BlockedUserException;
+import com.zhmenko.ids.models.ids.exception.UnsupportedProtocolException;
 import lombok.RequiredArgsConstructor;
 import nettrack.net.IpAddr;
 import nettrack.net.netflow.Accountant;

@@ -1,6 +1,6 @@
 package com.zhmenko.web.nac.mapper.networkresource;
 
-import com.zhmenko.data.nac.entity.NetworkResourceEntity;
+import com.zhmenko.ids.data.nac.entity.NetworkResourceEntity;
 import com.zhmenko.web.nac.model.NetworkResourceDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
